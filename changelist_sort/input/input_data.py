@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from pathlib import Path
 
+from changelist_sort.sorting.sort_mode import SortMode
+
 
 @dataclass(frozen=True)
 class InputData:
@@ -14,3 +16,4 @@ class InputData:
     """
     workspace_xml: str
     workspace_path: Path
+    sort_mode: SortMode = SortMode.MODULE

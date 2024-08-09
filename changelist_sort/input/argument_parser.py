@@ -23,7 +23,7 @@ def parse_arguments(args: Optional[list[str]] = None) -> ArgumentData:
     ArgumentData : Container for Valid Argument Data.
     """
     if args is None or len(args) == 0:
-        exit("No Arguments given.")
+        return ArgumentData(None)
     # Initialize the Parser and Parse Immediately
     try:
         parsed_args = _define_arguments().parse_args(args)
