@@ -51,7 +51,7 @@ def _validate_arguments(
             exit("The Workspace Path argument was invalid.")
     #
     return ArgumentData(
-        path=workspace_path,
+        workspace_path=workspace_path,
     )
 
 

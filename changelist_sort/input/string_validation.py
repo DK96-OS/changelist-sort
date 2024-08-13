@@ -1,6 +1,5 @@
 """String Validation Methods.
 """
-from typing import Literal
 
 
 def validate_name(argument) -> bool:
