@@ -4,7 +4,6 @@
 from typing import Callable
 
 from changelist_sort.change_data import ChangeData
-from changelist_sort.sorting.module_type import ModuleType
 
 
 class DeveloperFilePattern:
