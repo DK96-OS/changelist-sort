@@ -17,3 +17,4 @@ class ArgumentData:
     - workspace_path (str): The path to the workspace file.
     """
     workspace_path: str | None
+    developer_sort: bool = False
