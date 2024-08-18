@@ -1,6 +1,7 @@
 """The Changelist Map.
 """
 from changelist_sort.changelist_data import ChangelistData
+from changelist_sort.list_key import ListKey
 
 
 class ChangelistMap:
@@ -15,18 +16,25 @@ class ChangelistMap:
     def insert(self, changelist: ChangelistData) -> bool:
         """
         Insert a Changelist into the Map.
-            Uses the Changelist Simple name as a key.
+        - Uses the Changelist Simple name as a key.
+
+        Parameters:
+        - changelist (ChangelistData): The Changelist Data to insert into the Map.
+
+        Returns:
+        bool - True when Changelist Name and Id are not already in the Map.
         """
-        if changelist.id in self.changelist_ids:
+        if changelist.id in self.changelist_ids or\
+            changelist.list_key.key in self.mapping:
             return False
         self.changelist_ids.add(changelist.id)
-        self.mapping[changelist.get_simple_name()] = changelist
+        self.mapping[changelist.list_key.key] = changelist
         return True
 
     def search(self, key: str) -> ChangelistData | None:
         """
         Search the Map dict for the Changelist with the given simple name.
-            Expects the Changelist Simple name to match the key.
+            Expects the Changelist Simple Name to match the key.
         """
         return self.mapping.get(key)
 
@@ -40,9 +48,7 @@ class ChangelistMap:
         """
         Obtain all Changelists in the Map as a List.
         """
-        all_lists = []
-        all_lists.extend(self.mapping.values())
-        return all_lists
+        return list(self.mapping.values())
 
     def _generate_new_id(self) -> str:
         """
@@ -56,7 +62,7 @@ class ChangelistMap:
             test_id = generate_id()
         return test_id
 
-    def create_changelist(self, name: str) -> ChangelistData:
+    def create_changelist(self, cl_name: ListKey | str) -> ChangelistData:
         """
         Create a new empty Changelist with a new Id, and insert it into the Map.
 
@@ -66,17 +72,27 @@ class ChangelistMap:
         Returns:
         ChangelistData - The Changelist that was recently created and added to the Map.
         """
+        if isinstance(cl_name, ListKey):
+            cl_name = cl_name.changelist_name 
+        elif isinstance(cl_name, str):
+            pass
+        else:
+            raise TypeError
         new_cl = ChangelistData(
             id=self._generate_new_id(),
-            name=name,
-            changes=[]
+            name=cl_name,
         )
-        self.insert(new_cl)
-        return new_cl
+        if self.insert(new_cl):
+            return new_cl
+        if (existing_cl := self.search(new_cl.list_key.key)) is not None:
+            return existing_cl
+        exit(f"Failed to create new Changelist(name={new_cl.list_key.changelist_name})")
 
 
 def _hex_char_generator():
-    """Generator yielding all possible hexadecimal characters."""
+    """
+    Generator yielding all possible hexadecimal characters.
+    """
     for i in range(16):
         if i < 10:
             yield str(i) # Yield lowercase digits (0-9)

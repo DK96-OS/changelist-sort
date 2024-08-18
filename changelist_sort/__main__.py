@@ -17,4 +17,3 @@ if __name__ == "__main__":
     # Add the directory to sys.path
     path.append(str(current_directory))
     main()
-
