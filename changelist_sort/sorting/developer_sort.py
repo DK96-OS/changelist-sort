@@ -16,6 +16,7 @@ _INPUT_PACKAGE_PATTERN = DeveloperFilePattern(path_end='input')
 _SORTING_PACKAGE_PATTERN = DeveloperFilePattern(path_end='sorting')
 _WORKSPACE_PACKAGE_PATTERN = DeveloperFilePattern(path_end='workspace')
 
+_BUILD_UPDATES_KEY = list_key.compute_key('Build Updates')
 
 # Modify these Patterns
 DEVELOPER_CL_TUPLE: tuple[DeveloperChangelist, ...] = (
@@ -110,17 +111,35 @@ DEVELOPER_CL_TUPLE: tuple[DeveloperChangelist, ...] = (
         )
     ),
     DeveloperChangelist(
-        None,
-        ListKey('buildupdates', 'Build Updates'),
+        ModuleType.GRADLE,
+        _BUILD_UPDATES_KEY,
         (
             DeveloperFilePattern(
                 inverse=True,
                 first_dir='gradle',
             ),
+            DeveloperFilePattern(
+                inverse=True,
+                first_dir=None,
+            ),
         )
     ),
     DeveloperChangelist(
-        None,
+        ModuleType.ROOT,
+        _BUILD_UPDATES_KEY,
+        (
+            DeveloperFilePattern(file_ext='gradle'),
+        )
+    ),
+    DeveloperChangelist(
+        ModuleType.ROOT,
+        _BUILD_UPDATES_KEY,
+        (
+            DeveloperFilePattern(file_ext='properties'),
+        )
+    ),
+    DeveloperChangelist(
+        ModuleType.GRADLE,
         list_key.compute_key('Module Gradle Build Files'),
         (
             DeveloperFilePattern(
@@ -166,16 +185,20 @@ def sort_file_by_developer(
 
     - Fallback to Module Sort
     """
-    file_module_type = file_sort.get_module_type(file)
-    for pattern in _filter_patterns_by_module(file_module_type):
-        if pattern.check_file(file):
-            # Pattern Matched
-            if (cl := cl_map.search(pattern.list_key.key)) is not None:
+    # Filter Developer Changelist Tuple by File's ModuleType 
+    filtered_dcl_patterns = _filter_patterns_by_module(file_sort.get_module_type(file))
+    # Check Developer Changelists in Tuple Order
+    for dcl_pattern in filtered_dcl_patterns:
+        if dcl_pattern.check_file(file):
+            # Pattern Matched.
+            # Search Map. Add File to Changelist.
+            if (cl := cl_map.search(dcl_pattern.list_key.key)) is not None:
                 cl.changes.append(file)
                 return True
-            cl_map.create_changelist(pattern.list_key.changelist_name).changes.append(file)
+            # Create the Developer Changelist. Add File to Changelist.
+            cl_map.create_changelist(dcl_pattern.list_key.changelist_name).changes.append(file)
             return True
-    # Fallback to Module Sort when Developer Sort Fails
+    # Fallback to Module Sort when Developer Sort Fails.
     return module_sort.sort_file_by_module(cl_map, file)
 
 
@@ -188,16 +211,16 @@ def is_sorted_by_developer(
     - Finds the First DeveloperChangelist Pattern that matches
     - Fallback to Module Sort
     """
-    file_module_type = file_sort.get_module_type(file)
-    filtered_patterns = _filter_patterns_by_module(file_module_type)
-    for dc_pattern in filtered_patterns:
-        if dc_pattern.check_file(file):
+    # Filter Developer Changelist Tuple by File's ModuleType 
+    filtered_dcl_patterns = _filter_patterns_by_module(file_sort.get_module_type(file))
+    # Check Developer Changelists in Tuple Order
+    for dcl_pattern in filtered_dcl_patterns:
+        if dcl_pattern.check_file(file):
             # Pattern Matched
-            if changelist_key.key == dc_pattern.list_key.key or\
-                changelist_key.changelist_name == dc_pattern.list_key.changelist_name:
+            if dcl_pattern.list_key.key == changelist_key.key or\
+                dcl_pattern.list_key.changelist_name == changelist_key.changelist_name:
                 return True
-            else:
-                # This File could be sorted up higher in the DeveloperChangelist
-                return False
-    # Fallback to Module Sort
+            # This File could be sorted higher in the Developer Changelist order.
+            return False
+    # Fallback to Module Sort.
     return module_sort.is_sorted_by_module(changelist_key, file)
