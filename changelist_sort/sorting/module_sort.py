@@ -1,10 +1,40 @@
 """ Sorting By Module.
     An option of SortMode.
 """
+from changelist_sort.list_key import ListKey
 from changelist_sort.sorting import file_sort
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
-from changelist_sort.sorting.module_type import ModuleType, get_cl_simple_names
+from changelist_sort.sorting.module_type import ModuleType
+
+
+MODULE_ROOT_CL_TUPLE = (
+    ListKey('projectroot', 'Project Root'),
+    ListKey('root', 'Project Root'),
+)
+
+MODULE_GRADLE_CL_TUPLE = (
+    ListKey('buildupdates', 'Build Updates'),
+    ListKey('gradle', 'Build Updates'),
+)
+
+
+def get_module_keys(module_type: ModuleType) -> tuple[str, ...]:
+    """
+    Obtain a tuple containing the Keys for the Changelists.
+
+    Parameters:
+    - module_type (ModuleType): The type of Module.
+
+    Returns
+    tuple[str] - a tuple containing keys to lists of a given type of module.
+    """
+    if module_type == ModuleType.ROOT:
+        return tuple(x.key for x in MODULE_ROOT_CL_TUPLE)
+    elif module_type == ModuleType.GRADLE:
+        return tuple(x.key for x in MODULE_GRADLE_CL_TUPLE)
+    else:
+        return tuple()
 
 
 def sort_file_by_module(
@@ -21,31 +51,18 @@ def sort_file_by_module(
     Returns:
     bool - True when the operation succeeds.
     """
-    module_type = file_sort.get_module_type(file)
-    if module_type is None:
+    if (module_type := file_sort.get_module_type(file)) is None:
         return False
-    
-    file_module = file_sort.get_module_name(file)
-    if file_module is None or len(file_module) == 0:
-        return False
-    # 
-    if (cl := cl_map.search(file_module)) is not None:
-        cl.changes.append(file)
-        return True
-    # Create Changelist and Append File ChangeData
-    new_cl_name = file_module
-    if new_cl_name == 'gradle':
-        new_cl_name = 'Build Updates'
-    #
-    new_cl = cl_map.create_changelist(
-        name=capitalize_words(new_cl_name)
-    )
-    new_cl.changes.append(file)
-    return True
+    if module_type == ModuleType.ROOT:
+        return _sort_root_module(cl_map, file)
+    elif module_type == ModuleType.GRADLE:
+        return _sort_gradle_module(cl_map, file)
+    else:
+        return _sort_module(cl_map, file)
 
 
 def is_sorted_by_module(
-    changelist_name: str,
+    cl_key: ListKey,
     file: ChangeData,
 ) -> bool:
     """
@@ -60,21 +77,18 @@ def is_sorted_by_module(
     bool - Whether this file belongs in this Changelist according to Module sort logic.
     """
     if (module_type := file_sort.get_module_type(file)) == ModuleType.ROOT:
-        if changelist_name.startswith(
-            get_cl_simple_names(module_type)
-        ): return True
+        if cl_key.key.startswith(get_module_keys(ModuleType.ROOT)):
+            return True
         # File Extension Checks
         return file.file_ext.endswith(
             file_sort._GRADLE_FILE_SUFFIXES
-        ) and changelist_name.startswith(
-            get_cl_simple_names(ModuleType.GRADLE)
+        ) and cl_key.key.startswith(
+            get_module_keys(ModuleType.GRADLE)
         )
     if module_type == ModuleType.GRADLE:
-        return changelist_name.startswith(
-            get_cl_simple_names(module_type)
-        )
+        return cl_key.key.startswith(get_module_keys(ModuleType.GRADLE))
     # Starts with or Equals
-    return changelist_name.startswith(
+    return cl_key.key.startswith(
         file_sort.get_module_name(file)
     )
 
@@ -84,3 +98,58 @@ def capitalize_words(sentence: str) -> str:
     Uppercase the first letter of every word in the sentence.
     """
     return ' '.join(word.capitalize() for word in sentence.split())
+
+
+def replace_underscores(name: str) -> str:
+    """
+    """
+    return name.replace('_', ' ')
+
+
+def _sort_root_module(
+    cl_map: ChangelistMap,
+    file: ChangeData,
+) -> bool:
+    # Find CL
+    for module_cl in MODULE_ROOT_CL_TUPLE:
+        if (existing_cl := cl_map.search(module_cl.key)) is not None:
+            existing_cl.changes.append(file)
+            return True
+    # Create New ChangeList and Append File
+    cl_map.create_changelist(
+        MODULE_ROOT_CL_TUPLE[0],
+    ).changes.append(file)
+    return True
+
+
+def _sort_gradle_module(
+    cl_map: ChangelistMap,
+    file: ChangeData,
+) -> bool:
+    # Find CL
+    for module_cl in MODULE_GRADLE_CL_TUPLE:
+        if (existing_cl := cl_map.search(module_cl.key)) is not None:
+            existing_cl.changes.append(file)
+            return True
+    # Create New ChangeList and Append File
+    cl_map.create_changelist(
+        MODULE_GRADLE_CL_TUPLE[0]
+    ).changes.append(file)
+    return True
+
+
+def _sort_module(
+    cl_map: ChangelistMap,
+    file: ChangeData,
+) -> bool:
+    # Get Module Name from File Path data
+    if (file_module := file_sort.get_module_name(file)) is None or len(file_module) == 0:
+        return False
+    if (cl := cl_map.search(file_module)) is not None:
+        cl.changes.append(file)
+        return True
+    # Create Changelist and Append File
+    cl_map.create_changelist(
+        capitalize_words(replace_underscores(file_module))
+    ).changes.append(file)
+    return True

@@ -4,12 +4,13 @@ from typing import Callable
 
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
+from changelist_sort.list_key import ListKey
 
 
 def split_changelist(
     changelist: ChangelistData,
-    is_sorted: Callable[[str, ChangeData], bool],
-):
+    is_sorted: Callable[[ListKey, ChangeData], bool],
+) -> list[ChangeData]:
     """
     Split the Changelist by checking that all changes are sorted.
         Removes each element that is returned from the changelist.
@@ -21,11 +22,10 @@ def split_changelist(
     Returns:
     list[ChangeData] - The List of ChangeData that are Unsorted, now removed from this changelist.
     """
-    cl_simple_name = changelist.get_simple_name()
     unsorted_files = []
     for index in range(len(changelist.changes) - 1, -1, -1):
         if not is_sorted(
-            cl_simple_name,
+            changelist.list_key,
             changelist.changes[index]
         ):
             unsorted_files.append(

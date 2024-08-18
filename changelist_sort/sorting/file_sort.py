@@ -1,7 +1,6 @@
 """ Methods of Sorting Change Data.
     This Module aims to make Change Data easy to sort.
 """
-from os.path import basename
 from changelist_sort.change_data import ChangeData
 from changelist_sort.sorting.module_type import ModuleType
 
