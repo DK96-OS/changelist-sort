@@ -1,14 +1,27 @@
 """ Testing Change Sort Module Methods
 """
+from test import data_provider
+
 from changelist_sort.change_data import ChangeData
 from changelist_sort.sorting.file_sort import get_module_name, get_module_type
 from changelist_sort.sorting.module_type import ModuleType
-from test import data_provider
 
 
 def test_get_module_name_empty_returns_none():
     assert get_module_name(ChangeData()) is None
-    
+
+
+def test_get_module_name_requirements_file_returns_module():
+    assert 'root' == get_module_name(
+        data_provider.get_change_data('requirements.txt')
+    )
+
+
+def test_get_module_name_requirements_file_returns_module():
+    assert 'root' == get_module_name(
+        data_provider.get_change_data('setup.py')
+    )
+
 
 def test_get_module_name_src_file_returns_module():
     assert 'module' == get_module_name(
