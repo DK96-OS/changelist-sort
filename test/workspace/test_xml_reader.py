@@ -2,8 +2,9 @@
 """
 from xml.etree.ElementTree import fromstring
 
-from test import get_multi_changelist_xml, get_no_changelist_xml, get_simple_changelist_xml
+from test.data_provider import get_multi_changelist_xml
 from changelist_sort.workspace.xml_reader import filter_by_tag
+from test.data_provider import get_no_changelist_xml, get_simple_changelist_xml
 
 
 def test_filter_by_tag_no_changelist_returns_empty():

@@ -1,10 +1,10 @@
 """ Testing Workspace Tree.
 """
-from xml.etree.ElementTree import ElementTree, fromstring
-from changelist_sort.change_data import ChangeData
+from xml.etree.ElementTree import fromstring
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.workspace.workspace_tree import _convert_bool, _extract_change_data, _filter_project_dir, _find_changelist_manager, _write_list_element
-from test import get_empty_xml, get_multi_changelist_xml, get_no_changelist_xml, get_simple_changelist_xml
+from test.data_provider import get_multi_changelist_xml
+from test.data_provider import get_no_changelist_xml, get_simple_changelist_xml
 
 
 def test_find_changelist_manager_no_changelist_returns_none():
@@ -16,7 +16,6 @@ def test_find_changelist_manager_simple_changelist_returns_element():
     xml_root = fromstring(get_simple_changelist_xml())
     element = _find_changelist_manager(xml_root)
     cl_elements = list(element.iter())
-    print(cl_elements)
     assert len(cl_elements) == 3
     assert cl_elements[0].attrib['name'] == 'ChangeListManager'
     assert cl_elements[1].tag == 'list'
@@ -27,7 +26,6 @@ def test_find_changelist_manager_multi_changelist_returns_element():
     xml_root = fromstring(get_multi_changelist_xml())
     element = _find_changelist_manager(xml_root)
     cl_elements = list(element.iter())
-    print(cl_elements)
     assert len(cl_elements) == 6
     cl_main = cl_elements[1]
     assert cl_main.tag == 'list'

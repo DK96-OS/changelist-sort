@@ -3,7 +3,8 @@
 from xml.etree.ElementTree import fromstring
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.workspace.workspace_tree import WorkspaceTree
-from test import get_multi_changelist_xml, get_no_changelist_xml, get_simple_changelist_xml
+from test.data_provider import get_multi_changelist_xml
+from test.data_provider import get_no_changelist_xml, get_simple_changelist_xml
 
 
 def get_simple_ws_tree():
