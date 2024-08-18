@@ -1,18 +1,18 @@
 """ Testing List Sort Methods.
     The method split_changelist requires a callable arg, which applies the module sort for now.
 """
+from test import data_provider
+
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import module_sort
 from changelist_sort.sorting.list_sort import split_changelist
-from test import data_provider
 
 
 def test_split_changelist_empty_returns_empty():
     test_input = ChangelistData(
         id='1234',
         name='Empty',
-        changes=[],
     )
     result_list = split_changelist(test_input, module_sort.is_sorted_by_module)
     assert len(test_input.changes) == 0

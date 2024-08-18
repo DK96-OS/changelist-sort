@@ -73,10 +73,7 @@ def test_sort_app_cl_gradle_file_returns_new_gradle_cl():
             id='1234',
             name='App',
             changes=[
-                ChangeData(
-                    after_path=data_provider.APP_GRADLE_PATH,
-                    after_dir=False,
-                ),
+                data_provider.get_app_gradle_build_change_data(),
             ],
         )
     ]
@@ -89,4 +86,3 @@ def test_sort_app_cl_gradle_file_returns_new_gradle_cl():
     assert len(result[0].changes) == 0
     assert len(result[1].changes) == 1
     assert result[1].changes[0].after_path == data_provider.APP_GRADLE_PATH
-

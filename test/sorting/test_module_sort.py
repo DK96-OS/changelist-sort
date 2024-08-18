@@ -1,10 +1,10 @@
 """ Testing Module Sort Methods.
 """
+from test import data_provider
+
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.sorting.module_sort import capitalize_words, sort_file_by_module, is_sorted_by_module
-from test import data_provider
-from test.data_provider import get_app_gradle_build_change_data
 
 
 def test_sort_file_by_module_empty_map_empty_file_returns_false():
@@ -15,9 +15,8 @@ def test_sort_file_by_module_empty_map_empty_file_returns_false():
 
 def test_sort_file_by_module_empty_map_module_src_file_returns_true():
     cl_map = ChangelistMap()
-    src_file = ChangeData(
-        after_path=data_provider.MODULE_SRC_PATH,
-        after_dir=False,
+    src_file = data_provider.get_change_data(
+        data_provider.MODULE_SRC_PATH,
     )
     assert sort_file_by_module(cl_map, src_file)
     # Check CL Map for new Changelist
@@ -68,58 +67,90 @@ def test_sort_file_by_module_empty_file_returns_false():
     assert not sort_file_by_module(cl_map, empty_file)
 
 
+def test_sort_file_by_module_app_cl_app_gradle_returns_true():
+    cl_map = ChangelistMap()
+    cl_map.insert(data_provider.get_app_changelist())
+    new_cd = data_provider.get_app_gradle_build_change_data()
+    assert sort_file_by_module(cl_map, new_cd)
+    # A new Changelist is created called Build Updates
+    result = cl_map.get_lists()
+    assert len(result) == 2
+    cl_0 = result[0]
+    assert cl_0.name == 'App'
+    cl_1 = result[1]
+    assert cl_1.name == 'Build Updates'
+    assert new_cd in cl_1.changes
+
+
+def test_sort_file_by_module_module_cl_module_src_returns_true():
+    cl_map = ChangelistMap()
+    cl_map.insert(data_provider.get_module_changelist())
+    new_cd = data_provider.get_module_src_change_data()
+    assert sort_file_by_module(cl_map, new_cd)
+    # The Src file is added to the existing changelist
+    result = cl_map.get_lists()
+    assert len(result) == 1
+    cl_0 = result[0]
+    assert cl_0.name == 'Module'
+    assert new_cd in cl_0.changes
+
+
+def test_sort_file_by_module_zero_len_module_returns_false():
+    new_cd = data_provider.get_change_data('//hello.py')
+    assert not sort_file_by_module(None, new_cd)
+
+
 def test_is_sorted_by_module_module_cl():
     cl = data_provider.get_module_changelist()
-    print(cl.get_simple_name())
     for file in cl.changes:
-        assert is_sorted_by_module(cl.get_simple_name(), file)
+        assert is_sorted_by_module(cl.list_key, file)
 
 
 def test_is_sorted_by_module_app_cl_app_gradle_returns_false():
     cl = data_provider.get_app_changelist()
     assert not is_sorted_by_module(
-        cl.get_simple_name(), get_app_gradle_build_change_data()
+        cl.list_key, data_provider.get_app_gradle_build_change_data()
     )
 
 
 def test_is_sorted_by_module_app_cl_strings_res_returns_true():
     cl = data_provider.get_app_changelist()
     assert is_sorted_by_module(
-        cl.get_simple_name(), data_provider.get_change_data('/app/src/main/res/values/strings.xml')
+        cl.list_key, data_provider.get_change_data('/app/src/main/res/values/strings.xml')
     )
 
 
 def test_is_sorted_by_module_app_cl_src_file_returns_true():
     cl = data_provider.get_app_changelist()
     assert is_sorted_by_module(
-        cl.get_simple_name(), data_provider.get_change_data('/app/src/main/java/app/Main.java')
+        cl.list_key, data_provider.get_change_data('/app/src/main/java/app/Main.java')
     )
 
 
 def test_is_sorted_by_module_build_updates_cl_returns_true():
     cl = data_provider.get_build_updates_changelist()
     for file in cl.changes:
-        assert is_sorted_by_module(cl.get_simple_name(), file)
+        assert is_sorted_by_module(cl.list_key, file)
 
 
 def test_is_sorted_by_module_build_updates_cl_gradle_properties_returns_true():
     cl = data_provider.get_build_updates_changelist()
     assert is_sorted_by_module(
-        cl.get_simple_name(), data_provider.get_gradle_properties_change_data()
+        cl.list_key, data_provider.get_gradle_properties_change_data()
     )
 
 
 def test_is_sorted_by_module_github_cl():
     cl = data_provider.get_github_changelist()
     assert is_sorted_by_module(
-        cl.get_simple_name(), data_provider.get_change_data('/.github/workflow/test.yml')
+        cl.list_key, data_provider.get_change_data('/.github/workflow/test.yml')
     )
 
 
 def test_is_sorted_by_module_github_cl():
     cl = data_provider.get_github_changelist()
     assert is_sorted_by_module(
-        cl.get_simple_name(), data_provider.get_change_data('/.github/dependabot.yml')
+        cl.list_key, data_provider.get_change_data('/.github/dependabot.yml')
     )
 
 
