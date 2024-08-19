@@ -16,3 +16,4 @@ def test_sort_dev_build_updates_cl_sorted_returns_sorted():
     test_input = [data_provider.get_build_updates_changelist()]
     result = sort(test_input, SortMode.DEVELOPER)
     assert len(result) == 1
+    assert len(result[0].changes) == 1
