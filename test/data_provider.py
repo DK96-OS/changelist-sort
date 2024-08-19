@@ -3,12 +3,12 @@
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import module_sort
-from changelist_sort.workspace import developer_changelist
 
 
 MODULE_SRC_PATH = '/module/src/main/java/module/Main.java'
 MODULE_TEST_PATH = '/module/src/test/java/module/MainTest.java'
 ROOT_GRADLE_PATH = '/build.gradle'
+ROOT_README_PATH = '/README.md'
 GRADLE_PROPERTIES_PATH = '/gradle/wrapper/gradle-wrapper.properties'
 APP_GRADLE_PATH = '/app/build.gradle'
 GITHUB_WORKFLOW_PATH = '/.github/workflows/build_and_test.yml'
@@ -32,6 +32,10 @@ def get_module_test_change_data() -> ChangeData:
 
 def get_root_gradle_build_change_data() -> ChangeData:
     return get_change_data(ROOT_GRADLE_PATH)
+
+
+def get_root_readme_change_data() -> ChangeData:
+    return get_change_data(ROOT_README_PATH)
 
 
 def get_gradle_properties_change_data() -> ChangeData:
@@ -108,10 +112,6 @@ def get_multiple_gradle_changelists():
             name=name.changelist_name,
         ) for name in module_sort.MODULE_GRADLE_CL_TUPLE
     ]
-
-
-def get_empty_xml() -> str:
-    return ""
 
 
 def get_no_changelist_xml() -> str:

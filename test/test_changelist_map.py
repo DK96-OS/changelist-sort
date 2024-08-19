@@ -109,3 +109,22 @@ def test_generate_new_id_then_insert_times_n():
             )
         )
         assert instance.contains_id(result)
+
+
+def test_create_changelist_invalid_type():
+    instance = ChangelistMap()
+    try:
+        instance.create_changelist(1)
+        type_error_raised = False
+    except TypeError:
+        type_error_raised = True
+    assert type_error_raised
+
+
+def test_create_changelist_same_name_twice():
+    instance = ChangelistMap()
+    new_cl_name = 'Main Files'
+    first_cl = instance.create_changelist(new_cl_name)
+    second_cl = instance.create_changelist(new_cl_name)
+    assert first_cl == second_cl
+    assert first_cl.id == second_cl.id
