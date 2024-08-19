@@ -154,3 +154,15 @@ def get_multi_changelist_xml() -> str:
   </component>
 </project>"""
 
+
+def get_invalid_component_xml() -> str:
+    return """<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="af84ea1b-1b24-407d-970f-9f3a2835e933" name="Main" comment="Main Files">
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+    </list>
+  </component>
+</project>"""
