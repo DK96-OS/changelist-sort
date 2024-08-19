@@ -26,6 +26,10 @@ class DeveloperFilePattern:
         Keyword Arguments:
         - file_ext (str): The File Extension to Match.
         - first_dir (str): The First Directory in the File Path to Match.
+        - filename_prefix (str): Match the Filename Prefix, ignoring first slash character.
+        - filename_suffix (str): Match the Filename Suffix, ignoring file extension.
+        - path_start (str):
+        - path_end (str):
         """
         self.inverse = inverse
         if 'file_ext' in kwargs:
@@ -74,6 +78,10 @@ def _match_first_dir(
 def _match_filename_prefix(
     prefix: str,
 ) -> Callable[[ChangeData], bool]:
+    """
+    Match the Filename Prefix, ignoring first slash character.
+    - Applies an internal function to overcome lambda limitations
+    """
     return lambda change_data: change_data.file_basename.startswith(prefix)
 
 
@@ -85,8 +93,8 @@ def _match_filename_suffix(
     - Applies an internal function to overcome lambda limitations
     """
     def get_filename(change_data: ChangeData) -> str:
-        # Convert None values into empty strings
-        if (filename := change_data.file_basename) is None:
+        # Quickly return empty values
+        if (filename := change_data.file_basename) == '':
             return ''
         if change_data.file_ext is not None:
             # Remove File Ext from basename
