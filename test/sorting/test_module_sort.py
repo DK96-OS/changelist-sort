@@ -1,11 +1,11 @@
 """ Testing Module Sort Methods.
 """
 import pytest
+
+from test import data_provider
 from changelist_sort.sorting import file_sort
 from changelist_sort.sorting import module_sort
 from changelist_sort.sorting.module_type import ModuleType
-from test import data_provider
-
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.sorting.module_sort import capitalize_words, sort_file_by_module, is_sorted_by_module
@@ -92,6 +92,29 @@ def test_sort_file_by_module_app_cl_app_gradle_returns_true():
     cl_1 = result[1]
     assert cl_1.name == 'Build Updates'
     assert new_cd in cl_1.changes
+
+
+def test_sort_file_by_module_build_updates_cl_app_gradle_returns_true():
+    cl_map = ChangelistMap()
+    cl_map.insert(data_provider.get_build_updates_changelist())
+    new_cd = data_provider.get_app_gradle_build_change_data()
+    assert sort_file_by_module(cl_map, new_cd)
+    # The Build Updates Changelist
+    result = cl_map.get_lists()
+    assert len(result) == 1
+    assert result[0].name == 'Build Updates'
+
+
+def test_sort_file_by_module_root_cl_readme_returns_true():
+    cl_map = ChangelistMap()
+    cl_map.insert(data_provider.get_root_changelist())
+    new_cd = data_provider.get_root_readme_change_data()
+    assert sort_file_by_module(cl_map, new_cd)
+    # The Build Updates Changelist
+    result = cl_map.get_lists()
+    assert len(result) == 1
+    assert result[0].name == 'Root'
+    assert len(result[0].changes) == 1
 
 
 def test_sort_file_by_module_module_cl_module_src_returns_true():

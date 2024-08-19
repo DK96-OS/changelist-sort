@@ -1,10 +1,9 @@
 """ Testing the Developer SortMode.
 """
-
+from test import data_provider
 
 from changelist_sort.sorting import sort
 from changelist_sort.sorting.sort_mode import SortMode
-from test import data_provider
 
 
 def test_sort_dev_empty_returns_empty():
