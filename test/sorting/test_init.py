@@ -7,10 +7,29 @@ from changelist_sort.sorting.sort_mode import SortMode
 from test import data_provider
 
 
-def test_sort_empty_raise_exit():
+def test_sort_empty_returns_empty():
     test_input = []
     result = sort(test_input, SortMode.MODULE)
     assert result == test_input
+
+
+def test_sort_empty_invalid_sort_mode_raises_exit():
+    try:
+        sort([], 'sort_mode.invalid')
+        raised_exit = False
+    except SystemExit:
+        raised_exit = True
+    assert raised_exit
+
+
+def test_sort_invalid_sort_mode_raises_exit():
+    test_input = [data_provider.get_app_changelist()]
+    try:
+        sort(test_input, 'sort_mode.invalid')
+        raised_exit = False
+    except SystemExit:
+        raised_exit = True
+    assert raised_exit
 
 
 def test_sort_no_changes_returns_same():

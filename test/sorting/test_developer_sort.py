@@ -25,6 +25,30 @@ def get_file_patterns(file: ChangeData) -> tuple[DeveloperChangelist]:
     return developer_sort._filter_patterns_by_module(module_type)
 
 
+def test_filter_patterns_by_module_root_returns_tuple():
+    result = developer_sort._filter_patterns_by_module(ModuleType.ROOT)
+    assert len(result) == 5
+    # print(', '.join(x.list_key.changelist_name for x in result))
+
+
+def test_filter_patterns_by_module_gradle_returns_tuple():
+    result = developer_sort._filter_patterns_by_module(ModuleType.GRADLE)
+    assert len(result) == 3
+    # print(', '.join(x.list_key.changelist_name for x in result))
+
+
+def test_filter_patterns_by_module_module_returns_tuple():
+    result = developer_sort._filter_patterns_by_module(ModuleType.MODULE)
+    assert len(result) == 9
+    # print(', '.join(x.list_key.changelist_name for x in result))
+
+
+def test_filter_patterns_by_module_hidden_returns_tuple():
+    result = developer_sort._filter_patterns_by_module(ModuleType.HIDDEN)
+    assert len(result) == 1
+    # print(result[0].list_key.changelist_name)
+
+
 def test_sort_file_by_developer_github_cl_exists_returns_true():
     cl_map = ChangelistMap()
     github_cl = data_provider.get_github_changelist()
@@ -91,7 +115,7 @@ def test_sort_file_by_developer_existing_gradle_module_app_build_file_returns_tr
     assert cl_map.search(new_cl.list_key.key) is not None
 
 
-def test_is_sorted_by_developer_module_cl_creation_simple_key():
+def test_is_sorted_by_developer_module_cl_creation_simple_key_returns_true():
     list_key = ListKey('module', 'Module Source Files')
     test_file = data_provider.get_module_src_change_data()
     # Ensure the File is the right Module Type
@@ -100,10 +124,28 @@ def test_is_sorted_by_developer_module_cl_creation_simple_key():
     assert is_sorted_by_developer(list_key, test_file)
 
 
-def test_is_sorted_by_developer_module_cl_creation_full_key():
+def test_is_sorted_by_developer_module_cl_creation_full_key_returns_true():
     list_key = ListKey('modulesourcefiles', 'Module Source Files')
     test_file = data_provider.get_module_src_change_data()
     # Ensure the File is the right Module Type
     assert file_sort.get_module_type(test_file) == ModuleType.MODULE
     #
     assert is_sorted_by_developer(list_key, test_file)
+
+
+def test_is_sorted_by_developer_shell_script_build_file_returns_true():
+    list_key = ListKey('shellscripts', 'Shell Scripts')
+    test_file = data_provider.get_change_data('/shell_build.sh')
+    # Ensure the File is the right Module Type
+    assert file_sort.get_module_type(test_file) == ModuleType.ROOT
+    #
+    assert is_sorted_by_developer(list_key, test_file)
+
+
+def test_is_sorted_by_developer_shellscripts_cl_non_shell_root_files_returns_false():
+    list_key = ListKey('shellscripts', 'Shell Scripts')
+    test_file = data_provider.get_change_data('/bat_build.bat')
+    # Ensure the File is the right Module Type
+    assert file_sort.get_module_type(test_file) == ModuleType.ROOT
+    #
+    assert not is_sorted_by_developer(list_key, test_file)
