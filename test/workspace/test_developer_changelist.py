@@ -18,16 +18,6 @@ def get_dc_src_input() -> DeveloperChangelist:
     )
 
 
-def get_dc_src_input() -> DeveloperChangelist:
-    return DeveloperChangelist(
-        None,
-        list_key.compute_key('Input Source Package'),
-        (
-            _SRC_DIR_PATTERN,
-            _INPUT_PACKAGE_PATTERN
-        )
-    )
-
 def test_check_file_src_dir_input_pattern_input_data_returns_true():
     instance = get_dc_src_input()
     assert instance.check_file(data_provider.get_change_data('/changelist_sort/input/input_data.py'))
