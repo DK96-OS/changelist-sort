@@ -59,6 +59,38 @@ def test_sort_file_by_developer_module_cl_creation_src_returns_true():
     assert cl_map.search(new_cl.list_key.key) is not None
 
 
+def test_sort_file_by_developer_gradle_module_app_build_file_returns_true():
+    cl_map = ChangelistMap()
+    test_file = data_provider.get_app_gradle_build_change_data()
+    #
+    assert file_sort.get_module_type(test_file) == ModuleType.GRADLE
+    assert sort_file_by_developer(cl_map, test_file)
+    # Expect New Changelist
+    result = cl_map.get_lists()
+    new_cl = result[0]
+    # The CL Key is the Module Name
+    assert new_cl.list_key == developer_sort._BUILD_UPDATES_KEY
+    # Search for CL
+    assert cl_map.search(new_cl.list_key.key) is not None
+
+
+def test_sort_file_by_developer_existing_gradle_module_app_build_file_returns_true():
+    cl_map = ChangelistMap()
+    cl_map.create_changelist(developer_sort._BUILD_UPDATES_KEY)
+    test_file = data_provider.get_app_gradle_build_change_data()
+    #
+    assert file_sort.get_module_type(test_file) == ModuleType.GRADLE
+    assert sort_file_by_developer(cl_map, test_file)
+    # Expect New Changelist
+    result = cl_map.get_lists()
+    assert len(result) == 1
+    new_cl = result[0]
+    # The CL Key is the Module Name
+    assert new_cl.list_key == developer_sort._BUILD_UPDATES_KEY
+    # Search for CL
+    assert cl_map.search(new_cl.list_key.key) is not None
+
+
 def test_is_sorted_by_developer_module_cl_creation_simple_key():
     list_key = ListKey('module', 'Module Source Files')
     test_file = data_provider.get_module_src_change_data()

@@ -1,10 +1,22 @@
 """ Testing Module Sort Methods.
 """
+import pytest
+from changelist_sort.sorting import file_sort
+from changelist_sort.sorting import module_sort
+from changelist_sort.sorting.module_type import ModuleType
 from test import data_provider
 
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.sorting.module_sort import capitalize_words, sort_file_by_module, is_sorted_by_module
+
+
+@pytest.mark.parametrize(
+    'key', [ModuleType.MODULE, ModuleType.HIDDEN]
+)
+def test_get_module_keys_user_modules(key):
+    result = module_sort.get_module_keys(key)
+    assert result == tuple()
 
 
 def test_sort_file_by_module_empty_map_empty_file_returns_false():
@@ -98,6 +110,13 @@ def test_sort_file_by_module_module_cl_module_src_returns_true():
 def test_sort_file_by_module_zero_len_module_returns_false():
     new_cd = data_provider.get_change_data('//hello.py')
     assert not sort_file_by_module(None, new_cd)
+
+
+def test_sort_file_by_module_root_readme_returns_true():
+    cl_map = ChangelistMap()
+    new_cd = data_provider.get_root_readme_change_data()
+    assert file_sort.get_module_type(new_cd) == ModuleType.ROOT
+    assert sort_file_by_module(cl_map, new_cd)
 
 
 def test_is_sorted_by_module_module_cl():
