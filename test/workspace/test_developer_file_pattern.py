@@ -2,8 +2,16 @@
 """
 from test import data_provider
 
-from changelist_sort.sorting.module_type import ModuleType
 from changelist_sort.workspace.developer_file_pattern import DeveloperFilePattern
+
+
+def test_constructor_invalid_kwarg_raises_error():
+    try:
+        instance = DeveloperFilePattern(invalid_kwarg='')
+        raised_error = False
+    except ValueError:
+        raised_error = True
+    assert raised_error
 
 
 def test_check_file_file_ext_returns_true():
@@ -106,6 +114,15 @@ def test_check_file_filename_suffix_build_inverse_app_gradle_returns_false():
     )
 
 
+def test_check_file_filename_suffix_file_basename_is_none_returns_false():
+    instance = DeveloperFilePattern(
+        filename_suffix='build'
+    )
+    cd = data_provider.get_change_data('/just/a/directory/')
+    assert cd.file_basename == ''
+    assert not instance.check_file(cd)
+
+
 def test_check_file_path_start_github_github_workflows_returns_true():
     instance = DeveloperFilePattern(
         path_start='.github/'
@@ -116,6 +133,13 @@ def test_check_file_path_start_github_github_workflows_returns_true():
 def test_check_file_path_start_github_github_dependabot_returns_true():
     instance = DeveloperFilePattern(
         path_start='.github/'
+    )
+    assert instance.check_file(data_provider.get_github_dependabot_change_data())
+
+
+def test_check_file_path_start_slash_char_github_github_dependabot_returns_true():
+    instance = DeveloperFilePattern(
+        path_start='/.github/'
     )
     assert instance.check_file(data_provider.get_github_dependabot_change_data())
 

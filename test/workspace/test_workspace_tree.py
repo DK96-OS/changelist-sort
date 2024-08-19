@@ -37,6 +37,12 @@ def test_find_changelist_manager_multi_changelist_returns_element():
     assert cl_elements[5].tag == 'change'
 
 
+def test_find_changelist_manager__returns_none():
+    xml_root = fromstring(data_provider.get_invalid_component_xml())
+    element = _find_changelist_manager(xml_root)
+    assert element is not None
+
+
 def test_extract_change_data_simple_():
     xml_root = fromstring(get_simple_changelist_xml())
     element = _find_changelist_manager(xml_root)
