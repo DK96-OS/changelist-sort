@@ -94,6 +94,15 @@ DEVELOPER_CL_TUPLE: tuple[DeveloperChangelist, ...] = (
     ),
     DeveloperChangelist(
         ModuleType.ROOT,
+        list_key.compute_key('Shell Scripts'),
+        (
+            DeveloperFilePattern(
+                file_ext='sh',
+            ),
+        )
+    ),
+    DeveloperChangelist(
+        ModuleType.ROOT,
         list_key.compute_key('Project Root'),
         (
             DeveloperFilePattern(
@@ -152,21 +161,12 @@ DEVELOPER_CL_TUPLE: tuple[DeveloperChangelist, ...] = (
             ),
         )
     ),
-    DeveloperChangelist(
-        ModuleType.ROOT,
-        list_key.compute_key('Shell Scripts'),
-        (
-            DeveloperFilePattern(
-                file_ext='sh',
-            ),
-        )
-    ),
 )
 
 
 def _filter_patterns_by_module(
     module_type: ModuleType | None
-) -> tuple[DeveloperChangelist]:
+) -> tuple[DeveloperChangelist, ...]:
     """
     Filter the Changelists by the ModuleType their Pattern applies to.
     """
@@ -182,7 +182,7 @@ def sort_file_by_developer(
 ) -> bool:
     """
     Apply the Developer FilePattern Setting to Sort a single File into the Changelist Map.
-
+    - Filters Patterns by matching ModuleType before checking files.
     - Fallback to Module Sort
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
