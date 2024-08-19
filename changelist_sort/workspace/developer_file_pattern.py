@@ -28,8 +28,8 @@ class DeveloperFilePattern:
         - first_dir (str): The First Directory in the File Path to Match.
         - filename_prefix (str): Match the Filename Prefix, ignoring first slash character.
         - filename_suffix (str): Match the Filename Suffix, ignoring file extension.
-        - path_start (str):
-        - path_end (str):
+        - path_start (str): Match the start of the File Path, ignoring first slash character.
+        - path_end (str): Match the end of the File Path Parent Directory, ignoring the end slash character.
         """
         self.inverse = inverse
         if 'file_ext' in kwargs:
