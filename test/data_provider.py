@@ -102,6 +102,16 @@ def get_github_changelist(
     )
 
 
+def get_root_changelist(
+    changes: list[ChangeData] = [],
+) -> ChangelistData:
+    return ChangelistData(
+        id='1234509',
+        name='Root',
+        changes=changes,
+    )
+
+
 def get_multiple_gradle_changelists():
     """
     Create a list of Changelists from the DeveloperChangelists Gradle Module CLs.
