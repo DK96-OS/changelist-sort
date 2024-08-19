@@ -2,19 +2,18 @@
 """
 from xml.etree.ElementTree import fromstring
 
+from test import data_provider
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.workspace.workspace_tree import _convert_bool, _extract_change_data, _filter_project_dir, _find_changelist_manager, _write_list_element
-from test import data_provider
-from test.data_provider import get_no_changelist_xml, get_simple_changelist_xml
 
 
 def test_find_changelist_manager_no_changelist_returns_none():
-    xml_root = fromstring(get_no_changelist_xml())
+    xml_root = fromstring(data_provider.get_no_changelist_xml())
     assert _find_changelist_manager(xml_root) is None
 
 
 def test_find_changelist_manager_simple_changelist_returns_element():
-    xml_root = fromstring(get_simple_changelist_xml())
+    xml_root = fromstring(data_provider.get_simple_changelist_xml())
     element = _find_changelist_manager(xml_root)
     cl_elements = list(element.iter())
     assert len(cl_elements) == 3
@@ -44,7 +43,7 @@ def test_find_changelist_manager__returns_none():
 
 
 def test_extract_change_data_simple_():
-    xml_root = fromstring(get_simple_changelist_xml())
+    xml_root = fromstring(data_provider.get_simple_changelist_xml())
     element = _find_changelist_manager(xml_root)
     cl_elements = list(element.iter())
     # Extract Change Data is called on a List element
@@ -58,7 +57,7 @@ def test_extract_change_data_simple_():
 
 
 def test_extract_change_data_empty_element_returns_empty_list():
-    xml_root = fromstring(get_simple_changelist_xml())
+    xml_root = fromstring(data_provider.get_simple_changelist_xml())
     element = _find_changelist_manager(xml_root)
     cl_elements = list(element.findall('list'))
     assert len(cl_elements) == 1
@@ -104,7 +103,11 @@ def test_write_list_element_default_returns_element():
 
 
 def test_write_list_element_changes_returns_element():
-    cl_data = data_provider.get_build_updates_changelist()
+    cl_data = data_provider.get_build_updates_changelist(
+        changes=[data_provider.get_root_gradle_build_change_data()]
+    )
+    print(', '.join(x.sort_path for x in cl_data.changes))
+    assert len(cl_data.changes) == 1
     cl_element = _write_list_element(cl_data)
     #
     assert len(cl_element.findall('change')) == 1
