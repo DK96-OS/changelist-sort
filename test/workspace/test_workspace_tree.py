@@ -1,9 +1,10 @@
 """ Testing Workspace Tree.
 """
 from xml.etree.ElementTree import fromstring
+
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.workspace.workspace_tree import _convert_bool, _extract_change_data, _filter_project_dir, _find_changelist_manager, _write_list_element
-from test.data_provider import get_multi_changelist_xml
+from test import data_provider
 from test.data_provider import get_no_changelist_xml, get_simple_changelist_xml
 
 
@@ -23,7 +24,7 @@ def test_find_changelist_manager_simple_changelist_returns_element():
 
 
 def test_find_changelist_manager_multi_changelist_returns_element():
-    xml_root = fromstring(get_multi_changelist_xml())
+    xml_root = fromstring(data_provider.get_multi_changelist_xml())
     element = _find_changelist_manager(xml_root)
     cl_elements = list(element.iter())
     assert len(cl_elements) == 6
@@ -76,6 +77,34 @@ def test_write_list_element_simple_returns_element():
     assert cl_element.attrib['name'] == 'Simple'
     assert cl_element.attrib['comment'] == 'Main Program Files'
     # Default is not included when false
+    assert 'default' not in cl_element.attrib
+
+
+def test_write_list_element_default_returns_element():
+    cl_data = ChangelistData(
+        id="9f60fda2-421e-4a4b-bd0f-4c8f83a47c88",
+        name="Simple",
+        changes=[],
+        comment="Main Program Files",
+        is_default=True,
+    )
+    cl_element = _write_list_element(cl_data)
+    #
+    assert len(cl_element.findall('change')) == 0
+    assert cl_element.attrib['id'] == '9f60fda2-421e-4a4b-bd0f-4c8f83a47c88'
+    assert cl_element.attrib['name'] == 'Simple'
+    assert cl_element.attrib['comment'] == 'Main Program Files'
+    assert cl_element.attrib['default'] == 'true'
+
+
+def test_write_list_element_changes_returns_element():
+    cl_data = data_provider.get_build_updates_changelist()
+    cl_element = _write_list_element(cl_data)
+    #
+    assert len(cl_element.findall('change')) == 1
+    assert cl_element.attrib['id'] == cl_data.id
+    assert cl_element.attrib['name'] == cl_data.name
+    assert cl_element.attrib['comment'] == cl_data.comment
     assert 'default' not in cl_element.attrib
 
 

@@ -1,6 +1,6 @@
 """ Testing the WorkspaceTree Class.
 """
-from xml.etree.ElementTree import fromstring
+from xml.etree.ElementTree import Element, fromstring
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.workspace.workspace_tree import WorkspaceTree
 from test.data_provider import get_multi_changelist_xml
@@ -78,3 +78,19 @@ def test_replace_changelists_simple_with_multi():
     # Get Elements
     result = ws_tree.extract_list_elements()
     assert len(result) == 2
+
+
+def test_replace_changelists_no_cl_manager_raises_exit():
+    ws_tree = WorkspaceTree(fromstring(get_no_changelist_xml()))
+    try:
+        ws_tree.replace_changelists([])
+        raised_exit = False
+    except SystemExit:
+        raised_exit = True
+    assert raised_exit
+
+
+def test_get_root_no_cl_manager_returns_root():
+    ws_tree = WorkspaceTree(fromstring(get_no_changelist_xml()))
+    xml_root = ws_tree.get_root()
+    assert xml_root.getroot().tag == 'project'
