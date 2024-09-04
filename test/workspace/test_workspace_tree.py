@@ -51,9 +51,9 @@ def test_extract_change_data_simple_():
     assert len(c_data_list) == 1
     c_data0 = c_data_list[0]
     assert c_data0.before_path == '/main.py'
-    assert c_data0.before_dir == False
+    assert not c_data0.before_dir
     assert c_data0.after_path == '/main.py'
-    assert c_data0.after_dir == False
+    assert not c_data0.after_dir
 
 
 def test_extract_change_data_empty_element_returns_empty_list():
@@ -136,8 +136,8 @@ def test_convert_bool_none_returns_none():
 
 
 def test_convert_bool_false_returns_false():
-    assert _convert_bool('false') == False
+    assert not _convert_bool('false')
 
 
 def test_convert_bool_true_returns_true():
-    assert _convert_bool('true') == True
+    assert _convert_bool('true')

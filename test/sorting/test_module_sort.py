@@ -189,7 +189,7 @@ def test_is_sorted_by_module_github_cl():
     )
 
 
-def test_is_sorted_by_module_github_cl():
+def test_is_sorted_by_module_github_cl_dependabot_returns_true():
     cl = data_provider.get_github_changelist()
     assert is_sorted_by_module(
         cl.list_key, data_provider.get_change_data('/.github/dependabot.yml')

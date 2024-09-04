@@ -38,7 +38,7 @@ def test_get_sort_path_before_src_file_returns_before():
 
 def test_first_dir_root_gradle_returns_none():
     cd = data_provider.get_root_gradle_build_change_data()
-    assert None is cd.first_dir
+    assert cd.first_dir is None
 
 
 def test_first_dir_app_gradle_returns_app():
@@ -103,7 +103,7 @@ def test_file_ext_hidden_file_with_ext_returns_ext():
 
 def test_file_ext_hidden_file_no_ext_returns_none():
     cd = data_provider.get_change_data('/module/.hidden_file')
-    assert None == cd.file_ext
+    assert cd.file_ext is None
 
 
 def test_file_ext_gradle_kts_returns_ext():

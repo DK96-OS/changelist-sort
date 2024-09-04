@@ -1,8 +1,6 @@
 """ Testing Main Package Init Module Methods.
 """
 from pathlib import Path
-from tempfile import NamedTemporaryFile
-from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import ElementTree
 
 import pytest

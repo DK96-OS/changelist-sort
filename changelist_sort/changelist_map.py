@@ -56,7 +56,8 @@ class ChangelistMap:
         """
         from random import choices
         chars = list(_hex_char_generator())
-        generate_id = lambda: '-'.join(''.join(choices(chars, k=x)) for x in (8, 4, 4, 4, 12))
+        def generate_id():
+            return '-'.join(''.join(choices(chars, k=x)) for x in (8, 4, 4, 4, 12))
         test_id = generate_id()
         while self.contains_id(test_id):
             test_id = generate_id()

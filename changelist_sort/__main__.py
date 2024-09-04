@@ -6,7 +6,7 @@ def main():
     from changelist_sort.input import validate_input
     from changelist_sort import sort_changelists
     input_data = validate_input(argv[1:])
-    output_data = sort_changelists(input_data)
+    sort_changelists(input_data)
     #print(output_data)
 
 

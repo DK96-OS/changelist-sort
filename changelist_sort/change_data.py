@@ -55,7 +55,7 @@ class ChangeData:
                 start_idx = 0
             end_idx = self.sort_path.index('/', start_idx)
             return self.sort_path[start_idx:end_idx]
-        except:
+        except ValueError:
             return None
 
     def _get_file_ext(self) -> str | None:

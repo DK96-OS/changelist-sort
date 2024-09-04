@@ -3,19 +3,19 @@
 from changelist_sort.input.argument_parser import parse_arguments
 
 
-def test_parse_arguments_empty_list():
+def test_parse_arguments_empty_list_returns_none():
     result = parse_arguments()
     assert result.workspace_path is None
 
 
-def test_parse_arguments_empty_list():
+def test_parse_arguments_empty_str_returns_none():
     result = parse_arguments('')
     assert result.workspace_path is None
 
 
 def test_parse_arguments_change_list_main_empty_workspace_arg():
     try:
-        result = parse_arguments(['--workspace', ''])
+        parse_arguments(['--workspace', ''])
         assert False
     except SystemExit:
         assert True
