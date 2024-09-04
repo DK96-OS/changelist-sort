@@ -7,7 +7,7 @@ from changelist_sort.workspace.developer_file_pattern import DeveloperFilePatter
 
 def test_constructor_invalid_kwarg_raises_error():
     try:
-        instance = DeveloperFilePattern(invalid_kwarg='')
+        DeveloperFilePattern(invalid_kwarg='')
         raised_error = False
     except ValueError:
         raised_error = True

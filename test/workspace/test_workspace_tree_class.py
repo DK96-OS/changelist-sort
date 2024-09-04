@@ -1,6 +1,6 @@
 """ Testing the WorkspaceTree Class.
 """
-from xml.etree.ElementTree import Element, fromstring
+from xml.etree.ElementTree import fromstring
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.workspace.workspace_tree import WorkspaceTree
 from test.data_provider import get_multi_changelist_xml
@@ -26,9 +26,9 @@ def test_extract_list_elements_simple_returns_list():
     assert len(cl.changes) == 1
     file = cl.changes[0]
     assert file.before_path == '/main.py'
-    assert file.before_dir == False
+    assert not file.before_dir
     assert file.after_path == '/main.py'
-    assert file.after_dir == False
+    assert not file.after_dir
 
 
 def test_extract_list_elements_multi_returns_list():
