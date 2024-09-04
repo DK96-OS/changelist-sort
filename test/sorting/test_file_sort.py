@@ -17,7 +17,7 @@ def test_get_module_name_requirements_file_returns_module():
     )
 
 
-def test_get_module_name_requirements_file_returns_module():
+def test_get_module_name_setup_file_returns_module():
     assert 'root' == get_module_name(
         data_provider.get_change_data('setup.py')
     )

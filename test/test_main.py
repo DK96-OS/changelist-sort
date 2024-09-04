@@ -1,7 +1,6 @@
 """ Testing Main.
 """
 from pathlib import Path
-from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import ElementTree
 import pytest
 from test import data_provider
