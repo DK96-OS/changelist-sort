@@ -7,6 +7,7 @@ from changelist_sort.sorting import module_sort
 
 MODULE_SRC_PATH = '/module/src/main/java/module/Main.java'
 MODULE_TEST_PATH = '/module/src/test/java/module/MainTest.java'
+MODULE_DEBUG_PATH = '/module/src/debug/java/module/MainDebug.java'
 ROOT_GRADLE_PATH = '/build.gradle'
 ROOT_README_PATH = '/README.md'
 GRADLE_PROPERTIES_PATH = '/gradle/wrapper/gradle-wrapper.properties'
@@ -28,6 +29,10 @@ def get_module_src_change_data() -> ChangeData:
 
 def get_module_test_change_data() -> ChangeData:
     return get_change_data(MODULE_TEST_PATH)
+
+
+def get_module_debug_change_data() -> ChangeData:
+    return get_change_data(MODULE_DEBUG_PATH)
 
 
 def get_root_gradle_build_change_data() -> ChangeData:
