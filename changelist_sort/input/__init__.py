@@ -20,10 +20,11 @@ def validate_input(args_list: list[str]) -> InputData:
     """
     arg_data = parse_arguments(args_list)
     ws_path = _find_workspace_file(arg_data)
+
     return InputData(
         workspace_xml=validate_input_file(ws_path),
         workspace_path=ws_path,
-        sort_mode=SortMode.DEVELOPER if arg_data.developer_sort else SortMode.MODULE,
+        sort_mode=_determine_sort_mode(arg_data),
     )
 
 
@@ -39,3 +40,14 @@ def _find_workspace_file(arg_data: ArgumentData) -> Path:
     if arg_data.workspace_path is None:
         return Path('.') / '.idea' / 'workspace.xml'
     return Path(arg_data.workspace_path)
+
+
+def _determine_sort_mode(arg_data: ArgumentData) -> SortMode:
+    """
+    Check the Argument Data flags to determine which SortMode to use.
+    """
+    if arg_data.developer_sort:
+        return SortMode.DEVELOPER
+    if arg_data.sourceset_sort:
+        return SortMode.SOURCESET
+    return SortMode.MODULE

@@ -15,6 +15,9 @@ class ArgumentData:
 
     Fields:
     - workspace_path (str): The path to the workspace file.
+    - developer_sort (bool):
+    - sourceset_sort (bool):
     """
     workspace_path: str | None
     developer_sort: bool = False
+    sourceset_sort: bool = False
