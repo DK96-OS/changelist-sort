@@ -6,6 +6,8 @@ from changelist_sort.sorting import file_sort
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.sorting.module_type import ModuleType
+from changelist_sort.string_operations import capitalize_words
+from changelist_sort.string_operations import replace_underscores
 
 
 MODULE_ROOT_CL_TUPLE = (
@@ -91,19 +93,6 @@ def is_sorted_by_module(
     return cl_key.key.startswith(
         file_sort.get_module_name(file)
     )
-
-
-def capitalize_words(sentence: str) -> str:
-    """
-    Uppercase the first letter of every word in the sentence.
-    """
-    return ' '.join(word.capitalize() for word in sentence.split())
-
-
-def replace_underscores(name: str) -> str:
-    """
-    """
-    return name.replace('_', ' ')
 
 
 def _sort_root_module(
