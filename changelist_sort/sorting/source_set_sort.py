@@ -28,10 +28,8 @@ def sort_by_source_set(
     bool - True when the operation succeeds.
     """
     if file_sort.get_module_type(file) == ModuleType.MODULE:
-        # Get Module Name from File Path data
-        if (file_module := file_sort.get_module_name(file)) is None or len(file_module) == 0:
-            return False
-        # Get Source Set Name
+        file_module = file_sort.get_module_name(file)
+        # Get SourceSet Name
         if (source_set_name := _get_source_set_name(file)) is not None:
             # Merge Module and SourceSet into a Sorting Key
             sort_key = f"{file_module}{source_set_name.lower()}"
@@ -39,12 +37,13 @@ def sort_by_source_set(
                 cl.changes.append(file)
                 return True
             # Create a new Changelist for this SourceSet
-            pretty_name = split_words_on_capitals(source_set_name)
             cl_map.create_changelist(
-                capitalize_words(replace_underscores(f"{file_module} {pretty_name}"))
+                capitalize_words(replace_underscores(
+                    f"{file_module} {split_words_on_capitals(source_set_name)}"
+                ))
             ).changes.append(file)
             return True
-    # Fallback to Module Sort
+    # Fallback to ModuleSort
     return module_sort.sort_file_by_module(cl_map, file)
 
 
@@ -64,16 +63,12 @@ def is_sorted_by_source_set(
     bool - Whether this file belongs in this Changelist according to Module sort logic.
     """
     if file_sort.get_module_type(file) == ModuleType.MODULE:
-        # Get Module Name from File Path data
-        if (file_module := file_sort.get_module_name(file)) is None or len(file_module) == 0:
-            raise ValueError(f'Invalid File Path: {file.sort_path}')
-        # Get Source Set Name
-        source_set_name = _get_source_set_name(file)
-        if cl_key.key.startswith(f"{file_module}{source_set_name.lower()}"):
-            return True
-        if cl_key.changelist_name.lower().startswith(f"{file_module} {source_set_name.lower()}"):
-            return True
-        return False
+        file_module = file_sort.get_module_name(file)
+        # Get SourceSet Name
+        if (source_set_name := _get_source_set_name(file)) is not None:
+            if cl_key.key.startswith(f"{file_module}{source_set_name.lower()}"):
+                return True
+            return False
     return module_sort.is_sorted_by_module(cl_key, file)
 
 

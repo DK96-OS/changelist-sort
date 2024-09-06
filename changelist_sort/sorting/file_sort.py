@@ -18,10 +18,7 @@ def get_module_name(data: ChangeData) -> str | None:
         return 'root'
     if module_type == ModuleType.GRADLE:
         return 'gradle'
-    module_name = data.first_dir.lower()
-    if module_name.startswith('.'):
-        return module_name[1:]
-    return module_name
+    return data.first_dir.lower().lstrip('.')
 
 
 def get_module_type(file: ChangeData) -> ModuleType | None:
