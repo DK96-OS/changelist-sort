@@ -51,7 +51,8 @@ def _validate_arguments(
             exit("The Workspace Path argument was invalid.")
     return ArgumentData(
         workspace_path=workspace_path,
-        developer_sort=parsed_args.developer_sort
+        developer_sort=parsed_args.developer_sort,
+        sourceset_sort=parsed_args.sourceset_sort,
     )
 
 
@@ -74,10 +75,15 @@ def _define_arguments() -> ArgumentParser:
         help='The Workspace File containing the ChangeList data. Searches current directory by default.'
     )
     parser.add_argument(
-        '-d', '--developer_sort',
+        '-d', '--developer_sort', '--developer-sort',
         action='store_true',
         default=False,
         help='A Flag indicating that Developer Sort is to be used primarily. Fallback to Module Sort.',
     )
+    parser.add_argument(
+        '-s', '--sourceset_sort', '--sourceset-sort',
+        action='store_true',
+        default=False,
+        help='A Flag indicating that SourceSet Sort is to be used primarily. Fallback to Module Sort.',
+    )
     return parser
-

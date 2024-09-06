@@ -12,6 +12,10 @@ Making Sorting Changelist Files Easy!
 Files are sorted by the name of the top level directory they are located in.
 In Android projects, each directory in the project root is a module, with a few special cases.
 
+## Sorting By Source Set
+A specialized Module Sort mode that splits changes by their source set.
+Apply the `-s` flag to use this sorting mode.
+
 ### Special Changelists & Directories
 There are special Changelists, and special Directories that are handled differently.
 - Build Updates Changelist

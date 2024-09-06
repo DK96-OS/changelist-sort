@@ -13,6 +13,7 @@ class InputData:
     Fields:
     - workspace_xml (str): The contents of the Workspace XML file.
     - workspace_path (Path): The Path to the Workspace File.
+    - sort_mode (SortMode): The selected Sorting Mode enum value.
     """
     workspace_xml: str
     workspace_path: Path

@@ -8,7 +8,7 @@ from changelist_sort.sorting import module_sort
 from changelist_sort.sorting.module_type import ModuleType
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
-from changelist_sort.sorting.module_sort import capitalize_words, sort_file_by_module, is_sorted_by_module
+from changelist_sort.sorting.module_sort import sort_file_by_module, is_sorted_by_module
 
 
 @pytest.mark.parametrize(
@@ -194,19 +194,3 @@ def test_is_sorted_by_module_github_cl_dependabot_returns_true():
     assert is_sorted_by_module(
         cl.list_key, data_provider.get_change_data('/.github/dependabot.yml')
     )
-
-
-def test_captialize_word_app():
-    assert capitalize_words('app') == 'App'
-
-
-def test_captialize_word_gradle():
-    assert capitalize_words('gradle') == 'Gradle'
-
-
-def test_captialize_word_build_updates():
-    assert capitalize_words('build updates') == 'Build Updates'
-
-
-def test_captialize_word_root_project():
-    assert capitalize_words('root project') == 'Root Project'

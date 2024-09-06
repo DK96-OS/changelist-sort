@@ -7,7 +7,7 @@ from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting.sort_mode import SortMode
-from changelist_sort.sorting import developer_sort, module_sort
+from changelist_sort.sorting import developer_sort, module_sort, source_set_sort
 from changelist_sort.sorting.list_sort import split_changelist
 
 
@@ -55,6 +55,8 @@ def _create_sorting_callable(
         return lambda x: module_sort.sort_file_by_module(changelist_map, x)
     if sort_mode == SortMode.DEVELOPER:
         return lambda x: developer_sort.sort_file_by_developer(changelist_map, x)
+    if sort_mode == SortMode.SOURCESET:
+        return lambda x: source_set_sort.sort_by_source_set(changelist_map, x)
     else:
         exit("SortMode not Implemented")
 
@@ -69,6 +71,8 @@ def _get_is_sorted_callable(
         return module_sort.is_sorted_by_module
     if sort_mode == SortMode.DEVELOPER:
         return developer_sort.is_sorted_by_developer
+    if sort_mode == SortMode.SOURCESET:
+        return source_set_sort.is_sorted_by_source_set
     else:
         exit("SortMode not Implemented")
 
