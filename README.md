@@ -40,3 +40,6 @@ The name of the changelist must match the module, ignoring letter case and remov
 Otherwise, a new Changelist will be created that matches the module name.
 - Underscores are replaced with spaces.
 - Each Word in the Name will start with an uppercase letter.
+
+## Remove Empty Changelists
+You can remove all empty changelists after a sort has completed by adding the `-r` flag, or `--remove-empty` argument.
