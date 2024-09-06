@@ -66,3 +66,27 @@ def test_parse_arguments_sourceset_long2():
     assert result.workspace_path is None
     assert not result.developer_sort
     assert result.sourceset_sort
+
+
+def test_parse_arguments_remove_empty_short_flag():
+    result = parse_arguments(['-r'])
+    assert result.workspace_path is None
+    assert not result.developer_sort
+    assert not result.sourceset_sort
+    assert result.remove_empty
+
+
+def test_parse_arguments_remove_empty_long():
+    result = parse_arguments(['--remove-empty'])
+    assert result.workspace_path is None
+    assert not result.developer_sort
+    assert not result.sourceset_sort
+    assert result.remove_empty
+
+
+def test_parse_arguments_remove_empty_long2():
+    result = parse_arguments(['--remove_empty'])
+    assert result.workspace_path is None
+    assert not result.developer_sort
+    assert not result.sourceset_sort
+    assert result.remove_empty
