@@ -53,6 +53,7 @@ def _validate_arguments(
         workspace_path=workspace_path,
         developer_sort=parsed_args.developer_sort,
         sourceset_sort=parsed_args.sourceset_sort,
+        remove_empty=parsed_args.remove_empty,
     )
 
 
@@ -85,5 +86,11 @@ def _define_arguments() -> ArgumentParser:
         action='store_true',
         default=False,
         help='A Flag indicating that SourceSet Sort is to be used primarily. Fallback to Module Sort.',
+    )
+    parser.add_argument(
+        '-r', '--remove_empty', '--remove-empty',
+        action='store_true',
+        default=False,
+        help='A Flag indicating that empty changelists are to be removed after sorting.',
     )
     return parser

@@ -20,11 +20,11 @@ def validate_input(args_list: list[str]) -> InputData:
     """
     arg_data = parse_arguments(args_list)
     ws_path = _find_workspace_file(arg_data)
-
     return InputData(
         workspace_xml=validate_input_file(ws_path),
         workspace_path=ws_path,
         sort_mode=_determine_sort_mode(arg_data),
+        remove_empty=arg_data.remove_empty,
     )
 
 

@@ -19,4 +19,3 @@ def validate_name(argument) -> bool:
     elif len(argument.strip()) < 1:
         return False
     return True
-

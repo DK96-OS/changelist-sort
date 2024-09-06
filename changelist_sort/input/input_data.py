@@ -14,7 +14,9 @@ class InputData:
     - workspace_xml (str): The contents of the Workspace XML file.
     - workspace_path (Path): The Path to the Workspace File.
     - sort_mode (SortMode): The selected Sorting Mode enum value.
+    - remove_empty (bool): Whether to remove empty changelists after sort.
     """
     workspace_xml: str
     workspace_path: Path
     sort_mode: SortMode = SortMode.MODULE
+    remove_empty: bool = False
