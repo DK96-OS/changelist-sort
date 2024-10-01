@@ -194,3 +194,9 @@ def test_is_sorted_by_module_github_cl_dependabot_returns_true():
     assert is_sorted_by_module(
         cl.list_key, data_provider.get_change_data('/.github/dependabot.yml')
     )
+
+def test_is_sorted_by_module_root_cl_gradlew_no_file_ext_returns_true():
+    cl = data_provider.get_root_changelist()
+    assert is_sorted_by_module(
+        cl.list_key, data_provider.get_change_data('/gradlew')
+    )
