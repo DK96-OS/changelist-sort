@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="changelist-sort",
-    version="0.2.1",
+    version="0.2.2",
 	author='DK96-OS',
 	description='CLI Tool for Sorting Android Studio Changelists',
     long_description=open('README.md').read(),
