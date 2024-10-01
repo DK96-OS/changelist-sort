@@ -82,6 +82,10 @@ def is_sorted_by_module(
         if cl_key.key.startswith(get_module_keys(ModuleType.ROOT)):
             return True
         # File Extension Checks
+        if file.file_ext is None:
+            # No FileExt Should Sort into Root CL
+            return False
+        # Check for Gradle FileExt
         return file.file_ext.endswith(
             file_sort._GRADLE_FILE_SUFFIXES
         ) and cl_key.key.startswith(
