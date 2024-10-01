@@ -109,3 +109,8 @@ def test_file_ext_hidden_file_no_ext_returns_none():
 def test_file_ext_gradle_kts_returns_ext():
     cd = data_provider.get_change_data('/module/build.gradle.kts')
     assert 'gradle.kts' == cd.file_ext
+
+
+def test_file_ext_gradlew_executable_returns_none():
+    cd = data_provider.get_change_data('/gradlew')
+    assert cd.file_ext is None
