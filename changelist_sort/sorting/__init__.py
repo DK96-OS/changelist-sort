@@ -36,11 +36,10 @@ def sort(
         )
     # This Callable depends on SortMode.
     #  It determines map keys, and executes map insertions.
-    sort_result_string = _process_file_sort_results(list(map(
+    map(
         _create_sorting_callable(cl_map, sort_mode),
         unsorted_files
-    )))
-    print(sort_result_string)
+    )
     return cl_map.get_lists()
 
 
@@ -94,11 +93,3 @@ def _handle_map_insertion_error(
     else:
         exit(f"Failed to Insert Changelist(name={failure_cl.name}) for unknown reason (neither key nor id conflict has occurred).")
 
-
-def _process_file_sort_results(results: list[bool]) -> str:
-    """
-    Process and Format a string to print.
-    """
-    correct = sum(results)
-    total = len(results)
-    return f"Sorted {correct} of {total} unsorted files."
