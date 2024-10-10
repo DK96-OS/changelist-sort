@@ -36,10 +36,9 @@ def sort(
         )
     # This Callable depends on SortMode.
     #  It determines map keys, and executes map insertions.
-    map(
-        _create_sorting_callable(cl_map, sort_mode),
-        unsorted_files
-    )
+    sorting_callable = _create_sorting_callable(cl_map, sort_mode)    
+    for x in unsorted_files:
+        sorting_callable(x)
     return cl_map.get_lists()
 
 
