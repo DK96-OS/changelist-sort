@@ -2,13 +2,15 @@
 """
 from dataclasses import dataclass, field
 
-from changelist_sort import list_key
+from changelist_data.changelist import Changelist
+
+from changelist_sort import list_key, change_data
 from changelist_sort.change_data import ChangeData
 from changelist_sort.list_key import ListKey
 
 
 @dataclass(frozen=True)
-class ChangelistData:
+class ChangelistData(Changelist):
     """
     The complete Data class representing a ChangeList.
     
@@ -20,15 +22,31 @@ class ChangelistData:
     - is_default (bool): Whether this is the active changelist.
 
     Post Init Properties:
-    - simple_name (str): A simplified string derived from the name property.
+    - list_key (ListKey): A key helping to identify this Changelist while sorting.
     """
-    id: str
-    name: str
     changes: list[ChangeData] = field(default_factory=lambda: [])
-    comment: str = ""
-    is_default: bool = False
     
     list_key: ListKey = field(init=False)
 
     def __post_init__(self):
         object.__setattr__(self, 'list_key', list_key.compute_key(self.name))
+
+
+def expand(cl: Changelist) -> ChangelistData:
+    return ChangelistData(
+        id=cl.id,
+        name=cl.name,
+        changes=[ change_data.expand(x) for x in cl.changes ],
+        comment=cl.comment,
+        is_default=cl.is_default,
+    )
+
+
+def simplify(cl: ChangelistData) -> Changelist:
+    return Changelist(
+        id=cl.id,
+        name=cl.name,
+        changes=[ change_data.simplify(x) for x in cl.changes ],
+        comment=cl.comment,
+        is_default=cl.is_default,
+    )

@@ -8,8 +8,8 @@ from argparse import ArgumentParser
 from sys import exit
 from typing import Optional
 
-from .argument_data import ArgumentData
-from .string_validation import validate_name
+from changelist_sort.input.argument_data import ArgumentData
+from changelist_sort.input.string_validation import validate_name
 
 
 def parse_arguments(args: Optional[list[str]] = None) -> ArgumentData:
@@ -23,7 +23,7 @@ def parse_arguments(args: Optional[list[str]] = None) -> ArgumentData:
     ArgumentData : Container for Valid Argument Data.
     """
     if args is None or len(args) == 0:
-        return ArgumentData(None)
+        return ArgumentData()
     # Initialize the Parser and Parse Immediately
     try:
         parsed_args = _define_arguments().parse_args(args)
@@ -45,12 +45,15 @@ def _validate_arguments(
     Returns:
     ArgumentData - A DataClass of syntactically correct arguments.
     """
-    workspace_path = parsed_args.workspace
-    if workspace_path is not None:
-        if not validate_name(workspace_path):
-            exit("The Workspace Path argument was invalid.")
+    if (cl_file := parsed_args.changelists_file) is not None:
+        if not validate_name(cl_file):
+            exit("Invalid Changelists File Name")
+    if (ws_file := parsed_args.workspace_file) is not None:
+        if not validate_name(ws_file):
+            exit("Invalid Workspace File Name")
     return ArgumentData(
-        workspace_path=workspace_path,
+        changelists_path=cl_file,
+        workspace_path=ws_file,
         developer_sort=parsed_args.developer_sort,
         sourceset_sort=parsed_args.sourceset_sort,
         remove_empty=parsed_args.remove_empty,
@@ -70,10 +73,17 @@ def _define_arguments() -> ArgumentParser:
     )
     # Optional Arguments
     parser.add_argument(
-        '--workspace',
+        '--changelists_file',
         type=str,
         default=None,
-        help='The Workspace File containing the ChangeList data. Searches current directory by default.'
+        help='The Changelists Data File. Searches default location if not provided.'
+    )
+    # Optional Arguments
+    parser.add_argument(
+        '--workspace_file', '--workspace',
+        type=str,
+        default=None,
+        help='The Workspace File containing the ChangeList data. Searches default location if not provided.'
     )
     parser.add_argument(
         '-d', '--developer_sort', '--developer-sort',
