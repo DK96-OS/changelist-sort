@@ -8,7 +8,7 @@
 from changelist_sort.change_data import ChangeData
 from changelist_sort.sorting import developer_sort
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.workspace.developer_changelist import DeveloperChangelist
+from changelist_sort.sorting.developer_changelist import DeveloperChangelist
 from test import data_provider
 
 from changelist_sort.changelist_map import ChangelistMap
