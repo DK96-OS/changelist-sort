@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from changelist_sort.change_data import ChangeData
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.workspace.developer_file_pattern import DeveloperFilePattern
+from changelist_sort.sorting.developer_file_pattern import DeveloperFilePattern
 
 
 @dataclass(frozen=True)
