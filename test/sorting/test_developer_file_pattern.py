@@ -2,7 +2,7 @@
 """
 from test import data_provider
 
-from changelist_sort.workspace.developer_file_pattern import DeveloperFilePattern
+from changelist_sort.sorting.developer_file_pattern import DeveloperFilePattern
 
 
 def test_constructor_invalid_kwarg_raises_error():

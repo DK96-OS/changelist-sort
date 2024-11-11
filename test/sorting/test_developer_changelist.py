@@ -4,7 +4,7 @@ from test import data_provider
 
 from changelist_sort import list_key
 from changelist_sort.sorting.developer_sort import _INPUT_PACKAGE_PATTERN, _SRC_DIR_PATTERN
-from changelist_sort.workspace.developer_changelist import DeveloperChangelist
+from changelist_sort.sorting.developer_changelist import DeveloperChangelist
 
 
 def get_dc_src_input() -> DeveloperChangelist:
