@@ -2,15 +2,13 @@
 """
 from typing import Callable
 
-from changelist_data.changelist import Changelist
-
 from changelist_sort.change_data import ChangeData
-from changelist_sort.changelist_data import ChangelistData, simplify, expand
+from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
-from changelist_sort.sorting.sort_mode import SortMode
 from changelist_sort.sorting import developer_sort, module_sort, source_set_sort
 from changelist_sort.sorting.list_sort import split_changelist
+from changelist_sort.sorting.sort_mode import SortMode
 
 
 def sort(
