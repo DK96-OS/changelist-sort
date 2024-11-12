@@ -130,6 +130,7 @@ def get_multiple_gradle_changelists():
 
 
 def get_no_changelist_xml() -> str:
+    """No ChangelistManager Tag Workspace XML"""
     return """<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
@@ -139,6 +140,7 @@ def get_no_changelist_xml() -> str:
 
 
 def get_simple_changelist_xml() -> str:
+    """Simple Workspace XML"""
     return """<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
@@ -153,6 +155,7 @@ def get_simple_changelist_xml() -> str:
 
 
 def get_multi_changelist_xml() -> str:
+    """Simple Workspace XML"""
     return """<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
@@ -171,6 +174,7 @@ def get_multi_changelist_xml() -> str:
 
 
 def get_invalid_component_xml() -> str:
+    """Invalid Workspace XML"""
     return """<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component>
@@ -181,3 +185,27 @@ def get_invalid_component_xml() -> str:
     </list>
   </component>
 </project>"""
+
+
+def get_cl_simple_xml() -> str:
+    """Simple Changelists XML"""
+    return """<?xml version="1.0" encoding="UTF-8"?>
+<changelists>
+<list id="9f60fda2f83a47c88" name="Simple" comment="Main Program Files">
+  <change beforePath="/main.py" beforeDir="false"  afterPath="/main.py" afterDir="false" />
+</list>
+</changelists>"""
+
+
+def get_cl_multi_xml() -> str:
+    """Multi Changelists XML"""
+    return """<?xml version="1.0" encoding="UTF-8"?>
+<changelists>
+<list default="true" id="af84ea1b9f3a2835e933" name="Main" comment="Main Program Files">
+  <change beforePath="/history.py" beforeDir="false" />
+  <change beforePath="/main.py" beforeDir="false" />
+</list>
+<list id="9f60fda24c8f83a47c88" name="Test" comment="Test Files">
+  <change afterPath="/test/test_file.py" afterDir="false" />
+</list>
+</changelists>"""

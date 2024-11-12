@@ -6,9 +6,9 @@ from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
-from changelist_sort.sorting.sort_mode import SortMode
 from changelist_sort.sorting import developer_sort, module_sort, source_set_sort
 from changelist_sort.sorting.list_sort import split_changelist
+from changelist_sort.sorting.sort_mode import SortMode
 
 
 def sort(
@@ -29,7 +29,7 @@ def sort(
     cl_map = ChangelistMap()
     for cl in initial_list:
         if not cl_map.insert(cl):
-            _handle_map_insertion_error()
+            _handle_map_insertion_error(cl_map, cl)
         # Split CL based on SortMode criteria
         unsorted_files.extend(
             split_changelist(cl, _get_is_sorted_callable(sort_mode))
@@ -85,8 +85,8 @@ def _handle_map_insertion_error(
     Raises:
     SystemExit - containing error information.
     """
-    if (existing_cl := cl_map.search(failure_cl.simple_name)) is not None:
-        exit(f"Failed to Insert Changelist(name={failure_cl.name}) due to simplename key conflict with Changelist(name={existing_cl.name}).")
+    if (existing_cl := cl_map.search(failure_cl.list_key.key)) is not None:
+        exit(f"Failed to Insert Changelist(name={failure_cl.name}) due to key conflict with Changelist(name={existing_cl.name}).")
     elif cl_map.contains_id(failure_cl.id):
         exit(f"Failed to Insert Changelist(name={failure_cl.name}) due to id conflict (id={failure_cl.id}).")
     else:

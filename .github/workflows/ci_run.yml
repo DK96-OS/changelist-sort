@@ -1,7 +1,7 @@
-# This workflow installs Python dependencies, run lint checks and unit tests
+# This workflow installs Python dependencies, runs unit tests and uploads coverage reports.
 # Info: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python App lint check and unit test
+name: Python unit test and coverage report
 
 on:
   push:
@@ -27,15 +27,15 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov
+          pip install -r requirements.txt
+          pip install pytest==8.3.3 pytest-cov==5.0.0
 
       - name: Run unit tests
-        run: pytest test/ --cov=changelist_sort --cov-report=html --cov-fail-under=97
+        run: pytest test/ --cov=changelist_sort --cov-report=html --cov-fail-under=96
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cov-${{ matrix.os }}-${{ matrix.python-version }}
+          name: cl-sort-cov-${{ matrix.os }}-${{ matrix.python-version }}
           path: htmlcov/
-

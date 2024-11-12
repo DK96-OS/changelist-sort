@@ -3,9 +3,11 @@
 from os.path import basename
 from dataclasses import dataclass, field
 
+from changelist_data.file_change import FileChange
+
 
 @dataclass(frozen=True)
-class ChangeData:
+class ChangeData(FileChange):
     """The Change Information that is associated with a single file.
 
     Properties:
@@ -14,10 +16,6 @@ class ChangeData:
     - after_path (str | None): The final path of the file.
     - after_dir (bool | None): Whether the final path is a directory.
     """
-    before_path: str | None = None
-    before_dir: bool | None = None
-    after_path: str | None = None
-    after_dir: bool | None = None
 
     sort_path: str | None = field(init=False)
     first_dir: str | None = field(init=False, default=None)
@@ -66,3 +64,21 @@ class ChangeData:
             return self.file_basename[self.file_basename.index('.', 1) + 1:]
         except ValueError:
             return None
+
+
+def expand(fc: FileChange) -> ChangeData:
+    return ChangeData(
+        before_path=fc.before_path,
+        before_dir=fc.before_dir,
+        after_path=fc.after_path,
+        after_dir=fc.after_dir,
+    )
+
+
+def simplify(cd: ChangeData) -> FileChange:
+    return FileChange(
+        before_path=cd.before_path,
+        before_dir=cd.before_dir,
+        after_path=cd.after_path,
+        after_dir=cd.after_dir,
+    )

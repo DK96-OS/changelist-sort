@@ -6,8 +6,8 @@ from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting import file_sort, module_sort
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.workspace.developer_changelist import DeveloperChangelist
-from changelist_sort.workspace.developer_file_pattern import DeveloperFilePattern
+from changelist_sort.sorting.developer_changelist import DeveloperChangelist
+from changelist_sort.sorting.developer_file_pattern import DeveloperFilePattern
 
 
 _SRC_DIR_PATTERN = DeveloperFilePattern(first_dir='changelist_sort')
