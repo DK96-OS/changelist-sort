@@ -3,7 +3,6 @@
 from pathlib import Path
 from unittest.mock import Mock
 
-import changelist_data
 import pytest
 from changelist_data.storage import ChangelistDataStorage, StorageType, storage_type
 from changelist_data.xml import workspace
