@@ -164,12 +164,12 @@ DEVELOPER_CL_TUPLE: tuple[SortingChangelist, ...] = (
 )
 
 
-def _filter_patterns_by_module(
+def filter_patterns_by_module(
     module_type: ModuleType | None
-) -> tuple[SortingChangelist, ...]:
+) -> list[SortingChangelist]:
     """ Filter the Changelists by the ModuleType their Pattern applies to.
     """
-    return tuple(filter(
+    return list(filter(
         lambda dcl: dcl.module_type is None or dcl.module_type == module_type,
         DEVELOPER_CL_TUPLE
     ))
@@ -185,7 +185,7 @@ def sort_file_by_developer(
     - Fallback to Module Sort
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
-    filtered_dcl_patterns = _filter_patterns_by_module(file_sort.get_module_type(file))
+    filtered_dcl_patterns = filter_patterns_by_module(file_sort.get_module_type(file))
     # Check Developer Changelists in Tuple Order
     for dcl_pattern in filtered_dcl_patterns:
         if dcl_pattern.check_file(file):
@@ -211,7 +211,7 @@ def is_sorted_by_developer(
     - Fallback to Module Sort
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
-    filtered_dcl_patterns = _filter_patterns_by_module(file_sort.get_module_type(file))
+    filtered_dcl_patterns = filter_patterns_by_module(file_sort.get_module_type(file))
     # Check Developer Changelists in Tuple Order
     for dcl_pattern in filtered_dcl_patterns:
         if dcl_pattern.check_file(file):
