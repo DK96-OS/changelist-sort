@@ -7,7 +7,7 @@ def test_sample1(
     sorting_xml_sample_1,
     sorting_config_list_sample1,
 ):
-    assert read_xml(sorting_xml_sample_1)[0] == sorting_config_list_sample1[0]
+    assert read_xml(sorting_xml_sample_1) == sorting_config_list_sample1
 
 
 def test_sample2(
