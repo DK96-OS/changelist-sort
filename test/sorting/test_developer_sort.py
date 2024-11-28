@@ -6,45 +6,43 @@
     If you need to know which module type a file is, use helper method get_file_patterns
 """
 from changelist_sort.change_data import ChangeData
-from changelist_sort.sorting import developer_sort
-from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.sorting.developer_changelist import DeveloperChangelist
-from test import data_provider
-
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
+from changelist_sort.sorting import developer_sort
 from changelist_sort.sorting import file_sort
 from changelist_sort.sorting.developer_sort import sort_file_by_developer, is_sorted_by_developer
+from changelist_sort.sorting.module_type import ModuleType
+from changelist_sort.sorting.sorting_changelist import SortingChangelist
+
+from test import data_provider
 
 
-def get_file_patterns(file: ChangeData) -> tuple[DeveloperChangelist]:
+def get_file_patterns(file: ChangeData) ->  list[SortingChangelist]:
+    """ Obtain the Developer Changelist Patterns that will be matched against this File Change.
     """
-    Obtain the Developer Changelist Patterns that will be matched against this File Change.
-    """
-    module_type = file_sort.get_module_type(file)
-    return developer_sort._filter_patterns_by_module(module_type)
+    return developer_sort.filter_patterns_by_module(file_sort.get_module_type(file))
 
 
 def test_filter_patterns_by_module_root_returns_tuple():
-    result = developer_sort._filter_patterns_by_module(ModuleType.ROOT)
+    result = developer_sort.filter_patterns_by_module(ModuleType.ROOT)
     assert len(result) == 5
     # print(', '.join(x.list_key.changelist_name for x in result))
 
 
 def test_filter_patterns_by_module_gradle_returns_tuple():
-    result = developer_sort._filter_patterns_by_module(ModuleType.GRADLE)
+    result = developer_sort.filter_patterns_by_module(ModuleType.GRADLE)
     assert len(result) == 3
     # print(', '.join(x.list_key.changelist_name for x in result))
 
 
 def test_filter_patterns_by_module_module_returns_tuple():
-    result = developer_sort._filter_patterns_by_module(ModuleType.MODULE)
+    result = developer_sort.filter_patterns_by_module(ModuleType.MODULE)
     assert len(result) == 9
     # print(', '.join(x.list_key.changelist_name for x in result))
 
 
 def test_filter_patterns_by_module_hidden_returns_tuple():
-    result = developer_sort._filter_patterns_by_module(ModuleType.HIDDEN)
+    result = developer_sort.filter_patterns_by_module(ModuleType.HIDDEN)
     assert len(result) == 1
     # print(result[0].list_key.changelist_name)
 
