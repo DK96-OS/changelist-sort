@@ -6,169 +6,168 @@ from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting import file_sort, module_sort
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.sorting.developer_changelist import DeveloperChangelist
-from changelist_sort.sorting.developer_file_pattern import DeveloperFilePattern
+from changelist_sort.sorting.sorting_changelist import SortingChangelist
+from changelist_sort.sorting.sorting_file_pattern import SortingFilePattern
 
 
-_SRC_DIR_PATTERN = DeveloperFilePattern(first_dir='changelist_sort')
-_TEST_DIR_PATTERN = DeveloperFilePattern(first_dir='test')
-_INPUT_PACKAGE_PATTERN = DeveloperFilePattern(path_end='input')
-_SORTING_PACKAGE_PATTERN = DeveloperFilePattern(path_end='sorting')
-_WORKSPACE_PACKAGE_PATTERN = DeveloperFilePattern(path_end='workspace')
+_SRC_DIR_PATTERN = SortingFilePattern(first_dir='changelist_sort')
+_TEST_DIR_PATTERN = SortingFilePattern(first_dir='test')
+_INPUT_PACKAGE_PATTERN = SortingFilePattern(path_end='input')
+_SORTING_PACKAGE_PATTERN = SortingFilePattern(path_end='sorting')
+_WORKSPACE_PACKAGE_PATTERN = SortingFilePattern(path_end='workspace')
 
 _BUILD_UPDATES_KEY = list_key.compute_key('Build Updates')
 
 # Modify these Patterns
-DEVELOPER_CL_TUPLE: tuple[DeveloperChangelist, ...] = (
-    DeveloperChangelist(
+DEVELOPER_CL_TUPLE: tuple[SortingChangelist, ...] = (
+    SortingChangelist(
         None,
         list_key.compute_key('Documentation'),
-        (
-            DeveloperFilePattern(
+        [
+            SortingFilePattern(
                 file_ext='md',
             ),
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Input Package Tests'),
-        (
+        [
             _TEST_DIR_PATTERN,
             _INPUT_PACKAGE_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Sorting Package Tests'),
-        (
+        [
             _TEST_DIR_PATTERN,
             _SORTING_PACKAGE_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Workspace Package Tests'),
-        (
+        [
             _TEST_DIR_PATTERN,
             _WORKSPACE_PACKAGE_PATTERN,
-        )
+        ]
     ),
     # Tests that don't match a pattern
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Tests'),
-        (
+        [
             _TEST_DIR_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Input Package'),
-        (
+        [
             _SRC_DIR_PATTERN,
             _INPUT_PACKAGE_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Sorting Package'),
-        (
+        [
             _SRC_DIR_PATTERN,
             _SORTING_PACKAGE_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Workspace Package'),
-        (
+        [
             _SRC_DIR_PATTERN,
             _WORKSPACE_PACKAGE_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.MODULE,
         list_key.compute_key('Main Package Source'),
-        (
+        [
             _SRC_DIR_PATTERN,
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.ROOT,
         list_key.compute_key('Shell Scripts'),
-        (
-            DeveloperFilePattern(
+        [
+            SortingFilePattern(
                 file_ext='sh',
             ),
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.ROOT,
         list_key.compute_key('Project Root'),
-        (
-            DeveloperFilePattern(
+        [
+            SortingFilePattern(
                 inverse=True,
                 first_dir='gradle',
             ),
-            DeveloperFilePattern(
+            SortingFilePattern(
                 inverse=True,
                 file_ext='gradle',
             ),
-            DeveloperFilePattern(
+            SortingFilePattern(
                 inverse=True,
                 file_ext='kts',
             ),
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.GRADLE,
         _BUILD_UPDATES_KEY,
-        (
-            DeveloperFilePattern(
+        [
+            SortingFilePattern(
                 inverse=True,
                 first_dir='gradle',
             ),
-            DeveloperFilePattern(
+            SortingFilePattern(
                 inverse=True,
-                first_dir=None,
+                first_dir='',
             ),
-        )
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.ROOT,
         _BUILD_UPDATES_KEY,
-        (
-            DeveloperFilePattern(file_ext='gradle'),
-        )
+        [
+            SortingFilePattern(file_ext='gradle'),
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.ROOT,
         _BUILD_UPDATES_KEY,
-        (
-            DeveloperFilePattern(file_ext='properties'),
-        )
+        [
+            SortingFilePattern(file_ext='properties'),
+        ]
     ),
-    DeveloperChangelist(
+    SortingChangelist(
         ModuleType.GRADLE,
         list_key.compute_key('Module Gradle Build Files'),
-        (
-            DeveloperFilePattern(
+        [
+            SortingFilePattern(
                 inverse=True,
                 first_dir='gradle',
             ),
-            DeveloperFilePattern(
+            SortingFilePattern(
                 inverse=True,
-                first_dir=None,
+                first_dir='',
             ),
-        )
+        ]
     ),
 )
 
 
 def _filter_patterns_by_module(
     module_type: ModuleType | None
-) -> tuple[DeveloperChangelist, ...]:
-    """
-    Filter the Changelists by the ModuleType their Pattern applies to.
+) -> tuple[SortingChangelist, ...]:
+    """ Filter the Changelists by the ModuleType their Pattern applies to.
     """
     return tuple(filter(
         lambda dcl: dcl.module_type is None or dcl.module_type == module_type,

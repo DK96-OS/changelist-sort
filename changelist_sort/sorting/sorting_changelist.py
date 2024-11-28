@@ -5,13 +5,12 @@ from dataclasses import dataclass
 from changelist_sort.change_data import ChangeData
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.sorting.developer_file_pattern import DeveloperFilePattern
+from changelist_sort.sorting.sorting_file_pattern import SortingFilePattern
 
 
 @dataclass(frozen=True)
-class DeveloperChangelist:
-    """
-    The Changelist Defined by the Developer.
+class SortingChangelist:
+    """ A Changelist data class designed for sorting.
 
     Parameters:
     - list_key (ListKey): The Key and Name of the Changelist.
@@ -20,11 +19,10 @@ class DeveloperChangelist:
     """
     module_type: ModuleType | None
     list_key: ListKey
-    file_patterns: tuple[DeveloperFilePattern]
+    file_patterns: list[SortingFilePattern]
 
     def check_file(self, file: ChangeData) -> bool:
-        """
-        Determine if the File can be added to this Changelist.
+        """ Determine if the File can be added to this Changelist.
 
         Parameters:
         - file (ChangeData): The ChangeData of the File to pattern match.
