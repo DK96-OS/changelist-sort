@@ -26,25 +26,21 @@ def get_file_patterns(file: ChangeData) ->  list[SortingChangelist]:
 def test_filter_patterns_by_module_root_returns_tuple():
     result = developer_sort.filter_patterns_by_module(ModuleType.ROOT)
     assert len(result) == 5
-    # print(', '.join(x.list_key.changelist_name for x in result))
 
 
 def test_filter_patterns_by_module_gradle_returns_tuple():
     result = developer_sort.filter_patterns_by_module(ModuleType.GRADLE)
     assert len(result) == 3
-    # print(', '.join(x.list_key.changelist_name for x in result))
 
 
 def test_filter_patterns_by_module_module_returns_tuple():
     result = developer_sort.filter_patterns_by_module(ModuleType.MODULE)
     assert len(result) == 9
-    # print(', '.join(x.list_key.changelist_name for x in result))
 
 
 def test_filter_patterns_by_module_hidden_returns_tuple():
     result = developer_sort.filter_patterns_by_module(ModuleType.HIDDEN)
     assert len(result) == 1
-    # print(result[0].list_key.changelist_name)
 
 
 def test_sort_file_by_developer_github_cl_exists_returns_true():
