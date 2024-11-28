@@ -38,8 +38,7 @@ def sorting_xml_sample_2():
 
 @pytest.fixture
 def sorting_xml_sample_3():
-    return """<?xml version='1.0' encoding='utf-8'?>
-<sorting>
+    return """<sorting>
     <changelist list_key="github" list_name="GitHub Actions CI" module_type="hidden">
         <files filename_prefix="ci">
         </files>
