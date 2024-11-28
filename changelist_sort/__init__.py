@@ -10,8 +10,7 @@ from changelist_sort.input.input_data import InputData
 def sort_changelists(
     input_data: InputData,
 ):
-    """
-    Sort the given Changelists and write them to the Workspace File.
+    """ Sort the given Changelists and write them to the Workspace File.
     """
     sorted_lists = sort(
         expand_changelists(

@@ -19,13 +19,13 @@ class ListKey:
 def compute_key(cl_name: str) -> ListKey:
     """
     Compute a Key to use for a given Changelist Name.
-    - computation is a series of reduction operations
+    - computation is a sequence of reduction operations
 
     Parameters:
     - cl_name (str): The Changelist Name to be included in the ListKey.
 
     Returns:
-    ListKey - A ListKey instance contianing the Key and Changelist Name.
+    ListKey - A ListKey instance containing the Key and Changelist Name.
     """
     if len(cl_name) == 0:
         return ListKey('', '')
