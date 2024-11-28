@@ -13,12 +13,10 @@ class ArgumentData:
     Fields:
     - changelists_path (str | None): The path to the Changelists file, or None to enable defaults.
     - workspace_path (str | None): The path to the workspace file, or None to enable defaults.
-    - developer_sort (bool): Flag for the Developer SortMode.
     - sourceset_sort (bool): Flag for the SourceSet SortMode.
     - remove_empty (bool): Flag indicating that empty changelists should be removed.
     """
     changelists_path: str | None = None
     workspace_path: str | None = None
-    developer_sort: bool = False
     sourceset_sort: bool = False
     remove_empty: bool = False

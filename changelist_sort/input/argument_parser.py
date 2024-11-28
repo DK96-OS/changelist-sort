@@ -6,15 +6,13 @@ Returns Argument Data, the args provided by the User.
 """
 from argparse import ArgumentParser
 from sys import exit
-from typing import Optional
 
 from changelist_sort.input.argument_data import ArgumentData
 from changelist_sort.input.string_validation import validate_name
 
 
-def parse_arguments(args: Optional[list[str]] = None) -> ArgumentData:
-    """
-    Parse command line arguments.
+def parse_arguments(arguments: list[str] | None = None) -> ArgumentData:
+    """ Parse command line arguments.
 
     Parameters:
     - args: A list of argument strings.
@@ -22,21 +20,19 @@ def parse_arguments(args: Optional[list[str]] = None) -> ArgumentData:
     Returns:
     ArgumentData : Container for Valid Argument Data.
     """
-    if args is None or len(args) == 0:
+    if arguments is None or len(arguments) == 0:
         return ArgumentData()
     # Initialize the Parser and Parse Immediately
     try:
-        parsed_args = _define_arguments().parse_args(args)
+        return _validate_arguments(_define_arguments().parse_args(arguments))
     except SystemExit:
         exit("Unable to Parse Arguments.")
-    return _validate_arguments(parsed_args)
 
 
 def _validate_arguments(
     parsed_args,
 ) -> ArgumentData:
-    """
-    Checks the values received from the ArgParser.
+    """ Checks the values received from the ArgParser.
         Uses Validate Name method from StringValidation.
 
     Parameters:
@@ -54,7 +50,6 @@ def _validate_arguments(
     return ArgumentData(
         changelists_path=cl_file,
         workspace_path=ws_file,
-        developer_sort=parsed_args.developer_sort,
         sourceset_sort=parsed_args.sourceset_sort,
         remove_empty=parsed_args.remove_empty,
     )
@@ -78,18 +73,11 @@ def _define_arguments() -> ArgumentParser:
         default=None,
         help='The Changelists Data File. Searches default location if not provided.'
     )
-    # Optional Arguments
     parser.add_argument(
         '--workspace_file', '--workspace',
         type=str,
         default=None,
         help='The Workspace File containing the ChangeList data. Searches default location if not provided.'
-    )
-    parser.add_argument(
-        '-d', '--developer_sort', '--developer-sort',
-        action='store_true',
-        default=False,
-        help='A Flag indicating that Developer Sort is to be used primarily. Fallback to Module Sort.',
     )
     parser.add_argument(
         '-s', '--sourceset_sort', '--sourceset-sort',

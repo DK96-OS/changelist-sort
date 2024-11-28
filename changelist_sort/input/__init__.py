@@ -13,10 +13,9 @@ from changelist_sort.sorting.sort_mode import SortMode
 
 
 def validate_input(args_list: list[str]) -> InputData:
-    """
-    Validate the arguments and gather program input into InputData object.
-    - Parses command line strings into ArgumentData object.
-    - Finds storage file and loads it into InputData as ChangelistDataStorage object.
+    """ Validate the arguments and gather program input into InputData object.
+        - Parses command line strings into ArgumentData object.
+        - Finds storage file and loads it into InputData as ChangelistDataStorage object.
 
     Returns:
     InputData - container for the program input.
@@ -46,11 +45,8 @@ def _determine_storage_type(
 
 
 def _determine_sort_mode(arg_data: ArgumentData) -> SortMode:
+    """ Check the Argument Data flags to determine which SortMode to use.
     """
-    Check the Argument Data flags to determine which SortMode to use.
-    """
-    if arg_data.developer_sort:
-        return SortMode.DEVELOPER
     if arg_data.sourceset_sort:
         return SortMode.SOURCESET
     return SortMode.MODULE
