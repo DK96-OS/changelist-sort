@@ -1,6 +1,7 @@
 """The Input Package for Changelist Sort
 """
 from pathlib import Path
+from xml.etree.ElementTree import ParseError
 
 from changelist_data.storage import load_storage
 from changelist_data.storage.changelist_data_storage import ChangelistDataStorage
@@ -10,6 +11,8 @@ from changelist_sort.input.argument_data import ArgumentData
 from changelist_sort.input.argument_parser import parse_arguments
 from changelist_sort.input.input_data import InputData
 from changelist_sort.sorting.sort_mode import SortMode
+from changelist_sort.sorting.sorting_changelist import SortingChangelist
+from changelist_sort.xml import read_xml
 
 
 def validate_input(args_list: list[str]) -> InputData:
@@ -28,6 +31,7 @@ def validate_input(args_list: list[str]) -> InputData:
         ),
         sort_mode=_determine_sort_mode(arg_data),
         remove_empty=arg_data.remove_empty,
+        sorting_config=_load_sorting_config(),
     )
 
 
@@ -50,3 +54,17 @@ def _determine_sort_mode(arg_data: ArgumentData) -> SortMode:
     if arg_data.sourceset_sort:
         return SortMode.SOURCESET
     return SortMode.MODULE
+
+
+def _load_sorting_config() -> list[SortingChangelist] | None:
+    """ Search for the Sorting Config file and load it.
+    """
+    sorting_config_paths = ('.changelists/sort.xml', '.changelists/sorting.xml')
+    for file_path_str in sorting_config_paths:
+        f = Path(file_path_str)
+        if f.exists() and f.is_file():
+            try:
+                return read_xml(f.read_text())
+            except ParseError:
+                return None
+    return None
