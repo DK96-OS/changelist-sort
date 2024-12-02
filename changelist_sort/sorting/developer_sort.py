@@ -1,5 +1,7 @@
 """ Sort With Developer File Patterns.
 """
+from typing import Iterable, Callable
+
 from changelist_sort import list_key
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
@@ -165,27 +167,31 @@ DEVELOPER_CL_TUPLE: tuple[SortingChangelist, ...] = (
 
 
 def filter_patterns_by_module(
-    module_type: ModuleType | None
+    module_type: ModuleType | None,
+    cl_patterns: Iterable[SortingChangelist] = DEVELOPER_CL_TUPLE
 ) -> list[SortingChangelist]:
     """ Filter the Changelists by the ModuleType their Pattern applies to.
     """
     return list(filter(
         lambda dcl: dcl.module_type is None or dcl.module_type == module_type,
-        DEVELOPER_CL_TUPLE
+        cl_patterns
     ))
 
 
 def sort_file_by_developer(
     cl_map: ChangelistMap,
     file: ChangeData,
+    sorting_config: list[SortingChangelist],
 ) -> bool:
-    """
-    Apply the Developer FilePattern Setting to Sort a single File into the Changelist Map.
-    - Filters Patterns by matching ModuleType before checking files.
-    - Fallback to Module Sort
+    """ Apply the Developer FilePattern Setting to Sort a single File into the Changelist Map.
+        - Filters Patterns by matching ModuleType before checking files.
+        - Fallback to Module Sort
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
-    filtered_dcl_patterns = filter_patterns_by_module(file_sort.get_module_type(file))
+    filtered_dcl_patterns = filter_patterns_by_module(
+        file_sort.get_module_type(file),
+        sorting_config,
+    )
     # Check Developer Changelists in Tuple Order
     for dcl_pattern in filtered_dcl_patterns:
         if dcl_pattern.check_file(file):
@@ -201,17 +207,24 @@ def sort_file_by_developer(
     return module_sort.sort_file_by_module(cl_map, file)
 
 
+def create_is_sorted_by_developer(sorting_config) -> Callable[[ListKey, ChangeData], bool]:
+    return lambda x, y: is_sorted_by_developer(x, y, sorting_config)
+
+
 def is_sorted_by_developer(
     changelist_key: ListKey,
     file: ChangeData,
+    sorting_config: list[SortingChangelist],
 ) -> bool:
-    """
-    Determines if this File matches the ChangeList Key or Name.
-    - Finds the First DeveloperChangelist Pattern that matches
-    - Fallback to Module Sort
+    """ Determines if this File matches the ChangeList Key or Name.
+        - Finds the First DeveloperChangelist Pattern that matches
+        - Fallback to Module Sort
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
-    filtered_dcl_patterns = filter_patterns_by_module(file_sort.get_module_type(file))
+    filtered_dcl_patterns = filter_patterns_by_module(
+        file_sort.get_module_type(file),
+        sorting_config,
+    )
     # Check Developer Changelists in Tuple Order
     for dcl_pattern in filtered_dcl_patterns:
         if dcl_pattern.check_file(file):
