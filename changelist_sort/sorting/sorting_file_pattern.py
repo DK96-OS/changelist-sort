@@ -47,7 +47,7 @@ class SortingFilePattern:
         elif self.path_end is not None:
             self._check_file = _match_path_end(self.path_end)
         else:
-            raise ValueError("One of the pattern matching keyword arguments must be provided.")
+            exit("A File Pattern was added without a valid attribute.")
 
     def check_file(self, file: ChangeData) -> bool:
         """ Determine if this File ChangeData matches the Sorting File Pattern.
