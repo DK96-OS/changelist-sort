@@ -16,7 +16,8 @@ def sort_changelists(
         expand_changelists(
             input_data.storage.get_changelists()
         ),
-        input_data.sort_mode
+        input_data.sort_mode,
+        input_data.sorting_config
     )
     if input_data.remove_empty: # Filter out Empty Changelists
         sorted_lists = list(filter(
