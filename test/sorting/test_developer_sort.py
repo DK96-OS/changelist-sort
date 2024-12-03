@@ -46,8 +46,7 @@ def test_filter_patterns_by_module_hidden_returns_tuple():
 def test_sort_file_by_developer_github_cl_exists_returns_true(github_changelist, dependabot_change_data):
     cl_map = ChangelistMap()
     assert cl_map.insert(github_changelist)
-    test_file = dependabot_change_data
-    assert sort_file_by_developer(cl_map, test_file)
+    assert sort_file_by_developer(cl_map, dependabot_change_data)
     # Expect Same Changelist
     result = cl_map.get_lists()
     assert len(result) == 1
@@ -77,7 +76,6 @@ def test_sort_file_by_developer_module_cl_creation_src_returns_true(module_src_c
 
 def test_sort_file_by_developer_gradle_module_app_build_file_returns_true(app_gradle_build_change_data):
     cl_map = ChangelistMap()
-    #
     assert file_sort.get_module_type(app_gradle_build_change_data) == ModuleType.GRADLE
     assert sort_file_by_developer(cl_map, app_gradle_build_change_data)
     # Expect New Changelist
