@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sorting>
+    <changelist key="input" name="CL-Sort Input Package" module="module">
+        <files path_start="changelist_sort/input" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="sorting" name="CL-Sort Sorting Package" module="module">
+        <files path_start="changelist_sort/sorting" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="xml" name="CL-Sort XML Package" module="module">
+        <files path_start="changelist_sort/xml" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="sorting_main" name="CL-Sort Main Package" module="module">
+        <files path_start="changelist_sort/" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="test_main" name="Test Main Package">
+        <files path_end="changelist_sort" />
+        <files path_start="test/changelist_sort" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="test_input" name="Test Input Package">
+        <files path_start="test/input" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="test_sorting" name="Test Sorting Package">
+        <files path_start="test/sorting" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="test_xml" name="Test XML Package">
+        <files path_start="test/xml" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="test" name="Test Package">
+        <files path_start="test/" />
+        <files file_ext="py" />
+    </changelist>
+    <changelist key="github_workflows" name="GitHub Workflows" module="hidden">
+        <files first_dir=".github"/>
+        <files path_end="workflows"/>
+        <files file_ext="yml"/>
+    </changelist>
+    <changelist key="github_dependabot" name="GitHub Dependabot" module="hidden">
+        <files first_dir=".github"/>
+        <files filename_prefix="dependabot"/>
+        <files file_ext="yml"/>
+    </changelist>
+    <changelist key="root_python" name="Root Project Python Files" module="root">
+        <files file_ext="py"/>
+    </changelist>
+    <changelist key="hidden_files" name="Hidden Files In Hidden Directories" module="hidden">
+        <files filename_prefix="."/>
+    </changelist>
+    <changelist key="root" name="Hidden Root Project Files" module="root">
+        <files filename_prefix="."/>
+    </changelist>
+</sorting>
