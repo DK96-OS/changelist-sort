@@ -2,7 +2,6 @@
 """
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.changelist_map import ChangelistMap
-from test import data_provider
 
 
 def test_insert_simple_returns_true():
@@ -26,9 +25,9 @@ def test_insert_twice_same_id_returns_false():
     ))
 
 
-def test_insert_twice_different_id_same_name_returns_false():
+def test_insert_twice_different_id_same_name_returns_false(module_changelist):
     instance = ChangelistMap()
-    init_cl = data_provider.get_module_changelist()
+    init_cl = module_changelist
     assert instance.insert(init_cl)
     # Insert New CL with different id, same name
     new_cl = ChangelistData(
@@ -38,9 +37,9 @@ def test_insert_twice_different_id_same_name_returns_false():
     assert not instance.insert(new_cl)
 
 
-def test_insert_gradle_changelists_returns():
+def test_insert_gradle_changelists_returns(multiple_gradle_changelists):
     instance = ChangelistMap()
-    gradle_cl = data_provider.get_multiple_gradle_changelists()
+    gradle_cl = multiple_gradle_changelists
     assert len(gradle_cl) == 2
     assert instance.insert(gradle_cl[0])
     assert not instance.insert(gradle_cl[1])    # Has the Same Changelist Name
