@@ -181,13 +181,15 @@ def filter_patterns_by_module(
 def sort_file_by_developer(
     cl_map: ChangelistMap,
     file: ChangeData,
-    sorting_config: list[SortingChangelist],
+    sorting_config=None,
 ) -> bool:
     """ Apply the Developer FilePattern Setting to Sort a single File into the Changelist Map.
         - Filters Patterns by matching ModuleType before checking files.
         - Fallback to Module Sort
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
+    if sorting_config is None:
+        sorting_config = []
     filtered_dcl_patterns = filter_patterns_by_module(
         file_sort.get_module_type(file),
         sorting_config,
