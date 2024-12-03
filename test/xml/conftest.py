@@ -10,7 +10,7 @@ from changelist_sort.sorting.module_type import ModuleType
 def sorting_xml_sample_1():
     return """<?xml version='1.0' encoding='utf-8'?>
 <sorting>
-    <changelist list_key="root" list_name="Project Root Python Files" module_type="root">
+    <changelist key="root" name="Project Root Python Files" module="root">
         <files path_end=".py"></files>
     </changelist>
 </sorting>"""
@@ -20,13 +20,13 @@ def sorting_xml_sample_1():
 def sorting_xml_sample_2():
     return """<?xml version='1.0' encoding='utf-8'?>
 <sorting>
-    <changelist list_key="source" list_name="Source Files">
+    <changelist key="source" name="Source Files">
         <files file_ext=".py" />
     </changelist>
-    <changelist list_key="text" list_name="Text Files">
+    <changelist key="text" name="Text Files">
         <files file_ext=".txt" />
     </changelist>
-    <changelist list_key="test" list_name="Tests">
+    <changelist key="test" name="Tests">
         <files first_dir="test" />
     </changelist>
 </sorting>"""
@@ -35,11 +35,11 @@ def sorting_xml_sample_2():
 @pytest.fixture
 def sorting_xml_sample_3():
     return """<sorting>
-    <changelist list_key="github" list_name="GitHub Actions CI" module_type="hidden">
+    <changelist key="github" name="GitHub Actions CI" module="hidden">
         <files filename_prefix="ci" />
         <files file_ext="yml" />
     </changelist>
-    <changelist list_key="dependabot" list_name="GitHub Dependabot" module_type="hidden">
+    <changelist key="dependabot" name="GitHub Dependabot" module="hidden">
         <files filename_prefix="dependabot" />
     </changelist>
 </sorting>"""
