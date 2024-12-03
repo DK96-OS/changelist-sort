@@ -25,27 +25,29 @@ def test_insert_twice_same_id_returns_false():
     ))
 
 
-def test_insert_twice_different_id_same_name_returns_false(module_changelist):
+def test_insert_twice_different_id_same_name_returns_false(
+    module_changelist
+):
     instance = ChangelistMap()
-    init_cl = module_changelist
-    assert instance.insert(init_cl)
+    assert instance.insert(module_changelist)
     # Insert New CL with different id, same name
     new_cl = ChangelistData(
         id=instance._generate_new_id(),
-        name=init_cl.name,
+        name=module_changelist.name,
     )
     assert not instance.insert(new_cl)
 
 
-def test_insert_gradle_changelists_returns(multiple_gradle_changelists):
+def test_insert_gradle_changelists_returns(
+    multiple_gradle_changelists
+):
     instance = ChangelistMap()
-    gradle_cl = multiple_gradle_changelists
-    assert len(gradle_cl) == 2
-    assert instance.insert(gradle_cl[0])
-    assert not instance.insert(gradle_cl[1])    # Has the Same Changelist Name
+    assert len(multiple_gradle_changelists) == 2
+    assert instance.insert(multiple_gradle_changelists[0])
+    assert not instance.insert(multiple_gradle_changelists[1])    # Has the Same Changelist Name
     #
-    result = instance.search(gradle_cl[0].list_key.key)
-    assert result.name == gradle_cl[0].name # The first in the list is returned
+    result = instance.search(multiple_gradle_changelists[0].list_key.key)
+    assert result.name == multiple_gradle_changelists[0].name # The first in the list is returned
 
 
 def test_search_empty_returns_none():
