@@ -20,6 +20,9 @@ APP_GRADLE_PATH = '/app/build.gradle'
 GITHUB_WORKFLOW_PATH = '/.github/workflows/build_and_test.yml'
 GITHUB_DEPENDABOT_PATH = '/.github/dependabot.yml'
 
+PYTHON_READER_PATH = '/changelist_sort/xml/sort_xml_reader.py'
+PYTHON_TEST_PATH = '/test/changelist_sort/xml/test_sort_xml_reader.py'
+
 
 def get_change_data(after_path: str) -> ChangeData:
     return ChangeData(
@@ -74,6 +77,16 @@ def dependabot_change_data() -> ChangeData:
 
 
 @pytest.fixture
+def python_reader_cd() -> ChangeData:
+    return get_change_data(PYTHON_READER_PATH)
+
+
+@pytest.fixture
+def python_test_cd() -> ChangeData:
+    return get_change_data(PYTHON_TEST_PATH)
+
+
+@pytest.fixture
 def module_changelist() -> ChangelistData:
     """ Creates a Changelist called Module.
     """
@@ -110,6 +123,15 @@ def github_changelist() -> ChangelistData:
     return ChangelistData(
         id='1234563',
         name='GitHub',
+        changes=[],
+    )
+
+
+@pytest.fixture
+def github_workflows_changelist() -> ChangelistData:
+    return ChangelistData(
+        id='123456331',
+        name='GitHub Workflows',
         changes=[],
     )
 
