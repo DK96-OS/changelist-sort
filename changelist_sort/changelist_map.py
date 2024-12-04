@@ -1,12 +1,13 @@
 """The Changelist Map.
 """
+from typing import Generator
+
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.list_key import ListKey
 
 
 class ChangelistMap:
-    """
-    The Map containing all of the Changelists.
+    """ The Map containing all of the Changelists.
     """
 
     def __init__(self):
@@ -14,9 +15,8 @@ class ChangelistMap:
         self.changelist_ids = set()
     
     def insert(self, changelist: ChangelistData) -> bool:
-        """
-        Insert a Changelist into the Map.
-        - Uses the Changelist Simple name as a key.
+        """ Insert a Changelist into the Map.
+            - Uses the Changelist Simple name as a key.
 
         Parameters:
         - changelist (ChangelistData): The Changelist Data to insert into the Map.
@@ -32,27 +32,23 @@ class ChangelistMap:
         return True
 
     def search(self, key: str) -> ChangelistData | None:
-        """
-        Search the Map dict for the Changelist with the given simple name.
-            Expects the Changelist Simple Name to match the key.
+        """ Search the Map dict for the Changelist with the given simple name.
+            - Expects the Changelist Simple Name to match the key.
         """
         return self.mapping.get(key)
 
     def contains_id(self, id: str) -> bool:
-        """
-        Determine whether the Map contains the given id.
+        """ Determine whether the Map contains the given id.
         """
         return id in self.changelist_ids
 
     def get_lists(self) -> list[ChangelistData]:
-        """
-        Obtain all Changelists in the Map as a List.
+        """ Obtain all Changelists in the Map as a List.
         """
         return list(self.mapping.values())
 
     def _generate_new_id(self) -> str:
-        """
-        Create a new Changelist Id that does not appear in this map.
+        """ Create a new Changelist Id that does not appear in this map.
         """
         from random import choices
         chars = list(_hex_char_generator())
@@ -64,8 +60,7 @@ class ChangelistMap:
         return test_id
 
     def create_changelist(self, cl_name: ListKey | str) -> ChangelistData:
-        """
-        Create a new empty Changelist with a new Id, and insert it into the Map.
+        """ Create a new empty Changelist with a new Id, and insert it into the Map.
 
         Parameters:
         - name (str): The Name of the new Changelist.
@@ -90,9 +85,8 @@ class ChangelistMap:
         exit(f"Failed to create new Changelist(name={new_cl.list_key.changelist_name})")
 
 
-def _hex_char_generator():
-    """
-    Generator yielding all possible hexadecimal characters.
+def _hex_char_generator() -> Generator[str, None, None]:
+    """ Generator yielding all possible hexadecimal characters.
     """
     for i in range(16):
         if i < 10:
