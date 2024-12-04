@@ -102,6 +102,30 @@ def test_sort_file_by_developer_existing_gradle_module_app_build_file_returns_tr
     assert cl_map.search(new_cl.list_key.key) is not None
 
 
+def test_sort_file_by_developer_github_workflow_github_cl_returns_true(
+    github_workflows_changelist,
+    github_workflows_change_data,
+    sort_config_github_workflows_yml
+):
+    cl_map = ChangelistMap()
+    assert sort_file_by_developer(cl_map, github_workflows_change_data, sort_config_github_workflows_yml)
+    result = cl_map.get_lists()
+    assert result[0].changes[0] == github_workflows_change_data
+
+
+def test_sort_file_by_developer_gh_workflows_config_1_github_workflows_change_returns_true(
+    github_workflows_changelist,
+    github_workflows_change_data,
+    sort_config_github_workflows_yml
+):
+    cl_map = ChangelistMap()
+    assert sort_file_by_developer(cl_map, github_workflows_change_data, sort_config_github_workflows_yml)
+    result = cl_map.get_lists()
+    assert result[0].name == github_workflows_changelist.name
+    assert result[0].list_key == github_workflows_changelist.list_key
+    assert result[0].changes[0] == github_workflows_change_data
+
+
 def test_is_sorted_by_developer_module_cl_creation_simple_key_returns_true(module_src_change_data):
     list_key = ListKey('module', 'Module Source Files')
     # Ensure the File is the right Module Type
