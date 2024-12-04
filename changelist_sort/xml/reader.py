@@ -27,33 +27,38 @@ FILES_EXTENSION = "file_ext"
 FILES_FIRST_DIR = "first_dir"
 
 
-def parse_xml(sorting_xml: str) -> Element:
-    """ Parse an XML file. This should be a Sorting XML file.
+def read_xml(sorting_xml: str) -> list[SortingChangelist]:
+    """ Parse the Sorting XML file and obtain all Developer Changelist data in a list.
+    """
+    if (sorting_root := _parse_xml(sorting_xml)) is not None:
+        return _read_sorting_element(sorting_root)
+
+
+def _parse_xml(sorting_xml: str) -> Element | None:
+    """ Parse an XML file, obtain the Root XML Element.
+        - This should be a Sorting XML file.
 
     Parameters:
-    - sorting_xml (str): The Sorting data in xml format.
+    - sorting_xml (str): The Sorting XML file string contents.
 
     Returns:
-    Element - the XML Root Element
-
-    Raises:
-    SystemExit - if the xml could not be parsed.
+    Element | None - The XML Root Element, or None if string was empty or parsing failed.
     """
+    if len(sorting_xml) == 0:
+        return None
     try:
-        return fromstring(sorting_xml)
-    except ParseError:
-        exit("Unable to Parse Sorting XML File.")
-
-
-def find_sorting_root(xml_root: Element) -> Element | None:
-    """ Extract the Sorting Root XML Element.
-    """
-    for elem in xml_reader.filter_by_tag(xml_root, ROOT_TAG):
-        return elem
+        # XML Parser builds a tree, returns the root
+        xml_root = fromstring(sorting_xml)
+        # Search the XML Tree for the sorting Root Tag.
+        for elem in xml_reader.filter_by_tag(xml_root, ROOT_TAG):
+            return elem
+    except ParseError as e:
+        exit("Failed to parse Sort XML file: " + str(e))
+    # Root Tag was not found
     return None
 
 
-def read_sorting_element(sorting_element: Element) -> list[SortingChangelist]:
+def _read_sorting_element(sorting_element: Element) -> list[SortingChangelist]:
     """ Given the Changelist Manager Element, obtain the list of List Elements.
 
     Parameters:
