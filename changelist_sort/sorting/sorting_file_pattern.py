@@ -1,5 +1,5 @@
 """ Sorting Files Definitions.
-    Add New Types of Pattern Implementations Here.
+    - Add New Types of Pattern Implementations Here.
 """
 from dataclasses import dataclass
 from typing import Callable
@@ -46,6 +46,8 @@ class SortingFilePattern:
             self._check_file = _match_path_start(self.path_start)
         elif self.path_end is not None:
             self._check_file = _match_path_end(self.path_end)
+        elif self.inverse:
+            self._check_file = lambda _: False
         else:
             exit("A File Pattern was added without a valid attribute.")
 
@@ -60,6 +62,7 @@ def _match_file_ext(
 ) -> Callable[[ChangeData], bool]:
     """ Match the given File Extension.
     """
+    file_ext = file_ext.lstrip('.')
     return lambda change_data: change_data.file_ext == file_ext
 
 
@@ -110,6 +113,7 @@ def _match_path_start(
 def _match_path_end(
     path_end: str,
 ) -> Callable[[ChangeData], bool]:
+    path_end = path_end.rstrip('/')
     return lambda change_data: change_data.sort_path[:-len(change_data.file_basename)-1].endswith(path_end)
 
 
