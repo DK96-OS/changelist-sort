@@ -23,6 +23,7 @@ class SortingChangelist:
 
     def check_file(self, file: ChangeData) -> bool:
         """ Determine if the File can be added to this Changelist.
+            - If the FilePatterns are empty, always returns False.
 
         Parameters:
         - file (ChangeData): The ChangeData of the File to pattern match.
@@ -30,6 +31,8 @@ class SortingChangelist:
         Returns:
         True if the File matches all patterns in this Changelist.
         """
+        if len(self.file_patterns) == 0:
+            return False
         for fp in self.file_patterns:
             if not fp.check_file(file):
                 return False

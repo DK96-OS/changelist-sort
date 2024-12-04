@@ -189,7 +189,7 @@ def sort_file_by_developer(
     """
     # Filter Developer Changelist Tuple by File's ModuleType 
     if sorting_config is None:
-        sorting_config = []
+        return module_sort.sort_file_by_module(cl_map, file)
     filtered_dcl_patterns = filter_patterns_by_module(
         file_sort.get_module_type(file),
         sorting_config,
