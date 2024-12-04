@@ -1,10 +1,10 @@
 """ Testing Sorting Package Init Methods.
 """
-from changelist_sort.change_data import ChangeData
-from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import sort
+from changelist_sort.sorting.developer_sort import DEVELOPER_CL_TUPLE
 from changelist_sort.sorting.sort_mode import SortMode
-from test import data_provider
+
+from test.conftest import *
 
 
 def test_sort_empty_returns_empty():
@@ -22,8 +22,8 @@ def test_sort_empty_invalid_sort_mode_raises_exit():
     assert raised_exit
 
 
-def test_sort_invalid_sort_mode_raises_exit():
-    test_input = [data_provider.get_app_changelist()]
+def test_sort_invalid_sort_mode_raises_exit(app_changelist):
+    test_input = [app_changelist]
     try:
         sort(test_input, 'sort_mode.invalid')
         raised_exit = False
@@ -51,15 +51,14 @@ def test_sort_gradle_cl_gradle_file_returns_unchanged():
             name='Gradle',
             changes=[
                 ChangeData(
-                    after_path=data_provider.APP_GRADLE_PATH,
+                    after_path=APP_GRADLE_PATH,
                     after_dir=False,
                 ),
             ],
         )
     ]
-    result = sort(test_input, SortMode.MODULE)
-    assert result == test_input
-    
+    assert test_input == sort(test_input, SortMode.MODULE)
+
 
 def test_sort_gradle_cl_gradle_files_returns_unchanged():
     test_input = [
@@ -68,32 +67,29 @@ def test_sort_gradle_cl_gradle_files_returns_unchanged():
             name='Build Updates',
             changes=[
                 ChangeData(
-                    after_path=data_provider.APP_GRADLE_PATH,
+                    after_path=APP_GRADLE_PATH,
                     after_dir=False,
                 ),
                 ChangeData(
-                    after_path=data_provider.ROOT_GRADLE_PATH,
+                    after_path=ROOT_GRADLE_PATH,
                     after_dir=False,
                 ),
                 ChangeData(
-                    after_path=data_provider.GRADLE_PROPERTIES_PATH,
+                    after_path=GRADLE_PROPERTIES_PATH,
                     after_dir=False,
                 ),
             ],
         )
     ]
-    result = sort(test_input, SortMode.MODULE)
-    assert result == test_input
-    
+    assert test_input == sort(test_input, SortMode.MODULE)
 
-def test_sort_app_cl_gradle_file_returns_new_gradle_cl():
+
+def test_sort_app_cl_gradle_file_returns_new_gradle_cl(app_gradle_build_change_data):
     test_input = [
         ChangelistData(
             id='1234',
             name='App',
-            changes=[
-                data_provider.get_app_gradle_build_change_data(),
-            ],
+            changes=[app_gradle_build_change_data],
         )
     ]
     result = sort(test_input, SortMode.MODULE)
@@ -104,17 +100,15 @@ def test_sort_app_cl_gradle_file_returns_new_gradle_cl():
     # Check Contents of Changes List
     assert len(result[0].changes) == 0
     assert len(result[1].changes) == 1
-    assert result[1].changes[0].after_path == data_provider.APP_GRADLE_PATH
+    assert result[1].changes[0].after_path == APP_GRADLE_PATH
 
 
-def test_sort_app_cl_gradle_file_sourceset_mode_returns_new_gradle_cl():
+def test_sort_app_cl_gradle_file_sourceset_mode_returns_new_gradle_cl(app_gradle_build_change_data):
     test_input = [
         ChangelistData(
             id='1234',
             name='App',
-            changes=[
-                data_provider.get_app_gradle_build_change_data(),
-            ],
+            changes=[app_gradle_build_change_data],
         )
     ]
     result = sort(test_input, SortMode.SOURCESET)
@@ -125,14 +119,19 @@ def test_sort_app_cl_gradle_file_sourceset_mode_returns_new_gradle_cl():
     # Check Contents of Changes List
     assert len(result[0].changes) == 0
     assert len(result[1].changes) == 1
-    assert result[1].changes[0].after_path == data_provider.APP_GRADLE_PATH
+    assert result[1].changes[0].after_path == APP_GRADLE_PATH
 
 
-def test_sort_module_cl_sourceset_mode_returns_new_sourceset_cl():
-    test_input = [
-        data_provider.get_module_changelist()
-    ]
+def test_sort_module_cl_sourceset_mode_returns_new_sourceset_cl(
+    module_changelist,
+    module_src_change_data,
+    module_test_change_data
+):
+    module_changelist.changes.append(module_src_change_data)
+    module_changelist.changes.append(module_test_change_data)
+    test_input = [module_changelist]
     result = sort(test_input, SortMode.SOURCESET)
+    #
     assert result != test_input
     assert len(result) == 3
     assert result[0].name == 'Module'
@@ -142,4 +141,16 @@ def test_sort_module_cl_sourceset_mode_returns_new_sourceset_cl():
     assert len(result[0].changes) == 0
     assert len(result[1].changes) == 1
     assert len(result[2].changes) == 1
-    
+
+
+def test_sort_dev_empty_returns_empty():
+    test_input = []
+    result = sort(test_input, SortMode.MODULE, list(DEVELOPER_CL_TUPLE))
+    assert len(result) == 0
+
+
+def test_sort_dev_build_updates_cl_sorted_returns_sorted(build_updates_changelist):
+    test_input = [build_updates_changelist]
+    result = sort(test_input, SortMode.MODULE, list(DEVELOPER_CL_TUPLE))
+    assert len(result) == 1
+    assert len(result[0].changes) == 1

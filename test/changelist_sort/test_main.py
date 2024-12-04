@@ -4,15 +4,18 @@ from pathlib import Path
 from unittest.mock import Mock
 from xml.etree.ElementTree import ElementTree
 import pytest
-from test import data_provider
 
 
-def test_main_():
+# Try fixtures
+
+
+
+def test_main_(simple_changelist_xml):
     with pytest.MonkeyPatch().context() as ctx:
         #ctx.setenv()
         import sys
         original_argv = sys.argv
-        sys.argv = ['changelist_sort', '--workspace', '/mockfile.xml']
+        sys.argv = ['changelist_sort', '--workspace', 'testfile']
         # Now Import
         from changelist_sort.__main__ import main
         # Mock File Input
@@ -21,7 +24,7 @@ def test_main_():
         obj = Mock()
         obj.__dict__["st_size"] = 4 * 1024
         ctx.setattr(Path, 'stat', lambda _: obj)
-        ctx.setattr(Path, 'read_text', lambda _: data_provider.get_simple_changelist_xml())
+        ctx.setattr(Path, 'read_text', lambda _: simple_changelist_xml)
         # Mock File Write
         def element_tree_write(
             self: ElementTree, file_or_filename, encoding='utf-8',

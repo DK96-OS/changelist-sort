@@ -9,11 +9,13 @@ from changelist_sort.list_key import ListKey
 from changelist_sort.sorting import developer_sort, module_sort, source_set_sort
 from changelist_sort.sorting.list_sort import split_changelist
 from changelist_sort.sorting.sort_mode import SortMode
+from changelist_sort.sorting.sorting_changelist import SortingChangelist
 
 
 def sort(
     initial_list: list[ChangelistData],
     sort_mode: SortMode,
+    sorting_config: list[SortingChangelist] | None = None,
 ) -> list[ChangelistData]:
     """
     Processes InputData.
@@ -32,11 +34,11 @@ def sort(
             _handle_map_insertion_error(cl_map, cl)
         # Split CL based on SortMode criteria
         unsorted_files.extend(
-            split_changelist(cl, _get_is_sorted_callable(sort_mode))
+            split_changelist(cl, _get_is_sorted_callable(sort_mode, sorting_config))
         )
     # This Callable depends on SortMode.
     #  It determines map keys, and executes map insertions.
-    sorting_callable = _create_sorting_callable(cl_map, sort_mode)    
+    sorting_callable = _create_sorting_callable(cl_map, sort_mode, sorting_config)
     for x in unsorted_files:
         sorting_callable(x)
     return cl_map.get_lists()
@@ -45,14 +47,14 @@ def sort(
 def _create_sorting_callable(
     changelist_map: ChangelistMap,
     sort_mode: SortMode,
+    sorting_config: list[SortingChangelist] | None,
 ) -> Callable[[ChangeData], bool]:
+    """ Create a Callable that sorts ChangeData passed to it.
     """
-    Create a Callable that sorts ChangeData passed to it.
-    """
+    if sorting_config is not None:
+        return lambda x: developer_sort.sort_file_by_developer(changelist_map, x, sorting_config)
     if sort_mode == SortMode.MODULE:
         return lambda x: module_sort.sort_file_by_module(changelist_map, x)
-    if sort_mode == SortMode.DEVELOPER:
-        return lambda x: developer_sort.sort_file_by_developer(changelist_map, x)
     if sort_mode == SortMode.SOURCESET:
         return lambda x: source_set_sort.sort_by_source_set(changelist_map, x)
     else:
@@ -60,15 +62,15 @@ def _create_sorting_callable(
 
 
 def _get_is_sorted_callable(
-    sort_mode: SortMode
+    sort_mode: SortMode,
+    sorting_config: list[SortingChangelist] | None,
 ) -> Callable[[ListKey, ChangeData], bool]:
+    """ Obtain a Callable that determines whether a ChangeData is sorted.
     """
-    Obtain a Callable that determines whether a ChangeData is sorted.
-    """
+    if sorting_config is not None:
+        return developer_sort.create_is_sorted_by_developer(sorting_config)
     if sort_mode == SortMode.MODULE:
         return module_sort.is_sorted_by_module
-    if sort_mode == SortMode.DEVELOPER:
-        return developer_sort.is_sorted_by_developer
     if sort_mode == SortMode.SOURCESET:
         return source_set_sort.is_sorted_by_source_set
     else:
@@ -79,8 +81,7 @@ def _handle_map_insertion_error(
     cl_map: ChangelistMap,
     failure_cl: ChangelistData,
 ):
-    """
-    Using the given parameters, produce an error message and exit.
+    """ Using the given parameters, produce an error message and exit.
 
     Raises:
     SystemExit - containing error information.
@@ -91,4 +92,3 @@ def _handle_map_insertion_error(
         exit(f"Failed to Insert Changelist(name={failure_cl.name}) due to id conflict (id={failure_cl.id}).")
     else:
         exit(f"Failed to Insert Changelist(name={failure_cl.name}) for unknown reason (neither key nor id conflict has occurred).")
-
