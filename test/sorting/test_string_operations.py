@@ -1,6 +1,6 @@
 """Testing String Operations.
 """
-from changelist_sort.string_operations import capitalize_words, split_words_on_capitals
+from changelist_sort.sorting.string_operations import capitalize_words, split_words_on_capitals
 
 
 def test_captialize_word_app():
