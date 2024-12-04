@@ -1,6 +1,6 @@
 """ Testing Package-Level Method: read_xml.
 """
-from changelist_sort.xml import read_xml
+from changelist_sort.xml.reader import read_xml
 
 
 def test_sample1(
