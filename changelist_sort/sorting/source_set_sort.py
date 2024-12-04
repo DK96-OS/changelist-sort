@@ -1,24 +1,20 @@
 """ Sorting By Gradle Module Source Set.
-
-Builds on the Module Sort, with additional subcategories for Gradle Source Sets.
+    - Builds on the Module Sort, with additional subcategories for Gradle Source Sets.
 """
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting import file_sort, module_sort
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.string_operations import capitalize_words, replace_underscores
-from changelist_sort.string_operations import split_words_on_capitals
+from changelist_sort.sorting.string_operations import capitalize_words, replace_underscores, split_words_on_capitals
 
 
 def sort_by_source_set(
     cl_map: ChangelistMap,
     file: ChangeData,
 ) -> bool:
-    """
-    Sort files into Changelists by Source Set.
-    - Is Based on Module Sort. Should defer to Module Sort where possible.
-    - Matches 
+    """ Sort files into Changelists by Source Set.
+        - Is Based on Module Sort. Should defer to Module Sort where possible.
 
     Parameters:
     - cl_map (ChangelistMap): The Map of Changelists to sort into.
@@ -51,9 +47,8 @@ def is_sorted_by_source_set(
     cl_key: ListKey,
     file: ChangeData,
 ) -> bool:
-    """
-    Determine whether this file belongs in the given Changelist.
-        Applies Special Module, and Directory equivalencies.
+    """ Determine whether this file belongs in the given Changelist.
+        - Applies Special Module, and Directory equivalencies.
 
     Parameters:
     - changelist_name (str): The name of the Changelist, used to determine if the file is sorted.
@@ -73,8 +68,7 @@ def is_sorted_by_source_set(
 
 
 def _get_source_set_name(file: ChangeData) -> str | None:
-    """
-    Determine the Source Set of the File, if possible.
+    """ Determine the Source Set of the File, if possible.
 
     Parameters:
     - file (ChangeData): The File data to obtain the Source Set name from.
