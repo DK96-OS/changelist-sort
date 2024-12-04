@@ -5,7 +5,8 @@ from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.sorting.source_set_sort import _get_source_set_name, is_sorted_by_source_set, sort_by_source_set
-from test.conftest import get_change_data, module_changelist
+
+from test.conftest import get_change_data
 
 _TEST_FIXTURES_CHANGE_PATH = '/module/src/testFixtures/java/module/MainTestFixture.java'
 _ANDROID_TEST_CHANGE_PATH = '/module/src/androidTest/java/module/MainAndroidTest.java'
