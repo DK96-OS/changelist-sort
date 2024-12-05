@@ -14,6 +14,15 @@ def test_constructor_invalid_kwarg_raises_error():
     assert raised_error
 
 
+def test_constructor_empty_raises_exit():
+    try:
+        SortingFilePattern()
+        raised_error = False
+    except SystemExit:
+        raised_error = True
+    assert raised_error
+
+
 def test_check_file_file_ext_returns_true(app_gradle_build_change_data):
     instance = SortingFilePattern(
         inverse=False,
