@@ -13,6 +13,14 @@ def test_parse_arguments_empty_str_returns_none():
     assert result.workspace_path is None
 
 
+def test_parse_arguments_change_list_main_empty_changelist_arg():
+    try:
+        parse_arguments(['--changelist', ''])
+        assert False
+    except SystemExit:
+        assert True
+
+
 def test_parse_arguments_change_list_main_empty_workspace_arg():
     try:
         parse_arguments(['--workspace', ''])
@@ -21,8 +29,15 @@ def test_parse_arguments_change_list_main_empty_workspace_arg():
         assert True
 
 
-def test_parse_arguments_change_list_main():
+def test_parse_arguments_changelists_cl():
+    result = parse_arguments(['--changelists', 'data.xml'])
+    assert result.changelists_path == 'data.xml'
+    assert result.workspace_path is None
+
+
+def test_parse_arguments_workspace_cl():
     result = parse_arguments(['--workspace', 'workspace.xml'])
+    assert result.changelists_path is None
     assert result.workspace_path == 'workspace.xml'
 
 
