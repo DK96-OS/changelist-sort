@@ -19,6 +19,7 @@ CHANGELIST_MODULE = "module"
 CHANGELIST_DEFAULT = "is_default"
 # Files are nested elements within a changelist
 FILES_TAG = "files"
+FILES_INVERSE = "inverse"
 FILES_PATH_START = "path_start"
 FILES_PATH_END = "path_end"
 FILES_FILENAME_PREFIX = "filename_prefix"
@@ -108,10 +109,15 @@ def _read_file_patterns(
     ]
 
 
-def _create_file_pattern(cl_element: Element, file_pattern: Element) -> SortingFilePattern:
-    """"""
+def _create_file_pattern(
+    cl_element: Element,
+    file_pattern: Element,
+) -> SortingFilePattern:
+    """ Read the Attributes from a file pattern tag.
+    """
     try:
         return SortingFilePattern(
+            inverse=xml_reader.read_bool_from(file_pattern, FILES_INVERSE),
             file_ext=xml_reader.get_attr(file_pattern, FILES_EXTENSION),
             first_dir=xml_reader.get_attr(file_pattern, FILES_FIRST_DIR),
             filename_prefix=xml_reader.get_attr(file_pattern, FILES_FILENAME_PREFIX),
@@ -123,7 +129,9 @@ def _create_file_pattern(cl_element: Element, file_pattern: Element) -> SortingF
         exit(f"Found FilePattern Error in Changelist with Key:{_read_changelist_key(cl_element)}")
 
 
-def _determine_module_type(module_type: str | None) -> ModuleType | None:
+def _determine_module_type(
+    module_type: str | None,
+) -> ModuleType | None:
     """ Determine the ModuleType, or return None.
     """
     if module_type is None or not isinstance(module_type, str):
