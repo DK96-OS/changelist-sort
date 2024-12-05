@@ -15,8 +15,11 @@ class ChangeData(FileChange):
     - before_dir (bool | None): Whether the initial file is a directory.
     - after_path (str | None): The final path of the file.
     - after_dir (bool | None): Whether the final path is a directory.
+    - sort_path (str | None): The Path to use for sorting.
+    - first_dir (str | None): The First Directory in the file sort path.
+    - file_basename (str | None): The basename of the file sort path.
+    - file_ext (str | None): The File Extension.
     """
-
     sort_path: str | None = field(init=False)
     first_dir: str | None = field(init=False, default=None)
     file_basename: str | None = field(init=False, default=None)    
@@ -30,8 +33,7 @@ class ChangeData(FileChange):
             object.__setattr__(self, 'file_ext', self._get_file_ext())
 
     def _get_sort_path(self) -> str | None:
-        """
-        Determine the Path to use for sorting.
+        """ Determine the Path to use for sorting.
         """
         if self.before_path is not None:
             if self.after_path is not None:
@@ -43,8 +45,7 @@ class ChangeData(FileChange):
         return None
     
     def _get_first_dir(self) -> str | None:
-        """
-        Obtain the First Directory in the file sort path.
+        """ Obtain the First Directory in the file sort path.
         """
         try:
             if '/' == self.sort_path[0]:
@@ -57,8 +58,7 @@ class ChangeData(FileChange):
             return None
 
     def _get_file_ext(self) -> str | None:
-        """
-        Obtain the File Extension, or None.
+        """ Obtain the File Extension, or None.
         """
         try:
             return self.file_basename[self.file_basename.index('.', 1) + 1:]
