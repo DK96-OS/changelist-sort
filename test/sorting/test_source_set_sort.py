@@ -169,25 +169,35 @@ def test_is_sorted_by_source_set_appmain_cl_gradle_build_file_returns_false(app_
     )
 
 
+def test_get_source_set_name_none_returns_none():
+    assert _get_source_set_name(None) is None
+
+
 def test_get_source_set_name_module_src_file_returns_src(module_src_change_data):
-    assert 'main' == _get_source_set_name(module_src_change_data)
+    assert 'main' == _get_source_set_name(module_src_change_data.sort_path)
 
 
 def test_get_source_set_name_module_test_file_returns_test(module_test_change_data):
-    assert 'test' == _get_source_set_name(module_test_change_data)
+    assert 'test' == _get_source_set_name(module_test_change_data.sort_path)
 
 
 def test_get_source_set_name_module_debug_file_returns_debug(module_debug_change_data):
-    assert 'debug' == _get_source_set_name(module_debug_change_data)
+    assert 'debug' == _get_source_set_name(module_debug_change_data.sort_path)
 
 
 def test_get_source_set_name_module_androidtest_file_returns_androidtest():
     assert 'androidTest' == _get_source_set_name(
-        get_change_data(_ANDROID_TEST_CHANGE_PATH)
+        get_change_data(_ANDROID_TEST_CHANGE_PATH).sort_path
     )
 
 
 def test_get_source_set_name_module_testfixtures_file_returns_testfixtures():
     assert 'testFixtures' == _get_source_set_name(
-        get_change_data(_TEST_FIXTURES_CHANGE_PATH)
+        get_change_data(_TEST_FIXTURES_CHANGE_PATH).sort_path
     )
+
+
+def test_get_source_set_name_sourceset_path_without_slash_after_main_returns_none():
+    assert _get_source_set_name(
+        '/module/src/main'
+    ) is None
