@@ -59,9 +59,13 @@ def filter_by_module(
     if sorting_cl_list is None or len(sorting_cl_list) == 0:
         return []
     if module_type is None:
-        filter_lambda = lambda scl: scl.module_type is None
+        iterable = filter(
+            lambda scl: scl.module_type is None,
+            sorting_cl_list
+        )
     else:
-        filter_lambda = lambda scl: scl.module_type is None or scl.module_type == module_type
-    return list(
-        filter(filter_lambda, sorting_cl_list)
-    )
+        iterable = filter(
+            lambda scl: scl.module_type is None or scl.module_type == module_type,
+            sorting_cl_list
+        )
+    return list(iterable)

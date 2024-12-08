@@ -1,7 +1,5 @@
 """ Sort With Developer's SortingChangelist FilePatterns.
 """
-from typing import Callable
-
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
