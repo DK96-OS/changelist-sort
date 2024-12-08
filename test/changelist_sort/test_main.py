@@ -6,13 +6,8 @@ from xml.etree.ElementTree import ElementTree
 import pytest
 
 
-# Try fixtures
-
-
-
-def test_main_(simple_changelist_xml):
+def test_main_simple_cl_xml(simple_changelist_xml):
     with pytest.MonkeyPatch().context() as ctx:
-        #ctx.setenv()
         import sys
         original_argv = sys.argv
         sys.argv = ['changelist_sort', '--workspace', 'testfile']
