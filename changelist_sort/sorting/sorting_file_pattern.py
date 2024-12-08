@@ -115,12 +115,3 @@ def _match_path_end(
 ) -> Callable[[ChangeData], bool]:
     path_end = path_end.rstrip('/')
     return lambda change_data: change_data.sort_path[:-len(change_data.file_basename)-1].endswith(path_end)
-
-
-# TODO: Create Your Pattern Callables!
-# Refer to ChangeData class for available pattern matching data
-#
-#def _match_your_new_pattern(
-#    pattern_input: str,
-#) -> Callable[[ChangeData], bool]:
-#    return lambda change_data: False
