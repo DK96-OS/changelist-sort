@@ -5,10 +5,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="changelist-sort",
-    version="0.4",
+    version="0.4.1",
 	author='DK96-OS',
 	description='CLI Tool for Sorting Android Studio Changelists',
     long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
     url="https://github.com/DK96-OS/changelist-sort/",
 	project_urls={
         "Issues": "https://github.com/DK96-OS/changelist-sort/issues",
