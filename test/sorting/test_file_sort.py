@@ -63,6 +63,18 @@ def test_get_module_type_app_build_file_returns_module(app_gradle_build_change_d
     assert ModuleType.GRADLE == get_module_type(app_gradle_build_change_data)
 
 
+def test_get_module_type_module_src_cd_returns_module(module_src_change_data):
+    assert ModuleType.MODULE == get_module_type(module_src_change_data)
+
+
+def test_get_module_type_module_test_cd_returns_module(module_test_change_data):
+    assert ModuleType.MODULE == get_module_type(module_test_change_data)
+
+
+def test_get_module_type_module_debug_cd_returns_module(module_debug_change_data):
+    assert ModuleType.MODULE == get_module_type(module_debug_change_data)
+
+
 def test_get_module_type_app_src_file_returns_module():
     assert ModuleType.MODULE == get_module_type(
         get_change_data('/app/src/main/java/com/example/app/Main.java')
