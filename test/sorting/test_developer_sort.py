@@ -5,48 +5,24 @@
     - is_sorted_by_developer
     If you need to know which module type a file is, use helper method get_file_patterns
 """
-from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
-from changelist_sort.sorting import developer_sort
 from changelist_sort.sorting import file_sort
 from changelist_sort.sorting.developer_sort import sort_file_by_developer, is_sorted_by_developer
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.sorting.sorting_changelist import SortingChangelist
 
 from test.conftest import get_change_data
+from test.sorting.conftest import BUILD_UPDATES_KEY
 
 
-def get_file_patterns(file: ChangeData) ->  list[SortingChangelist]:
-    """ Obtain the Developer Changelist Patterns that will be matched against this File Change.
-    """
-    return developer_sort.filter_patterns_by_module(file_sort.get_module_type(file))
-
-
-def test_filter_patterns_by_module_root_returns_tuple():
-    result = developer_sort.filter_patterns_by_module(ModuleType.ROOT)
-    assert len(result) == 5
-
-
-def test_filter_patterns_by_module_gradle_returns_tuple():
-    result = developer_sort.filter_patterns_by_module(ModuleType.GRADLE)
-    assert len(result) == 3
-
-
-def test_filter_patterns_by_module_module_returns_tuple():
-    result = developer_sort.filter_patterns_by_module(ModuleType.MODULE)
-    assert len(result) == 9
-
-
-def test_filter_patterns_by_module_hidden_returns_tuple():
-    result = developer_sort.filter_patterns_by_module(ModuleType.HIDDEN)
-    assert len(result) == 1
-
-
-def test_sort_file_by_developer_github_cl_exists_returns_true(github_changelist, dependabot_change_data):
+def test_sort_file_by_developer_github_cl_exists_returns_true(
+    github_changelist,
+    dependabot_change_data,
+    sort_config_developer_cl_0
+):
     cl_map = ChangelistMap()
     assert cl_map.insert(github_changelist)
-    assert sort_file_by_developer(cl_map, dependabot_change_data)
+    assert sort_file_by_developer(cl_map, dependabot_change_data, sort_config_developer_cl_0)
     # Expect Same Changelist
     result = cl_map.get_lists()
     assert len(result) == 1
@@ -56,15 +32,12 @@ def test_sort_file_by_developer_github_cl_exists_returns_true(github_changelist,
     assert new_cl.list_key == github_changelist.list_key
 
 
-def test_sort_file_by_developer_module_cl_creation_src_returns_true(module_src_change_data):
+def test_sort_file_by_developer_module_cl_creation_src_returns_true(
+    module_src_change_data,
+    sort_config_developer_cl_0
+):
     cl_map = ChangelistMap()
-    # Ensure the File is the right Module Type
-    assert file_sort.get_module_type(module_src_change_data) == ModuleType.MODULE
-    patterns_to_match = get_file_patterns(module_src_change_data)
-    # The Number of Patterns with the given ModuleType
-    assert len(patterns_to_match) == 9
-    #
-    assert sort_file_by_developer(cl_map, module_src_change_data)
+    assert sort_file_by_developer(cl_map, module_src_change_data, sort_config_developer_cl_0)
     # Expect New Changelist
     result = cl_map.get_lists()
     new_cl = result[0]
@@ -74,30 +47,34 @@ def test_sort_file_by_developer_module_cl_creation_src_returns_true(module_src_c
     assert cl_map.search(new_cl.list_key.key) is not None
 
 
-def test_sort_file_by_developer_gradle_module_app_build_file_returns_true(app_gradle_build_change_data):
+def test_sort_file_by_developer_gradle_module_app_build_file_returns_true(
+    app_gradle_build_change_data,
+    sort_config_developer_cl_0
+):
     cl_map = ChangelistMap()
-    assert file_sort.get_module_type(app_gradle_build_change_data) == ModuleType.GRADLE
-    assert sort_file_by_developer(cl_map, app_gradle_build_change_data)
+    assert sort_file_by_developer(cl_map, app_gradle_build_change_data, sort_config_developer_cl_0)
     # Expect New Changelist
     result = cl_map.get_lists()
     new_cl = result[0]
     # The CL Key is the Module Name
-    assert new_cl.list_key == developer_sort._BUILD_UPDATES_KEY
+    assert new_cl.list_key == BUILD_UPDATES_KEY
     # Search for CL
     assert cl_map.search(new_cl.list_key.key) is not None
 
 
-def test_sort_file_by_developer_existing_gradle_module_app_build_file_returns_true(app_gradle_build_change_data):
+def test_sort_file_by_developer_existing_gradle_module_app_build_file_returns_true(
+    app_gradle_build_change_data,
+    sort_config_developer_cl_0
+):
     cl_map = ChangelistMap()
-    cl_map.create_changelist(developer_sort._BUILD_UPDATES_KEY)
-    assert file_sort.get_module_type(app_gradle_build_change_data) == ModuleType.GRADLE
-    assert sort_file_by_developer(cl_map, app_gradle_build_change_data)
+    cl_map.create_changelist(BUILD_UPDATES_KEY)
+    assert sort_file_by_developer(cl_map, app_gradle_build_change_data, sort_config_developer_cl_0)
     # Expect New Changelist
     result = cl_map.get_lists()
     assert len(result) == 1
     new_cl = result[0]
     # The CL Key is the Module Name
-    assert new_cl.list_key == developer_sort._BUILD_UPDATES_KEY
+    assert new_cl.list_key == BUILD_UPDATES_KEY
     # Search for CL
     assert cl_map.search(new_cl.list_key.key) is not None
 

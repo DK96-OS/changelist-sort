@@ -3,7 +3,6 @@
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import sort
-from changelist_sort.sorting.developer_sort import DEVELOPER_CL_TUPLE
 from changelist_sort.sorting.sort_mode import SortMode
 
 from test.conftest import APP_GRADLE_PATH, GRADLE_PROPERTIES_PATH, ROOT_GRADLE_PATH
@@ -42,8 +41,7 @@ def test_sort_no_changes_returns_same():
             changes=[],
         )
     ]
-    result = sort(test_input, SortMode.MODULE)
-    assert result == test_input
+    assert test_input == sort(test_input, SortMode.MODULE)
 
 
 def test_sort_gradle_cl_gradle_file_returns_unchanged():
@@ -145,14 +143,29 @@ def test_sort_module_cl_sourceset_mode_returns_new_sourceset_cl(
     assert len(result[2].changes) == 1
 
 
-def test_sort_dev_empty_returns_empty():
+def test_sort_dev_empty_returns_empty(
+    sort_config_developer_cl_0
+):
     test_input = []
-    result = sort(test_input, SortMode.MODULE, list(DEVELOPER_CL_TUPLE))
+    result = sort(test_input, SortMode.MODULE, sort_config_developer_cl_0)
     assert len(result) == 0
 
 
-def test_sort_dev_build_updates_cl_sorted_returns_sorted(build_updates_changelist):
+def test_sort_dev_build_updates_cl_module_mode_returns_sorted(
+    build_updates_changelist,
+    sort_config_developer_cl_0
+):
     test_input = [build_updates_changelist]
-    result = sort(test_input, SortMode.MODULE, list(DEVELOPER_CL_TUPLE))
+    result = sort(test_input, SortMode.MODULE, sort_config_developer_cl_0)
+    assert len(result) == 1
+    assert len(result[0].changes) == 1
+
+
+def test_sort_dev_build_updates_cl_sorted_returns_sorted(
+    build_updates_changelist,
+    sort_config_developer_cl_0,
+):
+    test_input = [build_updates_changelist]
+    result = sort(test_input, SortMode.MODULE, sort_config_developer_cl_0)
     assert len(result) == 1
     assert len(result[0].changes) == 1
