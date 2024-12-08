@@ -64,13 +64,13 @@ def sorting_xml_sample_4():
 def sorting_config_list_sample1():
     return [
         SortingChangelist(
-            module_type=ModuleType.ROOT,
             list_key=ListKey('root', 'Project Root Python Files'),
             file_patterns=[
                 SortingFilePattern(
                     path_end='.py',
                 ),
             ],
+            module_type=ModuleType.ROOT,
         ),
     ]
 
@@ -79,21 +79,18 @@ def sorting_config_list_sample1():
 def sorting_config_list_sample2():
     return [
         SortingChangelist(
-            module_type=None,
             list_key=ListKey('source', 'Source Files'),
             file_patterns=[
                 SortingFilePattern(file_ext='.py')
             ],
         ),
         SortingChangelist(
-            module_type=None,
             list_key=ListKey('text', 'Text Files'),
             file_patterns=[
                 SortingFilePattern(file_ext='.txt')
             ],
         ),
         SortingChangelist(
-            module_type=None,
             list_key=ListKey('test', 'Tests'),
             file_patterns=[
                 SortingFilePattern(first_dir='test')
@@ -106,19 +103,19 @@ def sorting_config_list_sample2():
 def sorting_config_list_sample3():
     return [
         SortingChangelist(
-            module_type=ModuleType.HIDDEN,
             list_key=ListKey("github", "GitHub Actions CI"),
             file_patterns=[
                 SortingFilePattern(filename_prefix='ci'),
                 SortingFilePattern(file_ext='yml'),
             ],
+            module_type=ModuleType.HIDDEN,
         ),
         SortingChangelist(
-            module_type=ModuleType.HIDDEN,
             list_key=ListKey("dependabot", "GitHub Dependabot"),
             file_patterns=[
                 SortingFilePattern(filename_prefix='dependabot'),
             ],
+            module_type=ModuleType.HIDDEN,
         ),
     ]
 
@@ -127,24 +124,24 @@ def sorting_config_list_sample3():
 def sorting_config_list_sample4():
     return [
         SortingChangelist(
-            module_type=ModuleType.MODULE,
             list_key=ListKey("app", "App Module Source Files"),
             file_patterns=[
                 SortingFilePattern(file_ext='kt'),
             ],
+            module_type=ModuleType.MODULE,
         ),
         SortingChangelist(
-            module_type=ModuleType.MODULE,
             list_key=ListKey("app", "App Module Source Files"),
             file_patterns=[
                 SortingFilePattern(file_ext='java'),
             ],
+            module_type=ModuleType.MODULE,
         ),
         SortingChangelist(
-            module_type=ModuleType.GRADLE,
             list_key=ListKey("gradle", "Gradle Build Files"),
             file_patterns=[
                 SortingFilePattern(inverse=True),
             ],
+            module_type=ModuleType.GRADLE,
         ),
     ]
