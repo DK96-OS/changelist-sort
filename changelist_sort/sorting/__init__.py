@@ -17,15 +17,16 @@ def sort(
     sort_mode: SortMode,
     sorting_config: list[SortingChangelist] | None = None,
 ) -> list[ChangelistData]:
-    """
-    Processes InputData.
+    """ Apply SortMode or Sorting Changelists to the Initial List.
+        - sorting_config Changelists will override sort_mode, if not None.
 
     Parameters:
     - initial_list (list[ChangelistData]): The list of Changelists to be sorted.
     - sort_mode (SortMode): The SortMode determining which sort rules to apply.
+    - sorting_config (list[SortingChangelist]?): An optional list of SortingChangelist that contains rules for sorting.
 
     Returns:
-    str - The desired output.
+    list[ChangelistData] - The sorted Changelists.
     """
     unsorted_files = []
     cl_map = ChangelistMap()
@@ -39,8 +40,8 @@ def sort(
     # This Callable depends on SortMode.
     #  It determines map keys, and executes map insertions.
     sorting_callable = _create_sorting_callable(cl_map, sort_mode, sorting_config)
-    for x in unsorted_files:
-        sorting_callable(x)
+    for cd in unsorted_files:
+        sorting_callable(cd)
     return cl_map.get_lists()
 
 
@@ -52,11 +53,11 @@ def _create_sorting_callable(
     """ Create a Callable that sorts ChangeData passed to it.
     """
     if sorting_config is not None:
-        return lambda x: developer_sort.sort_file_by_developer(changelist_map, x, sorting_config)
+        return lambda cd: developer_sort.sort_file_by_developer(changelist_map, cd, sorting_config)
     if sort_mode == SortMode.MODULE:
-        return lambda x: module_sort.sort_file_by_module(changelist_map, x)
+        return lambda cd: module_sort.sort_file_by_module(changelist_map, cd)
     if sort_mode == SortMode.SOURCESET:
-        return lambda x: source_set_sort.sort_by_source_set(changelist_map, x)
+        return lambda cd: source_set_sort.sort_by_source_set(changelist_map, cd)
     else:
         exit("SortMode not Implemented")
 
@@ -68,7 +69,7 @@ def _get_is_sorted_callable(
     """ Obtain a Callable that determines whether a ChangeData is sorted.
     """
     if sorting_config is not None:
-        return developer_sort.create_is_sorted_by_developer(sorting_config)
+        return lambda key, cd: developer_sort.is_sorted_by_developer(key, cd, sorting_config)
     if sort_mode == SortMode.MODULE:
         return module_sort.is_sorted_by_module
     if sort_mode == SortMode.SOURCESET:
