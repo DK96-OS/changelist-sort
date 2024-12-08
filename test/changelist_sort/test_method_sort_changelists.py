@@ -1,35 +1,21 @@
 """ Testing Main Package Init Module Methods.
 """
-from pathlib import Path
 from xml.etree.ElementTree import ElementTree
 
 import pytest
-from changelist_data.storage import ChangelistDataStorage, StorageType
-from changelist_data.xml import workspace
+
 from changelist_data.xml.workspace import WorkspaceTree
 
 from changelist_sort import sort_changelists
 from changelist_sort.input.input_data import InputData
 from changelist_sort.sorting.sort_mode import SortMode
-from test.data_provider import get_simple_changelist_xml, get_multi_changelist_xml
 
-
-@pytest.fixture()
-def simple_workspace_tree():
-    return workspace.load_xml(get_simple_changelist_xml())
-
-@pytest.fixture()
-def multi_workspace_tree():
-    return workspace.load_xml(get_multi_changelist_xml())
-
-
-def wrap_tree_in_storage(tree):
-    return ChangelistDataStorage(tree, StorageType.CHANGELISTS, Path('testfile'))
+from test.conftest import wrap_tree_in_storage
 
 
 def save_write(
     self: ElementTree, file_or_filename, encoding='utf-8', xml_declaration=True,
-    method='xml'
+    method='xml', default_namespace='', short_empty_elements = '',
 ):
     global TAG
     global VERSION

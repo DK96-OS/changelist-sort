@@ -6,13 +6,36 @@ Making Sorting Changelist Files Easy!
 3. Run `changelist-sort` (or `cl-sort`) add arguments/options if necessary
 4. Reopen Android Studio. Your changelists are sorted.
 
-**Note:** If you want to combine step 2 and step 3, add an alias to your shell environment.
+**Note:** Add alias to your shell environment to maximize your efficiency.
 
-## Sorting By Module
+## Project Sorting Configuration
+To configure a changelist sorting patterns for your project:
+1. Create Directory `.changelists/`
+2. Create File `sort.xml` in Directory
+3. Write Sorting XML Root Tag `<sorting></sorting>`
+4. Write Changelists Tags `<changelist name="" key=""></changelist>`
+5. Write File Pattern Tags `<files ... /> `
+
+### File Pattern Attributes
+For each `<files />` tag, apply ONE of the following attributes:
+- file_ext : Match the file extension of the file. Do not include the dot.
+- first_dir : The first directory in the path. Use empty string to match root directory.
+- filename_prefix : The filename startswith this prefix.
+- filename_suffix : The filename endswith this prefix.
+- path_start : The beginning of the parent directory path. It's usually better to exclude unnecessary slash characters. 
+- path_end : The end of the parent directory path. It's usually better to exclude unnecessary slash characters. 
+
+### Sorting Keys
+The `key` attribute inside changelists is required.
+- Sorting Keys are short, simple strings that identify a changelist.
+- More than one Sorting Key can map to one Changelist.
+- Every File pattern is associated with a Sorting Key.
+
+## Sorting By Module (default)
 Files are sorted by the name of the top level directory they are located in.
 In Android projects, each directory in the project root is a module, with a few special cases.
 
-## Sorting By Source Set
+## Sorting By Source Set (Gradle, Android)
 A specialized Module Sort mode that splits changes by their source set.
 Apply the `-s` flag to use this sorting mode.
 

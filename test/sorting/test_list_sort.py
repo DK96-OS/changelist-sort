@@ -1,8 +1,6 @@
 """ Testing List Sort Methods.
     The method split_changelist requires a callable arg, which applies the module sort for now.
 """
-from test import data_provider
-
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import module_sort
@@ -19,13 +17,13 @@ def test_split_changelist_empty_returns_empty():
     assert len(result_list) == 0
 
 
-def test_split_changelist_module_sorted_returns_sorted():
+def test_split_changelist_module_sorted_returns_sorted(module_src_change_data, module_test_change_data):
     test_input = ChangelistData(
         id='1234',
         name='Module',
         changes=[
-            data_provider.get_module_src_change_data(),
-            data_provider.get_module_test_change_data(),
+            module_src_change_data,
+            module_test_change_data,
         ],
     )
     result_list = split_changelist(test_input, module_sort.is_sorted_by_module)
@@ -134,15 +132,20 @@ def test_split_changelist_root_sorted_returns_sorted():
     assert len(result_list) == 0
 
 
-def test_split_changelist_build_updates_unsorted_returns_sorted():
+def test_split_changelist_build_updates_unsorted_returns_sorted(
+    module_src_change_data,
+    module_test_change_data,
+    github_workflows_change_data,
+    dependabot_change_data
+):
     test_input = ChangelistData(
         id='1234',
         name='Build Updates',
         changes=[
-            data_provider.get_module_src_change_data(),
-            data_provider.get_module_test_change_data(),
-            data_provider.get_github_workflows_change_data(),
-            data_provider.get_github_dependabot_change_data(),
+            module_src_change_data,
+            module_test_change_data,
+            github_workflows_change_data,
+            dependabot_change_data,
         ],
     )
     result_list = split_changelist(test_input, module_sort.is_sorted_by_module)

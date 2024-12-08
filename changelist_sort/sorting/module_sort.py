@@ -6,8 +6,7 @@ from changelist_sort.sorting import file_sort
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.sorting.module_type import ModuleType
-from changelist_sort.string_operations import capitalize_words
-from changelist_sort.string_operations import replace_underscores
+from changelist_sort.sorting.string_operations import capitalize_words, replace_underscores
 
 
 MODULE_ROOT_CL_TUPLE = (

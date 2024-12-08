@@ -1,5 +1,10 @@
-""" File Paths used as examples in Tests.
 """
+"""
+from pathlib import Path
+
+import pytest
+from changelist_data.storage import ChangelistDataStorage, StorageType
+
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import module_sort
@@ -15,6 +20,9 @@ APP_GRADLE_PATH = '/app/build.gradle'
 GITHUB_WORKFLOW_PATH = '/.github/workflows/build_and_test.yml'
 GITHUB_DEPENDABOT_PATH = '/.github/dependabot.yml'
 
+PYTHON_READER_PATH = '/changelist_sort/xml/sort_xml_reader.py'
+PYTHON_TEST_PATH = '/test/changelist_sort/xml/test_sort_xml_reader.py'
+
 
 def get_change_data(after_path: str) -> ChangeData:
     return ChangeData(
@@ -23,105 +31,126 @@ def get_change_data(after_path: str) -> ChangeData:
     )
 
 
-def get_module_src_change_data() -> ChangeData:
+@pytest.fixture
+def module_src_change_data() -> ChangeData:
     return get_change_data(MODULE_SRC_PATH)
 
 
-def get_module_test_change_data() -> ChangeData:
+@pytest.fixture
+def module_test_change_data() -> ChangeData:
     return get_change_data(MODULE_TEST_PATH)
 
 
-def get_module_debug_change_data() -> ChangeData:
+@pytest.fixture
+def module_debug_change_data() -> ChangeData:
     return get_change_data(MODULE_DEBUG_PATH)
 
 
-def get_root_gradle_build_change_data() -> ChangeData:
+@pytest.fixture
+def root_gradle_build_change_data() -> ChangeData:
     return get_change_data(ROOT_GRADLE_PATH)
 
 
-def get_root_readme_change_data() -> ChangeData:
+@pytest.fixture
+def root_readme_change_data() -> ChangeData:
     return get_change_data(ROOT_README_PATH)
 
 
-def get_gradle_properties_change_data() -> ChangeData:
+@pytest.fixture
+def gradle_properties_change_data() -> ChangeData:
     return get_change_data(GRADLE_PROPERTIES_PATH)
 
 
-def get_app_gradle_build_change_data() -> ChangeData:
+@pytest.fixture
+def app_gradle_build_change_data() -> ChangeData:
     return get_change_data(APP_GRADLE_PATH)
 
 
-def get_github_workflows_change_data() -> ChangeData:
+@pytest.fixture
+def github_workflows_change_data() -> ChangeData:
     return get_change_data(GITHUB_WORKFLOW_PATH)
 
 
-def get_github_dependabot_change_data() -> ChangeData:
+@pytest.fixture
+def dependabot_change_data() -> ChangeData:
     return get_change_data(GITHUB_DEPENDABOT_PATH)
 
 
-def get_module_changelist(
-    changes: list[ChangeData] = [get_module_src_change_data(), get_module_test_change_data()],
-) -> ChangelistData:
-    """
-    Creates a Changelist called Module.
-        Default Changes include a src and a test file.
+@pytest.fixture
+def python_reader_cd() -> ChangeData:
+    return get_change_data(PYTHON_READER_PATH)
+
+
+@pytest.fixture
+def python_test_cd() -> ChangeData:
+    return get_change_data(PYTHON_TEST_PATH)
+
+
+@pytest.fixture
+def module_changelist() -> ChangelistData:
+    """ Creates a Changelist called Module.
     """
     return ChangelistData(
         id='231341512',
         name='Module',
-        changes=changes,
+        changes=[],
     )
 
 
-def get_app_changelist(
-    changes: list[ChangeData] = [],
-) -> ChangelistData:
-    """
-    Creates a Changelist called App.
+@pytest.fixture
+def app_changelist() -> ChangelistData:
+    """ Creates a Changelist called App.
         Default Changes are empty.
     """
     return ChangelistData(
         id='1234',
         name='App',
-        changes=changes,
+        changes=[],
     )
 
 
-def get_build_updates_changelist(
-    changes: list[ChangeData] = [get_root_gradle_build_change_data()],
-) -> ChangelistData:
+@pytest.fixture
+def build_updates_changelist(root_gradle_build_change_data) -> ChangelistData:
     return ChangelistData(
         id='1234563',
         name='Build Updates',
-        changes=changes,
+        changes=[root_gradle_build_change_data],
     )
 
 
-def get_github_changelist(
-    changes: list[ChangeData] = [],
-) -> ChangelistData:
+@pytest.fixture
+def github_changelist() -> ChangelistData:
     return ChangelistData(
         id='1234563',
         name='GitHub',
-        changes=changes,
+        changes=[],
     )
 
 
-def get_root_changelist(
-    changes: list[ChangeData] = [],
-) -> ChangelistData:
+@pytest.fixture
+def github_workflows_changelist() -> ChangelistData:
+    return ChangelistData(
+        id='123456331',
+        name='GitHub Workflows',
+        changes=[],
+    )
+
+
+@pytest.fixture
+def root_changelist() -> ChangelistData:
     return ChangelistData(
         id='1234509',
         name='Root',
-        changes=changes,
+        changes=[],
     )
 
 
-def get_multiple_gradle_changelists():
+@pytest.fixture
+def multiple_gradle_changelists():
     """
     Create a list of Changelists from the DeveloperChangelists Gradle Module CLs.
     """
-    return [ 
+    return [
         ChangelistData(
             id=str(1) + name.key,
             name=name.changelist_name,
@@ -129,17 +158,12 @@ def get_multiple_gradle_changelists():
     ]
 
 
-def get_no_changelist_xml() -> str:
-    """No ChangelistManager Tag Workspace XML"""
-    return """<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="NONE" />
-  </component>
-</project>"""
+def wrap_tree_in_storage(tree):
+    return ChangelistDataStorage(tree, StorageType.CHANGELISTS, Path('testfile'))
 
 
-def get_simple_changelist_xml() -> str:
+@pytest.fixture
+def simple_changelist_xml() -> str:
     """Simple Workspace XML"""
     return """<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
@@ -154,7 +178,8 @@ def get_simple_changelist_xml() -> str:
 </project>"""
 
 
-def get_multi_changelist_xml() -> str:
+@pytest.fixture
+def multi_changelist_xml() -> str:
     """Simple Workspace XML"""
     return """<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
@@ -171,41 +196,3 @@ def get_multi_changelist_xml() -> str:
     </list>
   </component>
 </project>"""
-
-
-def get_invalid_component_xml() -> str:
-    """Invalid Workspace XML"""
-    return """<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component>
-  </component>
-  <component name="ChangeListManager">
-    <list default="true" id="af84ea1b-1b24-407d-970f-9f3a2835e933" name="Main" comment="Main Files">
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
-    </list>
-  </component>
-</project>"""
-
-
-def get_cl_simple_xml() -> str:
-    """Simple Changelists XML"""
-    return """<?xml version="1.0" encoding="UTF-8"?>
-<changelists>
-<list id="9f60fda2f83a47c88" name="Simple" comment="Main Program Files">
-  <change beforePath="/main.py" beforeDir="false"  afterPath="/main.py" afterDir="false" />
-</list>
-</changelists>"""
-
-
-def get_cl_multi_xml() -> str:
-    """Multi Changelists XML"""
-    return """<?xml version="1.0" encoding="UTF-8"?>
-<changelists>
-<list default="true" id="af84ea1b9f3a2835e933" name="Main" comment="Main Program Files">
-  <change beforePath="/history.py" beforeDir="false" />
-  <change beforePath="/main.py" beforeDir="false" />
-</list>
-<list id="9f60fda24c8f83a47c88" name="Test" comment="Test Files">
-  <change afterPath="/test/test_file.py" afterDir="false" />
-</list>
-</changelists>"""

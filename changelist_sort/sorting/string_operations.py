@@ -1,4 +1,4 @@
-"""A Collection of String Operations.
+"""A Collection of String Operations used during sort and formatting.
 """
 
 
