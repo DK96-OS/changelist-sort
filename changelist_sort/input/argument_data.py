@@ -8,7 +8,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class ArgumentData:
     """
-    The syntactically valid arguments recevied by the Program.
+    The syntactically valid arguments received by the Program.
 
     Fields:
     - changelists_path (str | None): The path to the Changelists file, or None to enable defaults.
