@@ -4,7 +4,6 @@ from pathlib import Path
 
 from changelist_data import load_storage_from_file_arguments
 
-from changelist_sort.input.argument_data import ArgumentData
 from changelist_sort.input.argument_parser import parse_arguments
 from changelist_sort.input.input_data import InputData
 from changelist_sort.sorting.sort_mode import SortMode
@@ -14,7 +13,7 @@ from changelist_sort.xml.reader import read_xml
 
 def validate_input(args_list: list[str]) -> InputData:
     """ Validate the arguments and gather program input into InputData object.
-        - Parses command line strings into ArgumentData object.
+        - Parses command line strings into Arguments data object.
         - Finds storage file and loads it into InputData as ChangelistDataStorage object.
 
     Returns:
