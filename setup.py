@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="changelist-sort",
-    version="0.4.2",
+    version="0.4.3",
 	author='DK96-OS',
 	description='CLI Tool for Sorting Android Studio Changelists',
     long_description=open('README.md').read(),
@@ -18,7 +18,7 @@ setup(
 	license='GPLv3',
     packages=find_packages(exclude=['test', 'test.*']),
     install_requires=[
-        'changelist-data >= 0.1.5, < 0.2',
+        'changelist-data >= 0.2.1, < 0.3',
     ],
     entry_points={
         'console_scripts': [
@@ -29,6 +29,7 @@ setup(
         ],
     },
     python_requires='>=3.10',
+    keywords=['vcs', 'foci', 'changelist', 'git'],
     classifiers=[
         'Natural Language :: English',
         'Operating System :: OS Independent',

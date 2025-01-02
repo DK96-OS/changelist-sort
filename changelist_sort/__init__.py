@@ -13,11 +13,9 @@ def sort_changelists(
     """ Sort the given Changelists and write them to the Workspace File.
     """
     sorted_lists = sort(
-        expand_changelists(
-            input_data.storage.get_changelists()
-        ),
-        input_data.sort_mode,
-        input_data.sorting_config
+        initial_list=expand_changelists(input_data.storage.get_changelists()),
+        sort_mode=input_data.sort_mode,
+        sorting_config=input_data.sorting_config,
     )
     if input_data.remove_empty: # Filter out Empty Changelists
         sorted_lists = list(filter(
@@ -25,9 +23,7 @@ def sort_changelists(
             sorted_lists
         ))
     input_data.storage.update_changelists(
-        simplify_changelists(
-            sorted_lists
-        )
+        simplify_changelists(sorted_lists)
     )
     input_data.storage.write_to_storage()
 

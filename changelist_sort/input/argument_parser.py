@@ -1,14 +1,13 @@
-"""Defines and Validates Argument Syntax.
-
-Encapsulates Argument Parser.
-
-Returns Argument Data, the args provided by the User.
+""" Defines and Validates Argument Syntax.
+    - Encapsulates Argument Parser.
+    - Returns Argument Data, the args provided by the User in a data object.
 """
 from argparse import ArgumentParser
 from sys import exit
 
+from changelist_data import validate_string_argument
+
 from changelist_sort.input.argument_data import ArgumentData
-from changelist_sort.input.string_validation import validate_name
 
 
 def parse_arguments(arguments: list[str] | None = None) -> ArgumentData:
@@ -33,7 +32,7 @@ def _validate_arguments(
     parsed_args,
 ) -> ArgumentData:
     """ Checks the values received from the ArgParser.
-        Uses Validate Name method from StringValidation.
+        - Uses Validate Name method from StringValidation.
 
     Parameters:
     - parsed_args : The object returned by ArgumentParser.
@@ -42,10 +41,10 @@ def _validate_arguments(
     ArgumentData - A DataClass of syntactically correct arguments.
     """
     if (cl_file := parsed_args.changelists_file) is not None:
-        if not validate_name(cl_file):
+        if not validate_string_argument(cl_file):
             exit("Invalid Changelists File Name")
     if (ws_file := parsed_args.workspace_file) is not None:
-        if not validate_name(ws_file):
+        if not validate_string_argument(ws_file):
             exit("Invalid Workspace File Name")
     return ArgumentData(
         changelists_path=cl_file,
@@ -56,9 +55,8 @@ def _validate_arguments(
 
 
 def _define_arguments() -> ArgumentParser:
-    """
-    Initializes and Defines Argument Parser.
-       - Sets Required/Optional Arguments and Flags.
+    """ Initializes and Defines Argument Parser.
+        - Sets Required/Optional Arguments and Flags.
 
     Returns:
     argparse.ArgumentParser - An instance with all supported Arguments.
