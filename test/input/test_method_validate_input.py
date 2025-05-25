@@ -29,8 +29,9 @@ def test_validate_input_no_args_ws_file_is_empty_raises_exit(monkeypatch):
     test_input = []
     monkeypatch.setattr(Path, 'exists', lambda _: True)
     monkeypatch.setattr(Path, 'read_text', lambda _: '')
-    result = validate_input(test_input)
-    assert len(result.storage.get_changelists()) == 0
+    with pytest.raises(SystemExit, match='Unable to Parse Workspace XML File.'):
+        result = validate_input(test_input)
+        assert len(result.storage.get_changelists()) == 0
 
 
 def test_validate_input_no_args_ws_file_has_no_cl_(no_changelist_xml):
@@ -133,3 +134,9 @@ def test_validate_input_remove_empty(no_changelist_xml):
         assert result.sort_mode == SortMode.MODULE
         assert result.remove_empty
         assert len(result.storage.get_changelists()) == 0
+
+
+def test_validate_input_generate_sort_xml_():
+    test_input = ['--generate_sort_xml',]
+    result = validate_input(test_input)
+    assert result.generate_sort_xml
