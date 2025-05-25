@@ -4,6 +4,7 @@
 """
 from argparse import ArgumentParser
 from sys import exit
+from xml.etree.ElementTree import ParseError
 
 from changelist_data import validate_string_argument
 
@@ -24,7 +25,7 @@ def parse_arguments(arguments: list[str] | None = None) -> ArgumentData:
     # Initialize the Parser and Parse Immediately
     try:
         return _validate_arguments(_define_arguments().parse_args(arguments))
-    except SystemExit:
+    except ParseError:
         exit("Unable to Parse Arguments.")
 
 
@@ -51,6 +52,7 @@ def _validate_arguments(
         workspace_path=ws_file,
         sourceset_sort=parsed_args.sourceset_sort,
         remove_empty=parsed_args.remove_empty,
+        generate_sort_xml=parsed_args.generate_sort_xml
     )
 
 
@@ -64,6 +66,7 @@ def _define_arguments() -> ArgumentParser:
     parser = ArgumentParser(
         description="Changelist Sort",
     )
+    parser.color = True
     # Optional Arguments
     parser.add_argument(
         '--changelists_file',
@@ -88,5 +91,11 @@ def _define_arguments() -> ArgumentParser:
         action='store_true',
         default=False,
         help='A Flag indicating that empty changelists are to be removed after sorting.',
+    )
+    parser.add_argument(
+        "--generate_sort_xml", "--sort_xml",
+        action='store_true',
+        default=False,
+        help='Generate the .changelist/sort.xml file for the project.',
     )
     return parser

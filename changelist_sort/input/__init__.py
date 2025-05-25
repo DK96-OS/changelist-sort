@@ -8,7 +8,7 @@ from changelist_sort.input.argument_parser import parse_arguments
 from changelist_sort.input.input_data import InputData
 from changelist_sort.sorting.sort_mode import SortMode
 from changelist_sort.sorting.sorting_changelist import SortingChangelist
-from changelist_sort.xml.reader import read_xml
+from changelist_sort.xml import reader
 
 
 def validate_input(args_list: list[str]) -> InputData:
@@ -26,6 +26,7 @@ def validate_input(args_list: list[str]) -> InputData:
         sort_mode=SortMode.SOURCESET if arg_data.sourceset_sort else SortMode.MODULE,
         remove_empty=arg_data.remove_empty,
         sorting_config=_load_sorting_config(),
+        generate_sort_xml=arg_data.generate_sort_xml,
     )
 
 
@@ -40,7 +41,7 @@ def _load_sorting_config() -> list[SortingChangelist] | None:
     for file_path_str in _SORTING_CONFIG_PATHS:
         if (f := Path(file_path_str)).exists() and f.is_file():
             try:
-                return read_xml(f.read_text())
+                return reader.read_xml(f.read_text())
             except SystemExit as e:
                 exit("Sort XML file parsing failed: " + str(e))
     return None
