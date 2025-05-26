@@ -196,3 +196,17 @@ def multi_changelist_xml() -> str:
     </list>
   </component>
 </project>"""
+
+
+@pytest.fixture
+def temp_cwd():
+    """ Creates a Temporary Working Directory for Git subprocesses.
+    """
+    from tempfile import TemporaryDirectory
+    tdir = TemporaryDirectory()
+    from os import getcwd, chdir
+    initial_cwd = getcwd()
+    chdir(tdir.name)
+    yield tdir
+    chdir(initial_cwd)
+    tdir.cleanup()
