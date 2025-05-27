@@ -47,6 +47,19 @@ class ChangelistMap:
         """
         return list(self.mapping.values())
 
+    def generate_lists(self) -> Generator[ChangelistData, None, None]:
+        """ Generate Changelists from the Map.
+        """
+        for k, cl in self.mapping.items():
+            yield cl
+
+    def generate_nonempty_lists(self) -> Generator[ChangelistData, None, None]:
+        """ Obtain only non-empty Changelists in the Map.
+        """
+        for k, cl in self.mapping.items():
+            if len(cl.changes) > 0:
+                yield cl
+
     def _generate_new_id(self) -> str:
         """ Create a new Changelist Id that does not appear in this map.
         """
