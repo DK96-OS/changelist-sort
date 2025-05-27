@@ -20,10 +20,11 @@ def parse_arguments(arguments: list[str] | None = None) -> ArgumentData:
     Returns:
     ArgumentData : Container for Valid Argument Data.
     """
-    if arguments is None or len(arguments) == 0:
+    if arguments is None or (number_of_args := len(arguments)) == 0:
         return ArgumentData()
-    # Initialize the Parser and Parse Immediately
-    try:
+    elif number_of_args > 6:
+        exit('Too many arguments')
+    try: # Initialize the Parser and Parse Immediately
         return _validate_arguments(_define_arguments().parse_args(arguments))
     except ParseError:
         exit("Unable to Parse Arguments.")
@@ -69,7 +70,7 @@ def _define_arguments() -> ArgumentParser:
     parser.color = True
     # Optional Arguments
     parser.add_argument(
-        '--changelists_file',
+        '--changelists_file', '--data_file',
         type=str,
         default=None,
         help='The Changelists Data File. Searches default location if not provided.'
