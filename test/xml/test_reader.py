@@ -1,5 +1,7 @@
 """ Testing Package-Level Method: read_xml.
 """
+import pytest
+
 from changelist_sort.xml.reader import read_xml
 
 
@@ -36,9 +38,5 @@ def test_sample4(
 
 
 def test_read_xml_invalid_raises_exit():
-    try:
+    with pytest.raises(SystemExit):
         read_xml('<some_bad_xml>')
-        raised_error = False
-    except SystemExit:
-        raised_error = True
-    assert raised_error
