@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pytest
 from changelist_data.storage import ChangelistDataStorage, StorageType
+from changelist_data.xml.base_xml_tree import BaseXMLTree
 
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import module_sort
-
 
 MODULE_SRC_PATH = '/module/src/main/java/module/Main.java'
 MODULE_TEST_PATH = '/module/src/test/java/module/MainTest.java'
@@ -158,7 +158,7 @@ def multiple_gradle_changelists():
     ]
 
 
-def wrap_tree_in_storage(tree):
+def wrap_tree_in_storage(tree: BaseXMLTree) -> ChangelistDataStorage:
     return ChangelistDataStorage(tree, StorageType.CHANGELISTS, Path('testfile'))
 
 
