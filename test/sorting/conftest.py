@@ -13,7 +13,7 @@ def shell_scripts_file_pattern() -> SortingFilePattern:
 
 
 @pytest.fixture
-def shell_scripts_changelist(shell_scripts_file_pattern) -> SortingChangelist:
+def shell_scripts_changelist(shell_scripts_file_pattern: SortingFilePattern) -> SortingChangelist:
     return SortingChangelist(
         module_type=ModuleType.ROOT,
         list_key=ListKey(key='shellscripts', changelist_name='Shell Scripts'),
@@ -135,7 +135,7 @@ BUILD_UPDATES_KEY = list_key.compute_key('Build Updates')
 
 
 @pytest.fixture
-def sorting_cl_input_package_tests():
+def sorting_cl_input_package_tests() -> SortingChangelist:
     return SortingChangelist(
         list_key.compute_key('Input Package Tests'),
         [
@@ -147,7 +147,7 @@ def sorting_cl_input_package_tests():
 
 
 @pytest.fixture
-def sorting_cl_input_package():
+def sorting_cl_input_package() -> SortingChangelist:
     return SortingChangelist(
         list_key.compute_key('Input Package'),
         [
@@ -159,7 +159,7 @@ def sorting_cl_input_package():
 
 
 @pytest.fixture
-def sorting_cl_all_files_in_tests():
+def sorting_cl_all_files_in_tests() -> SortingChangelist:
     """ All Files in the 'test' Directory.
     """
     return SortingChangelist(
@@ -172,7 +172,7 @@ def sorting_cl_all_files_in_tests():
 
 
 @pytest.fixture
-def sorting_cl_pytest_files():
+def sorting_cl_pytest_files() -> SortingChangelist:
     """ Pytest Files: 'test_*.py' files in the 'test' Directory.
     """
     return SortingChangelist(
@@ -187,7 +187,7 @@ def sorting_cl_pytest_files():
 
 
 @pytest.fixture
-def sorting_cl_src_package():
+def sorting_cl_src_package() -> SortingChangelist:
     """ """
     return SortingChangelist(
         list_key.compute_key('Main Package Source'),
@@ -206,7 +206,7 @@ def sort_config_developer_cl_0(
     sorting_cl_all_files_in_tests,
     sorting_cl_src_package,
     shell_scripts_changelist,
-):
+) -> tuple[SortingChangelist, ...]:
     return (
         sorting_cl_any_markdown_docs,
         sorting_cl_input_package,
