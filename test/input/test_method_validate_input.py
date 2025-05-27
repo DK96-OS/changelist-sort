@@ -76,7 +76,6 @@ def test_validate_input_no_args_ws_file_multi_cl_(multi_storage, get_cl_multi_xm
         assert len(result.storage.get_changelists()) == 2
 
 
-
 def test_validate_input_ws_path_arg_is_empty_raises_exit(no_changelist_xml):
     test_input = ['--workspace', '']
     with pytest.MonkeyPatch().context() as c:

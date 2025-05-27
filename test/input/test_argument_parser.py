@@ -87,6 +87,7 @@ def test_parse_arguments_remove_empty_long2():
     assert result.remove_empty
     assert not result.generate_sort_xml
 
+
 def test_parse_arguments_generate_sort_xml():
     result = parse_arguments(['--generate_sort_xml'])
     assert result.changelists_path is None

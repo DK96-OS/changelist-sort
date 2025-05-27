@@ -1,24 +1,24 @@
 import pytest
-
 from changelist_data.storage import ChangelistDataStorage
 from changelist_data.xml import workspace
+from changelist_data.xml.base_xml_tree import BaseXMLTree
 from changelist_data.xml.changelists import new_tree
 
 from test.conftest import wrap_tree_in_storage
 
 
-def create_storage(tree = new_tree()) -> ChangelistDataStorage:
+def create_storage(tree: BaseXMLTree = new_tree()) -> ChangelistDataStorage:
     return wrap_tree_in_storage(tree)
 
 
 @pytest.fixture()
-def simple_storage(simple_changelist_xml):
-    return wrap_tree_in_storage(workspace.read_xml(simple_changelist_xml))
+def simple_storage(simple_changelist_xml: str) -> ChangelistDataStorage:
+    return wrap_tree_in_storage(workspace.load_xml(simple_changelist_xml))
 
 
 @pytest.fixture()
-def multi_storage(multi_changelist_xml):
-    return wrap_tree_in_storage(workspace.read_xml(multi_changelist_xml))
+def multi_storage(multi_changelist_xml: str) -> ChangelistDataStorage:
+    return wrap_tree_in_storage(workspace.load_xml(multi_changelist_xml))
 
 
 @pytest.fixture
