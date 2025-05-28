@@ -60,7 +60,7 @@ def generator_sort(
     initial_list: Iterable[ChangelistData],
     sorting_config: list[SortingChangelist],
     filter_empty: bool = True,
-) -> Iterable[ChangelistData]:
+) -> Generator[ChangelistData, None, None]:
     """ Sort The Changelists using the SortingConfig and the ChangelistMap.
 
 **Parameters:**
