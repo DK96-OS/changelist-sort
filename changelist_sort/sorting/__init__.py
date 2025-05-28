@@ -64,12 +64,12 @@ def generator_sort(
     """ Sort The Changelists using the SortingConfig and the ChangelistMap.
 
 **Parameters:**
- - initial_list (Iterable[ChangelistData]):
- - sorting_config (list[SortingChangelist]): The set of criteria describing the sort objective.
- - verbose (bool): Whether to print the total number of files sorted.
+ - initial_list (Iterable[ChangelistData]): The ChangelistData to be sorted.
+ - sorting_config (list[SortingChangelist]): The criteria describing the sort objective.
+ - filter_empty (bool): Filter out Empty Changelists. Default: True.
 
 **Returns:**
- ChangelistMap -
+ ChangelistData - The sorted ChangelistData objects.
     """
     for _ in _sort_it_out_generator(
         (cl_map := ChangelistMap()),
@@ -79,9 +79,9 @@ def generator_sort(
     ):
         pass
     if filter_empty:
-        return cl_map.generate_nonempty_lists()
+        yield from cl_map.generate_nonempty_lists()
     else:
-        return cl_map.generate_lists()
+        yield from cl_map.generate_lists()
 
 
 def mode_sort(
