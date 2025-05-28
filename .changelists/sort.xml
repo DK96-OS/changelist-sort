@@ -21,7 +21,6 @@
         <files path_start="test/changelist_sort" />
         <files file_ext="py" />
     </changelist>
-    <!-- New Changelist Test Packages -->
     <changelist name="Test Input Package">
         <files path_start="test/changelist_sort/input" />
         <files file_ext="py" />
@@ -32,19 +31,6 @@
     </changelist>
     <changelist name="Test XML Package">
         <files path_start="test/changelist_sort/xml" />
-        <files file_ext="py" />
-    </changelist>
-    <!-- todo: Remove Old Test Package Changelists -->
-    <changelist key="test_input" name="Test Input Package">
-        <files path_start="test/input" />
-        <files file_ext="py" />
-    </changelist>
-    <changelist key="test_sorting" name="Test Sorting Package">
-        <files path_start="test/sorting" />
-        <files file_ext="py" />
-    </changelist>
-    <changelist key="test_xml" name="Test XML Package">
-        <files path_start="test/xml" />
         <files file_ext="py" />
     </changelist>
     <changelist key="test" name="Test Package">
