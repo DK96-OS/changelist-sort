@@ -7,7 +7,7 @@ from changelist_data.changelist import Changelist
 
 from changelist_sort.changelist_data import ChangelistData, generate_simple_changelists, generate_expanded_changelists
 from changelist_sort.input.input_data import InputData
-from changelist_sort.sorting import sort, map_sort, SortMode, SortingChangelist
+from changelist_sort.sorting import sort, SortMode, SortingChangelist, map_sort
 
 
 def sort_changelists(
@@ -34,25 +34,23 @@ def sort_changelist_in_storage(
 ):
     """ Sort the Changelists in Storage, and update them.
     """
+    changelists = sort(
+        initial_list=generate_expanded_changelists(storage.generate_changelists()),
+        sort_mode=sort_mode,
+        sorting_config=sorting_config,
+    )
     storage.update_changelists(
-        simplify_changelists(
-            _sort_and_filter(
-                data=generate_expanded_changelists(
-                    storage.generate_changelists()
-                ),
-                sort_mode=sort_mode,
-                sorting_config=sorting_config,
-                apply_filter=remove_empty,
-            )
+        generate_simple_changelists(changelists) if not remove_empty else filter(
+            lambda x: len(x.changes) > 0, generate_simple_changelists(changelists)
         )
     )
 
 
-def _sort_and_filter(
+def sort_and_filter(
     data: Iterable[ChangelistData],
-    sort_mode: SortMode,
-    sorting_config,
-    apply_filter: bool = True,
+    sorting_config: list[SortingChangelist],
+    sort_mode: SortMode = SortMode.MODULE,
+    filter_empty: bool = True,
 ) -> Generator[ChangelistData, None, None]:
     """
 **Parameters:**
@@ -65,7 +63,8 @@ def _sort_and_filter(
  ChangelistData - The sorted ChangelistData objects.
     """
     cl_map = map_sort(data, sorting_config)
-    if apply_filter:
+    #
+    if filter_empty:
         yield from cl_map.generate_nonempty_lists()
     else:
         yield from cl_map.generate_lists()
