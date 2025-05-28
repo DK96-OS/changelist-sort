@@ -13,6 +13,7 @@ from changelist_sort.sorting import module_sort
 MODULE_SRC_PATH = '/module/src/main/java/module/Main.java'
 MODULE_TEST_PATH = '/module/src/test/java/module/MainTest.java'
 MODULE_DEBUG_PATH = '/module/src/debug/java/module/MainDebug.java'
+MODULE_TEST_FIXTURES_PATH = '/module/src/testFixtures/java/module/DataProvider.java'
 ROOT_GRADLE_PATH = '/build.gradle'
 ROOT_README_PATH = '/README.md'
 GRADLE_PROPERTIES_PATH = '/gradle/wrapper/gradle-wrapper.properties'
