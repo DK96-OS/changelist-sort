@@ -1,4 +1,5 @@
-""" Testing Package-Level Method: read_xml.
+""" Testing Package-Level Method: read_xml, generate_sort_config_from_xml
+ - Note: read_xml calls generate_sort_config_from_xml method, wraps it in a list.
 """
 import pytest
 
