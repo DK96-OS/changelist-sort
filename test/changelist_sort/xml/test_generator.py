@@ -5,7 +5,7 @@ import io
 import pytest
 
 from changelist_sort.xml import generator, reader, _ensure_sort_xml_file_exists
-from test.conftest import get_temp_changelist_dir_absolute_path
+from test.conftest import get_temp_changelist_dir_absolute_path, get_temp_changelist_dir_rel_path
 
 INITIAL_ELEMENT_TREE = generator.create_initial_sort_xml_tree()
 _ROOT_ELEMENT = INITIAL_ELEMENT_TREE.getroot()
@@ -29,24 +29,24 @@ def test_ensure_sort_xml_file_exists_empty_cwd_returns_new_empty_file_path(temp_
 
 
 def test_ensure_sort_xml_file_exists_empty_sort_xml_exists_returns_empty_file_path(temp_cwd):
-    temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    (temp_sort_xml := (temp_cl_dir / 'sort.xml').absolute()).touch()
+    temp_cl_dir = get_temp_changelist_dir_rel_path(temp_cwd)
+    (temp_sort_xml := (temp_cl_dir / 'sort.xml')).touch()
     # The file is empty,
-    assert temp_sort_xml == _ensure_sort_xml_file_exists(None).absolute()
+    assert temp_sort_xml == _ensure_sort_xml_file_exists(None)
 
 
 def test_ensure_sort_xml_file_exists_contains_message_returns_path(temp_cwd):
-    temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    (temp_sort_xml := (temp_cl_dir / 'sort.xml').absolute()).touch()
+    temp_cl_dir = get_temp_changelist_dir_rel_path(temp_cwd)
+    (temp_sort_xml := (temp_cl_dir / 'sort.xml')).touch()
     temp_sort_xml.write_text('Hello Reader!')
     # The file contains something.
-    assert temp_sort_xml == _ensure_sort_xml_file_exists(None).absolute()
+    assert temp_sort_xml == _ensure_sort_xml_file_exists(None)
 
 
 def test_ensure_sort_xml_file_exists_empty_cl_dir_(temp_cwd):
-    temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    temp_sort_xml = (temp_cl_dir / 'sort.xml').absolute()
-    assert temp_sort_xml == _ensure_sort_xml_file_exists(temp_sort_xml).absolute()
+    temp_cl_dir = get_temp_changelist_dir_rel_path(temp_cwd)
+    temp_sort_xml = (temp_cl_dir / 'sort.xml')
+    assert temp_sort_xml == _ensure_sort_xml_file_exists(temp_sort_xml)
     # The file contains something.
     buffer = io.StringIO()
     INITIAL_ELEMENT_TREE.write(buffer, encoding='unicode', xml_declaration=True)
