@@ -3,9 +3,8 @@
 from pathlib import Path
 from unittest.mock import Mock
 from xml.etree.ElementTree import ElementTree
-import pytest
 
-from test.conftest import get_temp_changelist_dir_absolute_path
+import pytest
 
 
 def test_main_simple_cl_xml(simple_changelist_xml):
@@ -43,8 +42,6 @@ def test_main_simple_cl_xml(simple_changelist_xml):
 
 
 def test_main_generate_sort_xml(temp_cwd):
-    cl_config_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    #
     import sys
     original_argv = sys.argv
     sys.argv = ['changelist_sort', '--generate_sort_xml']
