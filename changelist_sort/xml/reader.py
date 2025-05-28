@@ -1,5 +1,6 @@
 """ XML Sort Definitions, Parsing and Reading Methods.
 """
+from typing import Generator
 from xml.etree.ElementTree import fromstring, Element, ParseError
 
 from changelist_sort import list_key
@@ -28,11 +29,20 @@ FILES_EXTENSION = "file_ext"
 FILES_FIRST_DIR = "first_dir"
 
 
-def read_xml(sorting_xml: str) -> list[SortingChangelist]:
+def read_xml(sorting_xml: str) -> list[SortingChangelist] | None:
     """ Parse the Sorting XML file and obtain all Developer Changelist data in a list.
     """
+    if len(sorting_cl_list := list(generate_sort_config_from_xml(sorting_xml))) > 0:
+        return sorting_cl_list
+    return None
+
+
+def generate_sort_config_from_xml(sorting_xml: str) -> Generator[SortingChangelist, None, None]:
+    """ Parse the Sorting XML string and generate SortingChangelist data objects.
+    """
     if (sorting_root := _parse_xml(sorting_xml)) is not None:
-        return _read_sorting_element(sorting_root)
+        yield from _generate_sorting_changelists(sorting_root)
+    return None
 
 
 def _parse_xml(sorting_xml: str) -> Element | None:
@@ -59,24 +69,19 @@ def _parse_xml(sorting_xml: str) -> Element | None:
     return None
 
 
-def _read_sorting_element(sorting_element: Element) -> list[SortingChangelist]:
-    """ Given the Changelist Manager Element, obtain the list of List Elements.
-
-    Parameters:
-    - changelist_manager (Element): The ChangeList Manager XML Element.
-
-    Returns:
-    list[Element] - A List containing the Lists.
+def _generate_sorting_changelists(
+    sorting_element: Element,
+) -> Generator[SortingChangelist, None, None]:
+    """ Generate SortingChangelist data objects from the container element's changelists.
     """
-    return [
-        SortingChangelist(
+    for cl_element in xml_reader.filter_by_tag(sorting_element, CHANGELIST_TAG):
+        yield SortingChangelist(
             module_type=_determine_module_type(
                 xml_reader.get_attr(cl_element, CHANGELIST_MODULE)
             ),
             list_key=_read_changelist_key(cl_element),
             file_patterns=_read_file_patterns(cl_element),
-        ) for cl_element in xml_reader.filter_by_tag(sorting_element, CHANGELIST_TAG)
-    ]
+        )
 
 
 def _read_changelist_key(cl_element: Element) -> ListKey:

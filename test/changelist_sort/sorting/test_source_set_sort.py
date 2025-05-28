@@ -173,6 +173,14 @@ def test_get_source_set_name_none_returns_none():
     assert _get_source_set_name(None) is None
 
 
+def test_get_source_set_name_simple_src_dir_returns_none():
+    assert _get_source_set_name('/src/') is None
+
+
+def test_get_source_set_name_no_src_dir_returns_none():
+    assert _get_source_set_name('s/') is None
+
+
 def test_get_source_set_name_module_src_file_returns_src(module_src_change_data):
     assert 'main' == _get_source_set_name(module_src_change_data.sort_path)
 

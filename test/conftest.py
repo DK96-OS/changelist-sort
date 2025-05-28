@@ -4,15 +4,16 @@ from pathlib import Path
 
 import pytest
 from changelist_data.storage import ChangelistDataStorage, StorageType
+from changelist_data.xml.base_xml_tree import BaseXMLTree
 
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import module_sort
 
-
 MODULE_SRC_PATH = '/module/src/main/java/module/Main.java'
 MODULE_TEST_PATH = '/module/src/test/java/module/MainTest.java'
 MODULE_DEBUG_PATH = '/module/src/debug/java/module/MainDebug.java'
+MODULE_TEST_FIXTURES_PATH = '/module/src/testFixtures/java/module/DataProvider.java'
 ROOT_GRADLE_PATH = '/build.gradle'
 ROOT_README_PATH = '/README.md'
 GRADLE_PROPERTIES_PATH = '/gradle/wrapper/gradle-wrapper.properties'
@@ -158,7 +159,7 @@ def multiple_gradle_changelists():
     ]
 
 
-def wrap_tree_in_storage(tree):
+def wrap_tree_in_storage(tree: BaseXMLTree) -> ChangelistDataStorage:
     return ChangelistDataStorage(tree, StorageType.CHANGELISTS, Path('testfile'))
 
 
@@ -196,3 +197,27 @@ def multi_changelist_xml() -> str:
     </list>
   </component>
 </project>"""
+
+
+@pytest.fixture
+def temp_cwd():
+    """ Creates a Temporary Working Directory for Git subprocesses.
+    """
+    from tempfile import TemporaryDirectory
+    tdir = TemporaryDirectory()
+    from os import getcwd, chdir
+    initial_cwd = getcwd()
+    chdir(tdir.name)
+    yield tdir
+    chdir(initial_cwd)
+    tdir.cleanup()
+
+
+def get_temp_changelist_dir_absolute_path(temp_cwd):
+    (temp_cl_dir := (Path(temp_cwd.name) / '.changelists').absolute()).mkdir()
+    return temp_cl_dir
+
+
+def get_temp_changelist_dir_rel_path(temp_cwd):
+    (temp_cl_dir := (Path(temp_cwd.name) / '.changelists')).mkdir()
+    return temp_cl_dir.relative_to(temp_cl_dir.parent)

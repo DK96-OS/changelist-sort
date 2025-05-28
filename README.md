@@ -26,18 +26,27 @@ For each `<files />` tag, apply ONE of the following attributes:
 - path_end : The end of the parent directory path. It's usually better to exclude unnecessary slash characters. 
 
 ### Sorting Keys
-The `key` attribute inside changelists is required.
+The `key` attribute inside changelists is integrated directly with sorting. When defining your sorting configuration, prefer the `name` attribute, only use key when necessary.
 - Sorting Keys are short, simple strings that identify a changelist.
 - More than one Sorting Key can map to one Changelist.
 - Every File pattern is associated with a Sorting Key.
 
-## Sorting By Module (default)
-Files are sorted by the name of the top level directory they are located in.
-In Android projects, each directory in the project root is a module, with a few special cases.
+## Sorting Modes
+There are two built-in sorting modes in addition to the sorting configuration (sort.xml).
+ - When sort.xml is provided, it takes precedence over the Module SortMode.
+ - The SourceSet SortMode is activated by a flag, only if config not provided.
 
-## Sorting By Source Set (Gradle, Android)
-A specialized Module Sort mode that splits changes by their source set.
-Apply the `-s` flag to use this sorting mode.
+### Sorting By Module (default)
+Files are sorted by the name of the top level directory they are located in.
+- In Android-Gradle projects, each directory in the project root is a module, with a few exception cases.
+- Often, projects contain support tools and frameworks in top level dirs.
+  - These get their own changelist if not gitignored.
+
+### Sorting By Source Set (Gradle, Android)
+A specialized SortMode that splits Gradle Modules by their Source Sets.
+ - Add the `-s` flag or `--sourceset-sort` to use this mode.
+ - This mode is not compatible with SortXML Config.
+   - It is a quick and useful default for Gradle projects (beyond the Module).
 
 ### Special Changelists & Directories
 There are special Changelists, and special Directories that are handled differently.

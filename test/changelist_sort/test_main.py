@@ -3,6 +3,7 @@
 from pathlib import Path
 from unittest.mock import Mock
 from xml.etree.ElementTree import ElementTree
+
 import pytest
 
 
@@ -38,3 +39,13 @@ def test_main_simple_cl_xml(simple_changelist_xml):
         assert TAG == 'project'
         assert VERSION == '4'
         sys.argv = original_argv
+
+
+def test_main_generate_sort_xml(temp_cwd):
+    import sys
+    original_argv = sys.argv
+    sys.argv = ['changelist_sort', '--generate_sort_xml']
+    from changelist_sort.__main__ import main
+    # Run Main
+    main()
+    sys.argv = original_argv
