@@ -28,14 +28,14 @@ def test_ensure_sort_xml_file_exists_empty_cwd_returns_new_empty_file_path(temp_
 
 def test_ensure_sort_xml_file_exists_empty_sort_xml_exists_returns_empty_file_path(temp_cwd):
     temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    (temp_sort_xml := (temp_cl_dir / 'sort.xml')).touch()
+    (temp_sort_xml := (temp_cl_dir / 'sort.xml').absolute()).touch()
     # The file is empty,
     assert temp_sort_xml == _ensure_sort_xml_file_exists(None).absolute()
 
 
 def test_ensure_sort_xml_file_exists_contains_message_returns_path(temp_cwd):
     temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    (temp_sort_xml := (temp_cl_dir / 'sort.xml')).touch()
+    (temp_sort_xml := (temp_cl_dir / 'sort.xml').absolute()).touch()
     temp_sort_xml.write_text('Hello Reader!')
     # The file contains something.
     assert temp_sort_xml == _ensure_sort_xml_file_exists(None).absolute()
