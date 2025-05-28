@@ -8,7 +8,8 @@ from changelist_sort.list_key import ListKey, compute_key
 from changelist_sort.sorting import SortingChangelist
 from changelist_sort.sorting.module_type import ModuleType
 from changelist_sort.sorting.sorting_file_pattern import SortingFilePattern
-from test.conftest import wrap_tree_in_storage
+from test.conftest import wrap_tree_in_storage, MODULE_SRC_PATH, MODULE_TEST_PATH, MODULE_DEBUG_PATH, \
+    MODULE_TEST_FIXTURES_PATH
 
 
 @pytest.fixture()
@@ -390,8 +391,18 @@ def get_cl_multi_xml() -> str:
 </changelists>"""
 
 
-
-
+@pytest.fixture
+def get_cl_gradle_sources_xml() -> str:
+    """Gradle Project SourceSet Changelists XML"""
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<changelists>
+<list default="true" id="af84ea1b9f3a2835e933" name="Main" comment="Main Program Files">
+  <change afterPath="{MODULE_SRC_PATH}" afterDir="false" />
+  <change afterPath="{MODULE_TEST_PATH}" afterDir="false" />
+  <change afterPath="{MODULE_DEBUG_PATH}" afterDir="false" />
+  <change afterPath="{MODULE_TEST_FIXTURES_PATH}" afterDir="false" />
+</list>
+</changelists>"""
 
 @pytest.fixture
 def sorting_xml_sample_1():
