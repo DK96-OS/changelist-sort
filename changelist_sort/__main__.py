@@ -9,17 +9,18 @@ def main():
     # Generate the Sorting Configuration file
     if input_data.generate_sort_xml:
         from changelist_sort.xml.generator import generate_sort_xml
-        if generate_sort_xml(input_data.sort_xml_file):
+        if generate_sort_xml(None):
             print("The file has been created: .changelists/sort.xml")
         else:
             print("Failed to create the sort.xml file.")
-        exit()
+        return None
     # Sort the CL Tree In-Memory
     changelist_sort.sort_changelists(input_data)
-    # Write Changelist Data File
+      # Write Changelist Data File
     # Todo: Version 0.5, when sort_changelist no longer calls write_to_storage.
     #  input_data.storage.write_to_storage()
     #print(output_data)
+    return None
 
 
 if __name__ == "__main__":
