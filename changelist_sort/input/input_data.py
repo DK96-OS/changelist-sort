@@ -1,6 +1,6 @@
 """ Valid Input Data Class.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from changelist_data.storage import ChangelistDataStorage
 
@@ -22,5 +22,5 @@ class InputData:
     storage: ChangelistDataStorage
     sort_mode: SortMode = SortMode.MODULE
     remove_empty: bool = False
-    sorting_config: list[SortingChangelist] | None = None
+    sorting_config: list[SortingChangelist] = field(default_factory=lambda:[])
     generate_sort_xml: bool = False

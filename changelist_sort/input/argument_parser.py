@@ -53,6 +53,7 @@ def _validate_arguments(
         workspace_path=ws_file,
         sourceset_sort=parsed_args.sourceset_sort,
         remove_empty=parsed_args.remove_empty,
+        sort_xml_path=parsed_args.sort_xml_file,
         generate_sort_xml=parsed_args.generate_sort_xml
     )
 
@@ -92,6 +93,12 @@ def _define_arguments() -> ArgumentParser:
         action='store_true',
         default=False,
         help='A Flag indicating that empty changelists are to be removed after sorting.',
+    )
+    parser.add_argument(
+        '--sort_xml_file',
+        type=str,
+        default=None,
+        help='The path to the Sort XML file, if not in a default location.'
     )
     parser.add_argument(
         "--generate_sort_xml", "--sort_xml",

@@ -25,6 +25,6 @@ def validate_input(args_list: list[str]) -> InputData:
         # Check the Argument Data flags to determine which SortMode to use.
         sort_mode=SortMode.SOURCESET if arg_data.sourceset_sort else SortMode.MODULE,
         remove_empty=arg_data.remove_empty,
-        sorting_config=load_sorting_config(None),
+        sorting_config=load_sorting_config(arg_data.sort_xml_path),
         generate_sort_xml=arg_data.generate_sort_xml,
     )
