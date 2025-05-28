@@ -69,18 +69,6 @@ def _parse_xml(sorting_xml: str) -> Element | None:
     return None
 
 
-def _read_sorting_element(sorting_element: Element) -> list[SortingChangelist]:
-    """ Given the Changelist Manager Element, obtain the list of List Elements.
-
-    Parameters:
-    - changelist_manager (Element): The ChangeList Manager XML Element.
-
-    Returns:
-    list[Element] - A List containing the Lists.
-    """
-    return list(_generate_sorting_changelists(sorting_element))
-
-
 def _generate_sorting_changelists(
     sorting_element: Element,
 ) -> Generator[SortingChangelist, None, None]:
