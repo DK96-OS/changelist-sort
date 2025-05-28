@@ -1,5 +1,7 @@
 """ Testing Argument Parser Methods.
 """
+import pytest
+
 from changelist_sort.input.argument_parser import parse_arguments
 
 
@@ -11,6 +13,16 @@ def test_parse_arguments_empty_list_returns_none():
 def test_parse_arguments_empty_str_returns_none():
     result = parse_arguments('')
     assert result.workspace_path is None
+
+
+def test_parse_arguments_too_many_arguments_raises_exit():
+    with pytest.raises(SystemExit):
+        parse_arguments(list(f"{i}" for i in range(35, 80)))
+
+
+def test_parse_arguments_invalid_argument_raises_exit():
+    with pytest.raises(SystemExit):
+        parse_arguments('-a')
 
 
 def test_parse_arguments_change_list_main_empty_changelist_arg():
