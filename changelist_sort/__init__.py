@@ -7,7 +7,7 @@ from changelist_data.changelist import Changelist
 
 from changelist_sort.changelist_data import ChangelistData, generate_simple_changelists, generate_expanded_changelists
 from changelist_sort.input.input_data import InputData
-from changelist_sort.sorting import sort, SortMode, SortingChangelist
+from changelist_sort.sorting import sort, map_sort, SortMode, SortingChangelist
 
 
 def sort_changelists(
@@ -64,7 +64,7 @@ def _sort_and_filter(
 **Yields:**
  ChangelistData - The sorted ChangelistData objects.
     """
-    cl_map = sorting.map_sort(data, sorting_config)
+    cl_map = map_sort(data, sorting_config)
     if apply_filter:
         yield from cl_map.generate_nonempty_lists()
     else:
