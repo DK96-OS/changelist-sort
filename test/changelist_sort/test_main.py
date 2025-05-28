@@ -5,6 +5,8 @@ from unittest.mock import Mock
 from xml.etree.ElementTree import ElementTree
 import pytest
 
+from test.conftest import get_temp_changelist_dir_absolute_path
+
 
 def test_main_simple_cl_xml(simple_changelist_xml):
     with pytest.MonkeyPatch().context() as ctx:
@@ -38,3 +40,15 @@ def test_main_simple_cl_xml(simple_changelist_xml):
         assert TAG == 'project'
         assert VERSION == '4'
         sys.argv = original_argv
+
+
+def test_main_generate_sort_xml(temp_cwd):
+    cl_config_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
+    #
+    import sys
+    original_argv = sys.argv
+    sys.argv = ['changelist_sort', '--generate_sort_xml']
+    from changelist_sort.__main__ import main
+    # Run Main
+    main()
+    sys.argv = original_argv
