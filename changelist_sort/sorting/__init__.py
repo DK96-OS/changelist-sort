@@ -7,7 +7,7 @@ from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.changelist_map import ChangelistMap
 from changelist_sort.list_key import ListKey
 from changelist_sort.sorting import developer_sort, module_sort, source_set_sort
-from changelist_sort.sorting.list_sort import split_changelist, generate_unsorted_change_data
+from changelist_sort.sorting.list_sort import generate_unsorted_change_data
 from changelist_sort.sorting.sort_mode import SortMode
 from changelist_sort.sorting.sorting_changelist import SortingChangelist
 
@@ -121,7 +121,7 @@ def _sort_it_out(
             _handle_map_insertion_error(cl_map, cl)
         # Extract Unsorted ChangeData using IsSortedCallable
         unsorted.extend(
-            list_sort.generate_unsorted_change_data(cl, is_sorted_callable)
+            generate_unsorted_change_data(cl, is_sorted_callable)
         )
     # Execute SortingCallable on each Unsorted File
     for cd in unsorted:
@@ -144,7 +144,7 @@ def _sort_it_out_generator(
         if not cl_map.insert(cl):
             _handle_map_insertion_error(cl_map, cl)
     for cl in initial_list: # Extract Unsorted ChangeData using IsSortedCallable
-        for cd in list_sort.generate_unsorted_change_data(cl, is_sorted_callable):
+        for cd in generate_unsorted_change_data(cl, is_sorted_callable):
             yield sorting_callable(cd) # Execute SortingCallable on each Unsorted File
 
 
