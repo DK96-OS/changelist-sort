@@ -459,6 +459,21 @@ def sorting_xml_sample_4():
 
 
 @pytest.fixture
+def sorting_xml_sample_4_no_cl_name_attrs():
+    return """<sorting>
+    <changelist key="App Module Source Files" module="module">
+        <files file_ext="kt" />
+    </changelist>
+    <changelist key="App Module Source Files" module="module">
+        <files file_ext="java" />
+    </changelist>
+    <changelist key="Gradle Build Files" module="gradle">
+        <files inverse="true" />
+    </changelist>
+</sorting>"""
+
+
+@pytest.fixture
 def sorting_config_list_sample1():
     return [
         SortingChangelist(
@@ -537,6 +552,32 @@ def sorting_config_list_sample4():
         ),
         SortingChangelist(
             list_key=ListKey("gradle", "Gradle Build Files"),
+            file_patterns=[
+                SortingFilePattern(inverse=True),
+            ],
+            module_type=ModuleType.GRADLE,
+        ),
+    ]
+
+@pytest.fixture
+def sorting_config_list_sample4_no_cl_name_attrs():
+    return [
+        SortingChangelist(
+            list_key=ListKey("appmodulesourcefiles", "App Module Source Files"),
+            file_patterns=[
+                SortingFilePattern(file_ext='kt'),
+            ],
+            module_type=ModuleType.MODULE,
+        ),
+        SortingChangelist(
+            list_key=ListKey("appmodulesourcefiles", "App Module Source Files"),
+            file_patterns=[
+                SortingFilePattern(file_ext='java'),
+            ],
+            module_type=ModuleType.MODULE,
+        ),
+        SortingChangelist(
+            list_key=ListKey("gradlebuildfiles", "Gradle Build Files"),
             file_patterns=[
                 SortingFilePattern(inverse=True),
             ],
