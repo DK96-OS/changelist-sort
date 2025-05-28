@@ -1,10 +1,13 @@
 """ Testing Sorting Package Init Methods.
 """
+from changelist_data.xml.changelists import changelists_reader
+from changelist_data.xml.changelists.changelists_reader import generate_changelists
+
+from changelist_sort import expand_changelists
 from changelist_sort.change_data import ChangeData
 from changelist_sort.changelist_data import ChangelistData
 from changelist_sort.sorting import sort
 from changelist_sort.sorting.sort_mode import SortMode
-
 from test.conftest import APP_GRADLE_PATH, GRADLE_PROPERTIES_PATH, ROOT_GRADLE_PATH
 
 
@@ -169,3 +172,18 @@ def test_sort_dev_build_updates_cl_sorted_returns_sorted(
     result = sort(test_input, SortMode.MODULE, sort_config_developer_cl_0)
     assert len(result) == 1
     assert len(result[0].changes) == 1
+
+
+def test_sort_source_set(get_cl_gradle_sources_xml):
+    test_input = expand_changelists(generate_changelists(changelists_reader.parse_xml(get_cl_gradle_sources_xml)))
+    result = sort(
+        initial_list=test_input,
+        sort_mode=SortMode.SOURCESET,
+        sorting_config=None,
+    )
+    assert len(result) == 5
+    assert result[0].name == 'Main'
+    assert result[1].name == 'Module Test Fixtures'
+    assert result[2].name == 'Module Debug'
+    assert result[3].name == 'Module Test'
+    assert result[4].name == 'Module Main'
