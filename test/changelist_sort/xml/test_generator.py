@@ -1,5 +1,7 @@
 """ Testing the Sort XML Generator Module.
 """
+import io
+
 import pytest
 
 from changelist_sort.xml import generator, reader, _ensure_sort_xml_file_exists
@@ -39,6 +41,16 @@ def test_ensure_sort_xml_file_exists_contains_message_returns_path(temp_cwd):
     temp_sort_xml.write_text('Hello Reader!')
     # The file contains something.
     assert temp_sort_xml == _ensure_sort_xml_file_exists(None).absolute()
+
+
+def test_ensure_sort_xml_file_exists_empty_cl_dir_(temp_cwd):
+    temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
+    temp_sort_xml = (temp_cl_dir / 'sort.xml').absolute()
+    assert temp_sort_xml == _ensure_sort_xml_file_exists(temp_sort_xml).absolute()
+    # The file contains something.
+    buffer = io.StringIO()
+    INITIAL_ELEMENT_TREE.write(buffer, encoding='unicode', xml_declaration=True)
+    assert temp_sort_xml.read_text() == buffer.read()
 
 
 def test_generate_sort_xml_invalid_argument_type_raises_type_error():
