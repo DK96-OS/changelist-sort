@@ -210,3 +210,8 @@ def temp_cwd():
     yield tdir
     chdir(initial_cwd)
     tdir.cleanup()
+
+
+def get_temp_changelist_dir_absolute_path(temp_cwd):
+    (temp_cl_dir := (Path(temp_cwd.name) / '.changelists')).mkdir()
+    return temp_cl_dir.absolute()
