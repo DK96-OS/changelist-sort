@@ -8,7 +8,7 @@ import pytest
 
 from changelist_sort.input import validate_input
 from changelist_sort.sorting.sort_mode import SortMode
-from test.xml.test_generator import INITIAL_ELEMENT_TREE
+from test.changelist_sort.xml.test_generator import INITIAL_ELEMENT_TREE
 
 
 def get_empty_file_stats(_):
