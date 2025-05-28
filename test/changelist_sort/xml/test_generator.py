@@ -60,7 +60,7 @@ def test_generate_sort_xml_invalid_argument_type_raises_type_error():
 
 def test_generate_sort_xml_none_file_exists_empty_sort_xml_exists_returns_true(temp_cwd):
     temp_cl_dir = get_temp_changelist_dir_absolute_path(temp_cwd)
-    (temp_sort_xml := (temp_cl_dir / 'sort.xml')).touch()
+    (temp_cl_dir / 'sort.xml').touch()
     # The file is empty
     assert generator.generate_sort_xml(None)
 
