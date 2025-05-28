@@ -31,7 +31,7 @@ def sort(
     if sorting_config is not None:
         return list(map_sort(initial_list, sorting_config).generate_lists())
     else:
-        return list(_mode_sort(initial_list, sort_mode).generate_lists())
+        return list(mode_sort(initial_list, sort_mode))
 
 
 def map_sort(
@@ -59,7 +59,8 @@ def map_sort(
 def generator_sort(
     initial_list: Iterable[ChangelistData],
     sorting_config: list[SortingChangelist],
-) -> ChangelistMap:
+    filter_empty: bool = True,
+) -> Iterable[ChangelistData]:
     """ Sort The Changelists using the SortingConfig and the ChangelistMap.
 
 **Parameters:**
@@ -77,13 +78,17 @@ def generator_sort(
         sorting_callable=lambda cd: developer_sort.sort_file_by_developer(cl_map, cd, sorting_config),
     ):
         pass
-    return cl_map
+    if filter_empty:
+        return cl_map.generate_nonempty_lists()
+    else:
+        return cl_map.generate_lists()
 
 
-def _mode_sort(
+def mode_sort(
     initial_list: Iterable[ChangelistData],
     sort_mode: SortMode,
-) -> ChangelistMap:
+    filter_empty: bool = True,
+) -> Iterable[ChangelistData]:
     """ Sort Changelists using ChangelistMap and preset SortMode configurations.
     """
     cl_map = ChangelistMap()
@@ -103,7 +108,10 @@ def _mode_sort(
         )
     else:
         exit("SortMode not Implemented")
-    return cl_map
+    if filter_empty:
+        return cl_map.generate_lists()
+    else:
+        return cl_map.generate_nonempty_lists()
 
 
 def _sort_it_out(
