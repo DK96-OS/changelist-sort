@@ -213,5 +213,5 @@ def temp_cwd():
 
 
 def get_temp_changelist_dir_absolute_path(temp_cwd):
-    (temp_cl_dir := (Path(temp_cwd.name) / '.changelists')).mkdir()
-    return temp_cl_dir.absolute()
+    (temp_cl_dir := (Path(temp_cwd.name) / '.changelists').absolute()).mkdir()
+    return temp_cl_dir
