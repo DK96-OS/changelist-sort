@@ -8,7 +8,6 @@ from changelist_data.storage import file_validation
 from changelist_sort.sorting.sorting_changelist import SortingChangelist
 from changelist_sort.xml import reader
 
-
 """ The relative paths that are checked for sorting configuration.
 """
 SORT_XML_LOCATIONS = (
@@ -87,16 +86,9 @@ def _argument_logic(
     """
     if sort_xml_path is not None:
         if file_validation.file_exists(f := Path(sort_xml_path)):
-            return _read_file(f)
+            return file_validation.validate_file_input_text(f)
         exit(f"Sort XML file does not exist: {sort_xml_path}")
     for file_path_str in SORT_XML_LOCATIONS:
         if file_validation.file_exists(f := Path(file_path_str)):
-            return _read_file(f)
+            return file_validation.validate_file_input_text(f)
     return None
-
-
-def _read_file(file_path: Path) -> str:
-    try:
-        return file_path.read_text()
-    except SystemExit as e:
-        exit(f"Error Occurred while reading Sort XML file: {e}")
