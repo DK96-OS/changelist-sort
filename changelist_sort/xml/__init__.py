@@ -22,22 +22,18 @@ SORT_XML_LOCATIONS = (
 
 def _ensure_sort_xml_file_exists(
     sort_xml_path: Path | None,
-    overwrite: bool = False,
-) -> Path | None:
+) -> Path:
     """ Find a sort_xml file path.
 - If no path is provided and no default file is found, creates it in the first default location.
 
 **Parameters**:
- - sort_xml_path (Path?): The path to the SortXML file, if not default. If None, searches the Default Locations.
- - overwrite (bool): Whether to overwrite existing files containing more than 8 bytes.
+ - sort_xml_path (Path?): The path to the SortXML file, if not in default SORT_XML_LOCATIONS.
 
 **Returns:**
- Path? - The path to the file, whether it already exists, or has just been created.
+ Path - The path to the file, whether it already exists, or has just been created.
     """
     if sort_xml_path is not None:
         if file_validation.file_exists(sort_xml_path):
-            if sort_xml_path.stat().st_size > 8 and not overwrite:
-                return None # The file exists, but don't overwrite it.
             return sort_xml_path
         # Create the File where the argument specified
         output_file = sort_xml_path

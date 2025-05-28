@@ -19,14 +19,11 @@ def generate_sort_xml(
     sort_xml_tree = create_initial_sort_xml_tree()
     # Check SortXML File argument
     if sort_xml_file is None:
-        if (output_file := _ensure_sort_xml_file_exists(None)) is None:
-            return False
+        output_file = _ensure_sort_xml_file_exists(None)
     elif isinstance(sort_xml_file, Path):
-        if (output_file := _ensure_sort_xml_file_exists(sort_xml_file)) is None:
-            return False
+        output_file = _ensure_sort_xml_file_exists(sort_xml_file)
     elif isinstance(sort_xml_file, str):
-        if (output_file := _ensure_sort_xml_file_exists(Path(sort_xml_file))) is None:
-            return False
+        output_file = _ensure_sort_xml_file_exists(Path(sort_xml_file))
     else:
         raise TypeError
     try:
