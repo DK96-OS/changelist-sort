@@ -190,7 +190,7 @@ def test_validate_input_sort_xml_file_argument_does_not_exist_raises_exit(monkey
     test_input = ['--sort_xml_file', '.changelists/sort.xml']
     monkeypatch.setattr(Path, 'exists', lambda _: False)
     with pytest.raises(SystemExit, match='Sort XML file'):
-        result = validate_input(test_input)
+        validate_input(test_input)
 
 
 def test_validate_input_sort_xml_file_is_empty_returns_empty_sorting_config(monkeypatch):
