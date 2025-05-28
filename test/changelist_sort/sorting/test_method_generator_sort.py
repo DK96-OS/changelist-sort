@@ -41,4 +41,31 @@ def test_generator_sort_multi_storage_input_empty_config_filter_returns_2(multi_
 def test_generator_sort_multi_storage_input_empty_config_no_filter_returns_3(multi_storage: ChangelistDataStorage):
     test_input = expand_changelists(multi_storage.get_changelists())
     result = list(generator_sort(test_input, [], False))
-    assert len(list(result)) == 3
+    assert len(result) == 3
+    assert result[0].name == 'Main'
+    assert result[1].name == 'Test'
+    assert result[2].name == 'Project Root'
+
+
+def test_generator_sort_multi_storage_dev_cl0_config_filter_returns_2(
+    multi_storage: ChangelistDataStorage,
+    sort_config_developer_cl_0
+):
+    test_input = expand_changelists(multi_storage.get_changelists())
+    result = list(generator_sort(test_input, sort_config_developer_cl_0, True))
+    assert len(result) == 2
+    assert result[0].name == 'Project Root'
+    assert result[1].name == 'Tests'
+
+
+def test_generator_sort_multi_storage_dev_cl0_config_no_filter_returns_4(
+    multi_storage: ChangelistDataStorage,
+    sort_config_developer_cl_0
+):
+    test_input = expand_changelists(multi_storage.get_changelists())
+    result = list(generator_sort(test_input, sort_config_developer_cl_0, False))
+    assert len(result) == 4
+    assert result[0].name == 'Main'
+    assert result[1].name == 'Test'
+    assert result[2].name == 'Project Root'
+    assert result[3].name == 'Tests'
