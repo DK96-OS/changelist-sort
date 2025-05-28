@@ -5,9 +5,7 @@ from typing import Iterable, Generator
 from changelist_data import ChangelistDataStorage
 from changelist_data.changelist import Changelist
 
-from changelist_sort.changelist_data import ChangelistData, generate_simple_changelists, \
-    generate_expanded_changelists
-from changelist_sort.input import input_data
+from changelist_sort.changelist_data import ChangelistData, generate_simple_changelists, generate_expanded_changelists
 from changelist_sort.input.input_data import InputData
 from changelist_sort.sorting import sort, SortMode, SortingChangelist
 
@@ -58,9 +56,13 @@ def _sort_and_filter(
 ) -> Generator[ChangelistData, None, None]:
     """
 **Parameters:**
- - data: ():
- -
+ - data (Iterable[ChangelistData]): The input data.
+ - sort_mode (SortMode): The mode to apply in absence of sorting_config.
+ - sorting_config (list[SortingChangelist]): The Sorting Changelists configuration.
  - apply_filter (bool): Filter out Empty Changelists. Default: True.
+
+**Yields:**
+ ChangelistData - The sorted ChangelistData objects.
     """
     cl_map = sorting.map_sort(data, sorting_config)
     if apply_filter:
