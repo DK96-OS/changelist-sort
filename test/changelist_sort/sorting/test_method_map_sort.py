@@ -5,7 +5,6 @@ from typing import Iterable
 from changelist_sort import ChangelistData, sorting, expand_changelists, SortingChangelist
 from changelist_sort.list_key import compute_key
 from changelist_sort.sorting.sorting_file_pattern import SortingFilePattern
-from test.input.conftest import simple_storage, multi_storage
 
 
 def generate_changelists_1(

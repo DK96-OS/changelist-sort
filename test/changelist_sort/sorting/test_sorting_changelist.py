@@ -6,7 +6,7 @@ from changelist_sort.sorting.module_type import ModuleType
 from changelist_sort.sorting.sorting_changelist import SortingChangelist, filter_by_module
 
 from test.conftest import get_change_data
-from test.sorting.conftest import INPUT_PACKAGE_PATTERN, SRC_DIR_PATTERN
+from test.changelist_sort.conftest import INPUT_PACKAGE_PATTERN, SRC_DIR_PATTERN
 
 
 def get_dc_src_input() -> SortingChangelist:

@@ -12,7 +12,7 @@ from changelist_sort.sorting.developer_sort import sort_file_by_developer, is_so
 from changelist_sort.sorting.module_type import ModuleType
 
 from test.conftest import get_change_data
-from test.sorting.conftest import BUILD_UPDATES_KEY
+from test.changelist_sort.conftest import BUILD_UPDATES_KEY
 
 
 def test_sort_file_by_developer_github_cl_exists_returns_true(
