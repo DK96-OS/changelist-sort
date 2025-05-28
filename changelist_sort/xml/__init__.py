@@ -1,4 +1,4 @@
-""" Sort XML.
+""" Sort XML stores the changelist and file sorting configuration.
 """
 from pathlib import Path
 from typing import Generator
@@ -9,7 +9,8 @@ from changelist_sort.sorting.sorting_changelist import SortingChangelist
 from changelist_sort.xml import reader
 
 
-# These are the relative paths that are checked for sorting configuration
+""" The relative paths that are checked for sorting configuration.
+"""
 SORT_XML_LOCATIONS = (
     ".changelists/sort.xml",
     ".changelists/sorting.xml",
@@ -63,11 +64,11 @@ def load_sorting_config(
 **Returns:**
  list[SortingChangelist]? - The list of SortingChangelist data objects created from the SortXML file.
     """
-    return list(generate_sorting_config(sort_xml_path))
+    return list(_generate_sorting_config(sort_xml_path))
 
 
-def generate_sorting_config(
-    sort_xml_path: Path | None = None,
+def _generate_sorting_config(
+    sort_xml_path: Path | None,
 ) -> Generator[SortingChangelist, None, None]:
     """ Search for the Sorting Config file and load it.
  - If file exists, but fails to parse, then exit.
@@ -78,14 +79,16 @@ def generate_sorting_config(
 **Yields:**
  SortingChangelist - The SortingChangelist data objects created from the SortXML file.
         """
-    if (result := _argument_logic(sort_xml_path)) is None:
-        exit("No Sorting Config File Exists. Create one with --generate_sort_xml")
-    yield from reader.generate_sort_config_from_xml(result)
+    if (result := _argument_logic(sort_xml_path)) is not None:
+        yield from reader.generate_sort_config_from_xml(result)
+    return None
 
 
 def _argument_logic(
     sort_xml_path: Path | None,
 ) -> str | None:
+    """ Tries to read the given file path, then the default paths, returning file contents as a string.
+    """
     if sort_xml_path is not None:
         if file_validation.file_exists(f := Path(sort_xml_path)):
             return _read_file(f)
