@@ -59,7 +59,6 @@ def map_sort(
 def generator_sort(
     initial_list: Iterable[ChangelistData],
     sorting_config: list[SortingChangelist],
-    verbose: bool = True,
 ) -> ChangelistMap:
     """ Sort The Changelists using the SortingConfig and the ChangelistMap.
 
@@ -71,14 +70,13 @@ def generator_sort(
 **Returns:**
  ChangelistMap -
     """
-    total = sum(_sort_it_out_generator(
+    for _ in _sort_it_out_generator(
         (cl_map := ChangelistMap()),
         initial_list,
         is_sorted_callable=lambda key, cd: developer_sort.is_sorted_by_developer(key, cd, sorting_config),
         sorting_callable=lambda cd: developer_sort.sort_file_by_developer(cl_map, cd, sorting_config),
-    ))
-    if verbose:
-        print(f"Files Sorted: {total}")
+    ):
+        pass
     return cl_map
 
 
@@ -127,7 +125,7 @@ def _sort_it_out(
         )
     # Execute SortingCallable on each Unsorted File
     for cd in unsorted:
-        sorting_callable(cd)
+        sorting_callable(cd) # Ignore boolean result
 
 
 def _sort_it_out_generator(
@@ -138,6 +136,9 @@ def _sort_it_out_generator(
 ) -> Generator[bool, None, None]:
     """
  - This method may be called by higher level methods.
+
+**Yields:**
+ bool - True, unless the sorting path of the ChangeData is None.
     """
     for cl in initial_list:
         if not cl_map.insert(cl):
