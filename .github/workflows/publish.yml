@@ -1,7 +1,5 @@
 # Create and Publish repository Packages
-
 name: Publish Packages on Release
-
 on:
   release:
     types: [ created ]
@@ -34,7 +32,7 @@ jobs:
         run: python -m build --sdist --wheel --outdir dist/
 
       - name: Sign Distributions
-        uses: dk96-os/gh-action-sigstore-python@v3.2.3-dk96-os
+        uses: dk96-os/gh-action-sigstore-python@v3.2.4
         with:
           inputs: >-
             ./dist/*.tar.gz
