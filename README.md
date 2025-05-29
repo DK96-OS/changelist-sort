@@ -1,20 +1,16 @@
 # Changelist Sort
 Making Sorting Changelist Files Easy!
 
-1. Close Android Studio (saves changelists to workspace file)
-2. Open shell from project root directory (or supply workspace file path in arguments)
-3. Run `changelist-sort` (or `cl-sort`) add arguments/options if necessary
-4. Reopen Android Studio. Your changelists are sorted.
+1. Changelist-Init
+2. Changelist-Sort
+3. Changelist-FOCI
 
 **Note:** Add alias to your shell environment to maximize your efficiency.
 
 ## Project Sorting Configuration
 To configure a changelist sorting patterns for your project:
-1. Create Directory `.changelists/`
-2. Create File `sort.xml` in Directory
-3. Write Sorting XML Root Tag `<sorting></sorting>`
-4. Write Changelists Tags `<changelist name="" key=""></changelist>`
-5. Write File Pattern Tags `<files ... /> `
+1. Run: `cl-sort --generate_sort_xml` to create `.changelists/sort.xml`
+2. Edit Changelist Sorting Patterns
 
 ### File Pattern Attributes
 For each `<files />` tag, apply ONE of the following attributes:
