@@ -1,7 +1,7 @@
 """ Module for creating the xml files.
 """
 from pathlib import Path
-from xml.etree.ElementTree import Element, ElementTree
+from xml.etree.ElementTree import Element, ElementTree, indent
 
 from changelist_sort.xml import reader, _ensure_sort_xml_file_exists
 
@@ -47,20 +47,28 @@ def create_initial_sort_xml_tree() -> ElementTree:
     root.append(root_project_cl := Element(reader.CHANGELIST_TAG))
     root.append(test_cl := Element(reader.CHANGELIST_TAG))
     root.append(changelists_cl := Element(reader.CHANGELIST_TAG))
+    indent(root_project_cl, level=1)
+    indent(test_cl, level=1)
+    indent(changelists_cl, level=1)
     #
     root_project_cl.set(reader.CHANGELIST_NAME, 'Project Root')
     root_project_cl.append(root_files := Element(reader.FILES_TAG))
     root_files.set(reader.FILES_FIRST_DIR, 'None')
+    indent(root_files, level=2)
     #
     test_cl.set(reader.CHANGELIST_NAME, 'Tests')
     test_cl.append(test_dir_files := Element(reader.FILES_TAG))
     test_dir_files.set(reader.FILES_FIRST_DIR, 'test')
+    indent(test_dir_files, level=2)
     #
     changelists_cl.set(reader.CHANGELIST_NAME, 'Changelists Config')
     changelists_cl.append(changelist_file_filter_1 := Element(reader.FILES_TAG))
     changelist_file_filter_1.set(reader.FILES_PATH_START, '.changelists')
+    indent(changelist_file_filter_1, level=2)
     changelists_cl.append(changelist_file_filter_2 := Element(reader.FILES_TAG))
     changelist_file_filter_2.set(reader.FILES_FILENAME_PREFIX, 'sort')
+    indent(changelist_file_filter_2, level=2)
     changelists_cl.append(changelist_file_filter_3 := Element(reader.FILES_TAG))
     changelist_file_filter_3.set(reader.FILES_EXTENSION, 'xml')
+    indent(changelist_file_filter_3, level=2)
     return ElementTree(root)
